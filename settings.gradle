@@ -1,1 +1,3 @@
 include ':example'
+include ':latte-core'
+include ':latte-ui'
