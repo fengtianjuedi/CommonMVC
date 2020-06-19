@@ -67,7 +67,7 @@ public class ConfigManager {
     }
 
     @SuppressWarnings("unchecked")
-    final <T> T getConfig(Object key){
+    public final <T> T getConfig(Object key){
         final Object value = CONFIGS.get(key);
         if (value == null)
             throw new NullPointerException(key.toString() + "is null");

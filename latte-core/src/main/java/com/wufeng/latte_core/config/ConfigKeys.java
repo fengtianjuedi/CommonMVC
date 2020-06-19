@@ -8,5 +8,6 @@ public enum ConfigKeys {
     CONTEXT, //context
     ICON, //图标库
     ACTIVITY, //活动对象
-    LOADER_DELAYED //延迟加载
+    LOADER_DELAYED, //延迟加载
+    INTERCEPTOR //okhttp自定义拦截器
 }
