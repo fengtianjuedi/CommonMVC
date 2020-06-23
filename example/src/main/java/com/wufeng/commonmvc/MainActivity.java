@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat;
 
 import com.wufeng.commonmvc.databinding.ActivityMainBinding;
 import com.wufeng.latte_core.activity.BaseActivity;
+import com.wufeng.latte_core.loader.Loader;
 import com.wufeng.latte_core.log.LogUtil;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding> {
@@ -20,11 +21,13 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         mBinding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ContextCompat.checkSelfPermission(getBaseContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
-                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CALL_PHONE}, 1);
-                }else {
-                    call();
-                }
+                Loader.showLoading(MainActivity.this);
+            }
+        });
+        mBinding.button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Loader.stopLoading();
             }
         });
     }

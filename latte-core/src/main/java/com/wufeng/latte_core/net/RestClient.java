@@ -2,6 +2,8 @@ package com.wufeng.latte_core.net;
 
 import android.content.Context;
 
+import com.wufeng.latte_core.loader.Loader;
+
 import java.io.File;
 import java.util.WeakHashMap;
 
@@ -41,7 +43,7 @@ public class RestClient {
     private void request(HttpMethod method){
         final RestService service = RestCreator.getRestService();
         Observable<String> observable = null;
-
+        Loader.showLoading(CONTEXT);
         switch (method){
             case GET:
                 observable = service.get(URL, PARAMS);
@@ -80,6 +82,7 @@ public class RestClient {
 
                     @Override
                     public void onNext(String s) {
+                        Loader.stopLoading();
                         mDisposable.dispose();
                         if (SUCCESS != null)
                             SUCCESS.onSuccess(s);
@@ -87,13 +90,14 @@ public class RestClient {
 
                     @Override
                     public void onError(Throwable e) {
+                        Loader.stopLoading();
                         if (ERROR != null)
                             ERROR.onError(e);
                     }
 
                     @Override
                     public void onComplete() {
-
+                        Loader.stopLoading();
                     }
                 });
     }

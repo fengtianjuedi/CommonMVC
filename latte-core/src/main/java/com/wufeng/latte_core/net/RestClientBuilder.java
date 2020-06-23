@@ -5,6 +5,7 @@ import android.content.Context;
 import java.io.File;
 import java.util.WeakHashMap;
 
+import app.dinus.com.loadingdrawable.LoadingView;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -52,6 +53,11 @@ public class RestClientBuilder {
 
     public final RestClientBuilder error(IError iError){
         this.mERROR = iError;
+        return this;
+    }
+
+    public final RestClientBuilder loading(Context context){
+        mContext = context;
         return this;
     }
 
