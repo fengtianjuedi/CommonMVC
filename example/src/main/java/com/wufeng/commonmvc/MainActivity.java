@@ -7,29 +7,55 @@ import android.net.Uri;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.bigkoo.pickerview.builder.TimePickerBuilder;
+import com.bigkoo.pickerview.listener.OnTimeSelectListener;
+import com.bigkoo.pickerview.view.TimePickerView;
 import com.wufeng.commonmvc.databinding.ActivityMainBinding;
 import com.wufeng.latte_core.activity.BaseActivity;
 import com.wufeng.latte_core.loader.Loader;
 import com.wufeng.latte_core.log.LogUtil;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
 public class MainActivity extends BaseActivity<ActivityMainBinding> {
+    private TimePickerView timePickerView;
     @Override
     protected void init() {
         mBinding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Loader.showLoading(MainActivity.this);
+                //Loader.showLoading(MainActivity.this);
+                timePickerView.show();
             }
         });
+        /*
         mBinding.button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Loader.stopLoading();
             }
         });
+        List<String> data = new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8"));
+        mBinding.wheelView.setDataList(data);
+         */
+        //List<String> data = new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8"));
+        //mBinding.wheelView.setDataList(data);
+        timePickerView = new TimePickerBuilder(this, new OnTimeSelectListener() {
+            @Override
+            public void onTimeSelect(Date date, View v) {
+
+            }
+        })
+                .setType(new boolean[]{false, false, false, true, true, true})
+                .setLabel("", "", "", "", "", "")
+                .build();
     }
 
     @Override
