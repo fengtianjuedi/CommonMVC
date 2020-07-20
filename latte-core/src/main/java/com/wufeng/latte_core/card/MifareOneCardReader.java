@@ -52,7 +52,24 @@ public abstract class MifareOneCardReader {
      * Start read card
      */
     public void startRead() {
-
+        execute(
+                new Op() {
+                    @Override
+                    public void onStart(byte[] lastDataRead) throws RequestException {
+                        //Certificate sector 1 can operate the No. 4 ~7 block
+                        byte[] keyA = BytesUtil.hexString2Bytes("B192C384D576");
+                        driver.authSector(1, MifareDriver.KEY_A, keyA, this);
+                    }
+                },
+                new ReadOp() {
+                    @Override
+                    public void onStart(byte[] lastDataRead) throws RequestException {
+                        // Read data
+                        driver.readBlock(4, this);
+                    }
+                }
+        );
+        /*
         // The driver method can be used only once in the 'onStart' method.
         if(RFCardActivity.rfWriteCard) {
             execute(

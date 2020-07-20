@@ -9,5 +9,6 @@ public enum ConfigKeys {
     ICON, //图标库
     ACTIVITY, //活动对象
     LOADER_DELAYED, //延迟加载
-    INTERCEPTOR //okhttp自定义拦截器
+    INTERCEPTOR, //okhttp自定义拦截器
+    P0SMODEL //POS机型号
 }

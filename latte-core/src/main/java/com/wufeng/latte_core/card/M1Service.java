@@ -8,6 +8,13 @@ import com.landicorp.android.eptapi.exception.ReloginException;
 import com.landicorp.android.eptapi.exception.RequestException;
 import com.landicorp.android.eptapi.exception.ServiceOccupiedException;
 import com.landicorp.android.eptapi.exception.UnsupportMultiProcess;
+import com.vanstone.trans.api.PiccApi;
+import com.vanstone.trans.api.SystemApi;
+import com.vanstone.utils.CommonConvert;
+import com.wufeng.latte_core.common.CommonUtils;
+import com.wufeng.latte_core.config.ConfigKeys;
+import com.wufeng.latte_core.config.ConfigManager;
+import com.wufeng.latte_core.config.PosModel;
 
 public class M1Service {
     /**
@@ -36,9 +43,7 @@ public class M1Service {
      */
     public void bindService(){
         try{
-            if (commonUtils.getInt(SerialPortActivity.posModel, SerialPortActivity.posModel_liandiA8) == SerialPortActivity.posModel_liandiA8 ||
-                    commonUtils.getInt(SerialPortActivity.posModel, SerialPortActivity.posModel_liandiA8) == SerialPortActivity.posModel_liandiGS ||
-                    commonUtils.getInt(SerialPortActivity.posModel, SerialPortActivity.posModel_liandiA8HF) == SerialPortActivity.posModel_liandiA8HF){
+            if (ConfigManager.getInstance().getConfig(ConfigKeys.P0SMODEL) == PosModel.LIANDIA8){
                 DeviceService.login(this.context);
                 rfCardReaderSample = new RFCardReaderSample(this.context) {
                     @Override
@@ -54,7 +59,7 @@ public class M1Service {
                         isFindCard = false;
                     }
                 };
-            }else if (commonUtils.getInt(SerialPortActivity.posModel, SerialPortActivity.posModel_liandiA8) == SerialPortActivity.posModel_aisinoA90){
+            }else if (ConfigManager.getInstance().getConfig(ConfigKeys.P0SMODEL) == PosModel.AISINOA90){
                 int result = PiccApi.PiccOpen_Api();
                 if (result != 0)
                     onResultListener.fail("打开设备失败" + String.valueOf(result));
@@ -69,13 +74,11 @@ public class M1Service {
      */
     public void unbindService(){
         isFindCard = false;
-        if (commonUtils.getInt(SerialPortActivity.posModel, SerialPortActivity.posModel_liandiA8) == SerialPortActivity.posModel_liandiA8 ||
-                commonUtils.getInt(SerialPortActivity.posModel, SerialPortActivity.posModel_liandiA8) == SerialPortActivity.posModel_liandiGS ||
-                commonUtils.getInt(SerialPortActivity.posModel, SerialPortActivity.posModel_liandiA8HF) == SerialPortActivity.posModel_liandiA8HF){
+        if (ConfigManager.getInstance().getConfig(ConfigKeys.P0SMODEL) == PosModel.LIANDIA8){
             if (rfCardReaderSample != null)
                 rfCardReaderSample.stopSearch();
             DeviceService.logout();
-        }else if (commonUtils.getInt(SerialPortActivity.posModel, SerialPortActivity.posModel_liandiA8) == SerialPortActivity.posModel_aisinoA90){
+        }else if (ConfigManager.getInstance().getConfig(ConfigKeys.P0SMODEL) == PosModel.AISINOA90){
             PiccApi.PiccClose_Api();
         }
     }
@@ -87,18 +90,16 @@ public class M1Service {
         if (isFindCard)
             return;
         isFindCard = true;
-        if (commonUtils.getInt(SerialPortActivity.posModel, SerialPortActivity.posModel_liandiA8) == SerialPortActivity.posModel_liandiA8 ||
-                commonUtils.getInt(SerialPortActivity.posModel, SerialPortActivity.posModel_liandiA8) == SerialPortActivity.posModel_liandiGS ||
-                commonUtils.getInt(SerialPortActivity.posModel, SerialPortActivity.posModel_liandiA8HF) == SerialPortActivity.posModel_liandiA8HF){
+        if (ConfigManager.getInstance().getConfig(ConfigKeys.P0SMODEL) == PosModel.LIANDIA8){
             if (rfCardReaderSample != null)
                 rfCardReaderSample.searchCard();
-        }else if (commonUtils.getInt(SerialPortActivity.posModel, SerialPortActivity.posModel_liandiA8) == SerialPortActivity.posModel_aisinoA90){
+        }else if (ConfigManager.getInstance().getConfig(ConfigKeys.P0SMODEL) == PosModel.AISINOA90){
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     byte []serialNo = new byte[16];
                     byte []cardType = new byte[2];
-                    byte[] keyA = CommonConvert.hexStringToByte(Config.KeyA);
+                    byte[] keyA = CommonConvert.hexStringToByte("B192C384D576");
                     byte[] data = new byte[16];
                     int result = 0;
                     final String error;

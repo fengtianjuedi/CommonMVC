@@ -186,7 +186,6 @@ public abstract class RFCardReaderSample extends AbstractSample {
         try {
             RFCardReader.getInstance().searchCard(onSearchListener);
         } catch (RequestException e) {
-            CommonUtils.reportError(e);
             onDeviceServiceCrash();
         }
     }
@@ -198,7 +197,6 @@ public abstract class RFCardReaderSample extends AbstractSample {
         try {
             RFCardReader.getInstance().stopSearch();
         } catch (RequestException e) {
-            CommonUtils.reportError(e);
             onDeviceServiceCrash();
         }
     }
@@ -210,7 +208,6 @@ public abstract class RFCardReaderSample extends AbstractSample {
         try {
             return RFCardReader.getInstance().exists();
         } catch (RequestException e) {
-            CommonUtils.reportError(e);
             onDeviceServiceCrash();
             return false;
         }
