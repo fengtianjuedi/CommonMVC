@@ -1,28 +1,20 @@
 package com.wufeng.commonmvc;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.wufeng.commonmvc.databinding.ActivityMainBinding;
 import com.wufeng.latte_core.activity.BaseActivity;
-import com.wufeng.latte_core.loader.Loader;
-import com.wufeng.latte_core.log.LogUtil;
+import com.wufeng.latte_core.util.LogUtil;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding> {
     private TimePickerView timePickerView;

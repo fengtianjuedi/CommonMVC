@@ -1,4 +1,4 @@
-package com.wufeng.latte_core.log;
+package com.wufeng.latte_core.util;
 
 import android.util.Log;
 

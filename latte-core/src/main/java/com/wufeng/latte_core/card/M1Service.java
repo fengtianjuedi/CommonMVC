@@ -11,7 +11,7 @@ import com.landicorp.android.eptapi.exception.UnsupportMultiProcess;
 import com.vanstone.trans.api.PiccApi;
 import com.vanstone.trans.api.SystemApi;
 import com.vanstone.utils.CommonConvert;
-import com.wufeng.latte_core.common.CommonUtils;
+import com.wufeng.latte_core.util.MediaPlayerUtil;
 import com.wufeng.latte_core.config.ConfigKeys;
 import com.wufeng.latte_core.config.ConfigManager;
 import com.wufeng.latte_core.config.PosModel;
@@ -28,14 +28,14 @@ public class M1Service {
     private Context context;
     private OnResultListener onResultListener;
     private RFCardReaderSample rfCardReaderSample; //联迪A8读卡对象
-    private CommonUtils commonUtils;
+    private MediaPlayerUtil mediaPlayerUtil;
     private static android.os.Handler mainHandler = new android.os.Handler();;
     private boolean isFindCard = false; //是否正在寻卡
 
     public M1Service(Context context, OnResultListener listener){
         this.context = context;
         this.onResultListener = listener;
-        commonUtils = new CommonUtils((Activity) context);
+        mediaPlayerUtil = new MediaPlayerUtil((Activity) context);
     }
 
     /**
@@ -48,7 +48,7 @@ public class M1Service {
                 rfCardReaderSample = new RFCardReaderSample(this.context) {
                     @Override
                     protected void displayRFCardInfo(String cardInfo) {
-                        commonUtils.startMediaPlayerDi();
+                        mediaPlayerUtil.startMediaPlayerDi();
                         onResultListener.success(cardInfo);
                         isFindCard = false;
                     }

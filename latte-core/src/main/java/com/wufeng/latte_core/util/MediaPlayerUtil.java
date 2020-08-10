@@ -1,4 +1,4 @@
-package com.wufeng.latte_core.common;
+package com.wufeng.latte_core.util;
 
 import android.app.Activity;
 import android.media.MediaPlayer;
@@ -8,12 +8,12 @@ import com.wufeng.latte_core.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommonUtils {
+public class MediaPlayerUtil {
     List<MediaPlayer> mediaPlayerList = new ArrayList<>();
     MediaPlayer mediaPlayerDi;
     Activity activity;
 
-    public CommonUtils(Activity activity){
+    public MediaPlayerUtil(Activity activity){
         this.activity = activity;
     }
 
