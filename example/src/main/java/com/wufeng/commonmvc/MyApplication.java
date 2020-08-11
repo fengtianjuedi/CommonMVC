@@ -13,7 +13,7 @@ public class MyApplication extends Application {
         ConfigManager.getInstance()
                 .withIcon(new FontAwesomeModule())
                 .withContext(getApplicationContext())
-                .withHost("")
+                .withHost("http://192.168.200.90:9008")
                 .config();
     }
 }

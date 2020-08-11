@@ -11,10 +11,10 @@ import com.landicorp.android.eptapi.exception.UnsupportMultiProcess;
 import com.vanstone.trans.api.PiccApi;
 import com.vanstone.trans.api.SystemApi;
 import com.vanstone.utils.CommonConvert;
-import com.wufeng.latte_core.util.MediaPlayerUtil;
 import com.wufeng.latte_core.config.ConfigKeys;
 import com.wufeng.latte_core.config.ConfigManager;
 import com.wufeng.latte_core.config.PosModel;
+import com.wufeng.latte_core.util.MediaPlayerUtil;
 
 public class M1Service {
     /**
@@ -33,6 +33,7 @@ public class M1Service {
     private boolean isFindCard = false; //是否正在寻卡
 
     public M1Service(Context context, OnResultListener listener){
+
         this.context = context;
         this.onResultListener = listener;
         mediaPlayerUtil = new MediaPlayerUtil((Activity) context);

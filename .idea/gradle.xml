@@ -13,7 +13,6 @@
             <option value="$PROJECT_DIR$/example" />
             <option value="$PROJECT_DIR$/latte-core" />
             <option value="$PROJECT_DIR$/latte-loadingDrawable" />
-            <option value="$PROJECT_DIR$/latte-ui" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

@@ -1,3 +1,2 @@
 include ':example', ':latte-loadingDrawable'
 include ':latte-core'
-include ':latte-ui'
