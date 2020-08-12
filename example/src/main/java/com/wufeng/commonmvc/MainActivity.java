@@ -13,6 +13,8 @@ import com.bigkoo.pickerview.view.TimePickerView;
 import com.wufeng.commonmvc.databinding.ActivityMainBinding;
 import com.wufeng.latte_core.activity.BaseActivity;
 import com.wufeng.latte_core.util.LogUtil;
+import com.wufeng.latte_core.util.RequestUtil;
+import com.wufeng.latte_core.util.ThreeDesUtil;
 
 import java.util.Date;
 
@@ -24,7 +26,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             @Override
             public void onClick(View view) {
                 //Loader.showLoading(MainActivity.this);
-                timePickerView.show();
+                //timePickerView.show();
+                //RequestUtil.setMerchantAndTerminal("601100000000021", "00000021", MainActivity.this);
+                //RequestUtil.checkIn("601100000000021", "00000021", MainActivity.this);
+                String plain = ThreeDesUtil
             }
         });
         /*

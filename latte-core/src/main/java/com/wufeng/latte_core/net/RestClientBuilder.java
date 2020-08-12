@@ -46,6 +46,11 @@ public class RestClientBuilder {
         return this;
     }
 
+    public final RestClientBuilder xwwwformurlencoded(String form){
+        this.mBody = RequestBody.create(MediaType.parse("application/x-www-form-urlencoded;charset=UTF-8"), form);
+        return this;
+    }
+
     public final RestClientBuilder success(ISuccess iSuccess){
         this.mSUCCESS = iSuccess;
         return this;

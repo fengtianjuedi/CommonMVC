@@ -5,9 +5,12 @@ import android.content.Context;
 
 import com.joanzapata.iconify.IconFontDescriptor;
 import com.joanzapata.iconify.Iconify;
+import com.wufeng.latte_core.net.interceptors.BaseInterceptor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import okhttp3.Interceptor;
 
 /**
  * 配置管理
@@ -15,6 +18,7 @@ import java.util.HashMap;
 public class ConfigManager {
     private static final HashMap<Object, Object> CONFIGS = new HashMap<>();
     private static final ArrayList<IconFontDescriptor> ICONS = new ArrayList<>();
+    private static final ArrayList<Interceptor> INTERCEPTORS = new ArrayList<>();
 
     private ConfigManager(){
     }
@@ -58,6 +62,12 @@ public class ConfigManager {
 
     public final ConfigManager withPosModel(PosModel posModel){
         CONFIGS.put(ConfigKeys.P0SMODEL, posModel);
+        return this;
+    }
+
+    public final ConfigManager withInterceptor(BaseInterceptor interceptor){
+        INTERCEPTORS.add(interceptor);
+        CONFIGS.put(ConfigKeys.INTERCEPTOR, INTERCEPTORS);
         return this;
     }
 

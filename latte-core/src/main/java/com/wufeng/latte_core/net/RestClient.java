@@ -43,7 +43,8 @@ public class RestClient {
     private void request(HttpMethod method){
         final RestService service = RestCreator.getRestService();
         Observable<String> observable = null;
-        Loader.showLoading(CONTEXT);
+        if (CONTEXT != null)
+            Loader.showLoading(CONTEXT);
         switch (method){
             case GET:
                 observable = service.get(URL, PARAMS);
@@ -105,12 +106,11 @@ public class RestClient {
     public final void get() {request(HttpMethod.GET);}
 
     public final void post() {
-        if (BODY == null)
+        if (BODY == null) {
             request(HttpMethod.POST);
-        else
-            if (PARAMS.isEmpty())
-                throw new NullPointerException("params must not be Empty!");
+        } else {
             request(HttpMethod.POST_RAW);
+        }
     }
 
     public final void put() {
