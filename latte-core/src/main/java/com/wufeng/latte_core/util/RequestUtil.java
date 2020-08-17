@@ -3,8 +3,6 @@ package com.wufeng.latte_core.util;
 import android.content.Context;
 
 import com.alibaba.fastjson.JSONObject;
-import com.wufeng.latte_core.config.ConfigKeys;
-import com.wufeng.latte_core.config.ConfigManager;
 import com.wufeng.latte_core.net.IError;
 import com.wufeng.latte_core.net.ISuccess;
 import com.wufeng.latte_core.net.RestClient;

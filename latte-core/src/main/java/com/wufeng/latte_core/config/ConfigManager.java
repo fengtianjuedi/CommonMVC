@@ -60,7 +60,7 @@ public class ConfigManager {
         return this;
     }
 
-    public final ConfigManager withPosModel(PosModel posModel){
+    public final ConfigManager withPosModel(String posModel){
         CONFIGS.put(ConfigKeys.P0SMODEL, posModel);
         return this;
     }

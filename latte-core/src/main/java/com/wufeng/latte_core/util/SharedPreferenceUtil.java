@@ -4,8 +4,6 @@ package com.wufeng.latte_core.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import androidx.preference.Preference;
-
 import com.wufeng.latte_core.config.ConfigKeys;
 import com.wufeng.latte_core.config.ConfigManager;
 
