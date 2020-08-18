@@ -30,7 +30,7 @@ public abstract class BaseFragment <T extends ViewBinding> extends Fragment impl
     protected FragmentActivity _mActivity;
     public T mBinding;
 
-    abstract void init();
+    protected abstract void init();
 
     @Override
     public SupportFragmentDelegate getSupportDelegate() {
@@ -132,6 +132,21 @@ public abstract class BaseFragment <T extends ViewBinding> extends Fragment impl
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         mDelegate.onHiddenChanged(hidden);
+    }
+
+    /**
+     * Causes the Runnable r to be added to the action queue.
+     * <p>
+     * The runnable will be run after all the previous action has been run.
+     * <p>
+     * 前面的事务全部执行后 执行该Action
+     *
+     * @deprecated Use {@link #post(Runnable)} instead.
+     */
+    @Deprecated
+    @Override
+    public void enqueueAction(Runnable runnable) {
+        mDelegate.enqueueAction(runnable);
     }
 
     @Override

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/white">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:background="@android:color/holo_blue_dark"/>
+    <!--头部-->
+    <andr oidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/holo_blue_dark"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="start|center_vertical">
+            <com.joanzapata.iconify.widget.IconTextView
+                android:id="@+id/itv_back"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:text="{fa-angle-left}"
+                android:textColor="@drawable/touch_text_gray"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/text_icon_back"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@drawable/touch_text_gray"
+                android:textSize="@dimen/text_size_30"
+                android:gravity="start"
+                android:text="@string/menu_deposit_trade"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.Toolbar>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,6 +1,5 @@
 package com.wufeng.commonmvc;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -14,17 +13,11 @@ import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.wufeng.commonmvc.databinding.ActivityMainBinding;
 import com.wufeng.latte_core.activity.BaseActivity;
-import com.wufeng.latte_core.config.ConfigKeys;
-import com.wufeng.latte_core.config.ConfigManager;
-import com.wufeng.latte_core.device.card.AISINOA90ReadCard;
 import com.wufeng.latte_core.device.card.LiandiA8ReadCard;
 import com.wufeng.latte_core.device.card.ReadCard;
 import com.wufeng.latte_core.device.print.PrintTemplate;
-import com.wufeng.latte_core.device.print.PrinterAisinoA90;
 import com.wufeng.latte_core.device.print.PrinterLiandiA8;
 import com.wufeng.latte_core.util.LogUtil;
-import com.wufeng.latte_core.util.RequestUtil;
-import com.wufeng.latte_core.util.ThreeDesUtil;
 
 import java.util.Date;
 
