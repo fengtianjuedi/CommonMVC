@@ -9,8 +9,6 @@ import com.wufeng.latte_core.util.ByteStringUtil;
  * 艾体威尔A90非接IC卡读写
  */
 public class AISINOA90ReadCard extends ReadCard {
-    //设备型号
-    public static final String AISINOA90 = "AISINOA90";
     @Override
     public void read(ReadCardCallback callback) {
         int result = 0xff;

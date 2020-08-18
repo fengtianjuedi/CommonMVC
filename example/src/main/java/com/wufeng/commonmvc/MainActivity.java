@@ -19,6 +19,9 @@ import com.wufeng.latte_core.config.ConfigManager;
 import com.wufeng.latte_core.device.card.AISINOA90ReadCard;
 import com.wufeng.latte_core.device.card.LiandiA8ReadCard;
 import com.wufeng.latte_core.device.card.ReadCard;
+import com.wufeng.latte_core.device.print.PrintTemplate;
+import com.wufeng.latte_core.device.print.PrinterAisinoA90;
+import com.wufeng.latte_core.device.print.PrinterLiandiA8;
 import com.wufeng.latte_core.util.LogUtil;
 import com.wufeng.latte_core.util.RequestUtil;
 import com.wufeng.latte_core.util.ThreeDesUtil;
@@ -36,7 +39,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                 //timePickerView.show();
                 //RequestUtil.setMerchantAndTerminal("601100000000021", "00000021", MainActivity.this);
                 //RequestUtil.checkIn("601100000000021", "00000021", MainActivity.this);
-                ReadCard readCard = new AISINOA90ReadCard();
+                ReadCard readCard = new LiandiA8ReadCard(getApplicationContext());
                 //ReadCard readCard = new LiandiA8ReadCard(getApplicationContext());
                 readCard.read(new ReadCard.ReadCardCallback() {
                     @Override
@@ -45,6 +48,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                             Log.d("MainActivity", "result: " + cardNo);
                     }
                 });
+                PrintTemplate template = new PrintTemplate(new PrinterLiandiA8(getApplicationContext()));
+                template.testTemplate1(null);
             }
         });
         /*

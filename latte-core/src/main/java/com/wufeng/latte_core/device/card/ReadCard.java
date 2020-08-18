@@ -1,10 +1,5 @@
 package com.wufeng.latte_core.device.card;
 
-import com.landicorp.android.eptapi.exception.ReloginException;
-import com.landicorp.android.eptapi.exception.RequestException;
-import com.landicorp.android.eptapi.exception.ServiceOccupiedException;
-import com.landicorp.android.eptapi.exception.UnsupportMultiProcess;
-
 public abstract class ReadCard {
     static final String KeyA = "B192C384D576";
     static final String KeyB = "9AB35CD67EF3";

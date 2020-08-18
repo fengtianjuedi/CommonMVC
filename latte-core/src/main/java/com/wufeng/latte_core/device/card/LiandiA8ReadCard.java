@@ -18,8 +18,6 @@ import com.wufeng.latte_core.util.ByteStringUtil;
  * 联迪A8非接触IC卡读写
  */
 public class LiandiA8ReadCard extends ReadCard {
-    //设备型号
-    public static final String LIANDIA8 = "LIANDIA8";
     // 卡驱动名
     private static final String DRIVER_NAME_PRO = "PRO";
     private static final String DRIVER_NAME_S50 = "S50";
