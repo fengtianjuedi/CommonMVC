@@ -12,6 +12,7 @@ import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.wufeng.commonmvc.databinding.ActivityMainBinding;
+import com.wufeng.commonmvc.ui.MainFragment;
 import com.wufeng.latte_core.activity.BaseActivity;
 import com.wufeng.latte_core.device.card.LiandiA8ReadCard;
 import com.wufeng.latte_core.device.card.ReadCard;
@@ -21,10 +22,13 @@ import com.wufeng.latte_core.util.LogUtil;
 
 import java.util.Date;
 
+import static android.view.Window.ID_ANDROID_CONTENT;
+
 public class MainActivity extends BaseActivity<ActivityMainBinding> {
     private TimePickerView timePickerView;
     @Override
     protected void init() {
+        mDelegate.loadRootFragment(ID_ANDROID_CONTENT, new MainFragment());
         mBinding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -32,8 +36,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                 //timePickerView.show();
                 //RequestUtil.setMerchantAndTerminal("601100000000021", "00000021", MainActivity.this);
                 //RequestUtil.checkIn("601100000000021", "00000021", MainActivity.this);
-                ReadCard readCard = new LiandiA8ReadCard(getApplicationContext());
                 //ReadCard readCard = new LiandiA8ReadCard(getApplicationContext());
+                //ReadCard readCard = new LiandiA8ReadCard(getApplicationContext());
+                /*
                 readCard.read(new ReadCard.ReadCardCallback() {
                     @Override
                     public void result(boolean success, String cardNo) {
@@ -43,6 +48,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                 });
                 PrintTemplate template = new PrintTemplate(new PrinterLiandiA8(getApplicationContext()));
                 template.testTemplate1(null);
+                 */
+                getSupportDelegate().startWithPop(new MainFragment());
             }
         });
         /*

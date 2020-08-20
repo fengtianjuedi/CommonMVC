@@ -23,7 +23,7 @@ import me.yokeyword.fragmentation.SupportHelper;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 public abstract class BaseActivity <T extends ViewBinding> extends AppCompatActivity implements ISupportActivity {
-    final SupportActivityDelegate mDelegate = new SupportActivityDelegate(this);
+    public final SupportActivityDelegate mDelegate = new SupportActivityDelegate(this);
     public T mBinding;
 
     protected abstract void init();

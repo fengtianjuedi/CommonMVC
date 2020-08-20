@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">CommonMVC</string>
     <string name="home_title">巨野生意助手</string>
+
+    <!-- 菜单 -->
+    <string name="menu_wholesaleTrade">批发交易</string>
+    <string name="menu_addGoods">品种设置</string>
+    <string name="menu_bindMerchantCard">绑卡</string>
+    <string name="menu_setTerminalCode">设置终端</string>
+    <string name="menu_signIn">签到</string>
 </resources>
