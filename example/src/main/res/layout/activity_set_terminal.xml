@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.wufeng.commonmvc.ui.SetTerminalActivity"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginTop="20dp">
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/editText_merchantCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/setTerminal_merchantCode"
+        android:layout_marginTop="10dp"/>
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/editText_terminalCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/setTerminal_terminalCode"
+        android:layout_marginTop="10dp"/>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/setTerminal_submit"
+        android:layout_marginTop="40dp"
+        android:background="@color/background_green" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>
