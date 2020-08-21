@@ -40,12 +40,13 @@
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="@drawable/touch_gray">
             <com.joanzapata.iconify.widget.IconTextView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:textSize="@dimen/text_size_30"
+                android:textSize="@dimen/text_size_60"
                 android:gravity="center"
                 android:text="{fa-shopping-basket}"
                 android:textColor="@drawable/touch_menu_gray"/>
@@ -54,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textSize="@dimen/text_size_25"
-                android:textColor="@color/background_green"
+                android:textColor="@drawable/touch_menu_gray"
                 android:text="@string/menu_wholesaleTrade"
                 android:textStyle="bold"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -62,12 +63,13 @@
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="@drawable/touch_gray">
             <com.joanzapata.iconify.widget.IconTextView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:textSize="@dimen/text_size_30"
+                android:textSize="@dimen/text_size_60"
                 android:gravity="center"
                 android:text="{fa-th-large}"
                 android:textColor="@drawable/touch_menu_gray"/>
@@ -93,12 +95,13 @@
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="@drawable/touch_gray">
             <com.joanzapata.iconify.widget.IconTextView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:textSize="@dimen/text_size_30"
+                android:textSize="@dimen/text_size_60"
                 android:gravity="center"
                 android:text="{fa-credit-card}"
                 android:textColor="@drawable/touch_menu_gray"/>
@@ -115,12 +118,13 @@
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="@drawable/touch_gray">
             <com.joanzapata.iconify.widget.IconTextView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:textSize="@dimen/text_size_30"
+                android:textSize="@dimen/text_size_60"
                 android:gravity="center"
                 android:text="{fa-cog}"
                 android:textColor="@drawable/touch_menu_gray"/>
@@ -146,12 +150,13 @@
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="@drawable/touch_gray">
             <com.joanzapata.iconify.widget.IconTextView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:textSize="@dimen/text_size_30"
+                android:textSize="@dimen/text_size_60"
                 android:gravity="center"
                 android:text="{fa-hand-pointer-o}"
                 android:textColor="@drawable/touch_menu_gray"/>
@@ -169,12 +174,13 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@drawable/touch_gray"
             android:visibility="invisible">
             <com.joanzapata.iconify.widget.IconTextView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:textSize="@dimen/text_size_30"
+                android:textSize="@dimen/text_size_60"
                 android:gravity="center"
                 android:text="{fa-th-large}"
                 android:textColor="@drawable/touch_menu_gray"/>

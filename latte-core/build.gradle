@@ -32,9 +32,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     api project(':latte-loadingDrawable')
 
-    //Fragment依赖
-    api 'me.yokeyword:fragmentationx:1.0.2'
-    api 'me.yokeyword:fragmentationx-swipeback:1.0.2'
     //字体图标
     api 'com.joanzapata.iconify:android-iconify-ionicons:2.2.2'
     api 'com.joanzapata.iconify:android-iconify-fontawesome:2.2.2'

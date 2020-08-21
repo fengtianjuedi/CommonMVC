@@ -11,7 +11,6 @@ import com.landicorp.android.eptapi.exception.RequestException;
 import com.landicorp.android.eptapi.exception.ServiceOccupiedException;
 import com.landicorp.android.eptapi.exception.UnsupportMultiProcess;
 import com.landicorp.android.eptapi.utils.ImageTransformer;
-import com.landicorp.android.eptapi.utils.OdCode;
 import com.landicorp.android.eptapi.utils.QrCode;
 import com.wufeng.latte_core.util.ImageUtil;
 
