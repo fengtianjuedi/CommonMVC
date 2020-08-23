@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.wufeng.commonmvc">
 
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -10,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.SetTerminalActivity"></activity>
+        <activity android:name=".ui.BindCardActivity"></activity>
+        <activity android:name=".ui.SetTerminalActivity" />
         <activity android:name=".ui.HomeActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -20,7 +23,5 @@
             </intent-filter>
         </activity>
     </application>
-
-    <uses-permission android:name="android.permission.CALL_PHONE" />
 
 </manifest>

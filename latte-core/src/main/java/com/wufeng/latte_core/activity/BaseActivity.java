@@ -27,6 +27,7 @@ public abstract class BaseActivity <T extends ViewBinding> extends AppCompatActi
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StatusBarUtil.setWindowStatusBarColor(this, R.color.background_green);
         Type type = this.getClass().getGenericSuperclass();
         if (type instanceof ParameterizedType){
             try{
@@ -39,7 +40,6 @@ public abstract class BaseActivity <T extends ViewBinding> extends AppCompatActi
                 e.printStackTrace();
             }
         }
-        StatusBarUtil.setWindowStatusBarColor(this, R.color.background_green);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null)
             actionBar.hide();

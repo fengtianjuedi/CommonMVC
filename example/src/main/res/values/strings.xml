@@ -8,9 +8,15 @@
     <string name="menu_bindMerchantCard">绑卡</string>
     <string name="menu_setTerminalCode">设置终端</string>
     <string name="menu_signIn">签到</string>
-    
+
     <!-- 终端设置 -->
     <string name="setTerminal_merchantCode">商户号</string>
     <string name="setTerminal_terminalCode">终端号</string>
     <string name="setTerminal_submit">提交</string>
+
+    <!-- 绑卡 -->
+    <string name="bindCard">绑定商户卡</string>
+    <string name="bindCard_merchantCode">商户卡号:</string>
+    <string name="bindCard_swipeCard">请刷卡/输入卡号</string>
+    <string name="bindCard_ok">绑定</string>
 </resources>

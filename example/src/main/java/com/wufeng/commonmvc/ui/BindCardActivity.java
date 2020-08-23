@@ -3,19 +3,18 @@ package com.wufeng.commonmvc.ui;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.wufeng.commonmvc.databinding.ActivitySetTerminalBinding;
+import com.wufeng.commonmvc.databinding.ActivityBindCardBinding;
 import com.wufeng.latte_core.activity.BaseActivity;
 
-public class SetTerminalActivity extends BaseActivity<ActivitySetTerminalBinding> {
+public class BindCardActivity extends BaseActivity<ActivityBindCardBinding> {
+
 
     @Override
     protected void init(@Nullable Bundle savedInstanceState) {
         initClickEvent();
-
     }
 
     //region 初始化点击事件

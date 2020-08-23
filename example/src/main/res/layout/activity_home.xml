@@ -37,6 +37,7 @@
         android:layout_marginEnd="20dp">
 
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_wholesaleTrade"
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -60,6 +61,7 @@
                 android:textStyle="bold"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_setGoods"
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -92,6 +94,7 @@
         android:layout_marginEnd="20dp">
 
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_bindCard"
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -115,6 +118,7 @@
                 android:textStyle="bold"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_setTerminal"
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -147,6 +151,7 @@
         android:layout_marginEnd="20dp">
 
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_signIn"
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="match_parent"
