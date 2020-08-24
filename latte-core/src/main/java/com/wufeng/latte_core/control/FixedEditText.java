@@ -43,11 +43,8 @@ public class FixedEditText extends AppCompatEditText {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        int left = getPaddingLeft();
-        int textWidth = (int) (getPaint().measureText(getText().toString()));
-
         if (!TextUtils.isEmpty(fixedText)){
-            canvas.drawText(fixedText, leftPadding, getBaseline(), fixedTextPaint);
+            canvas.drawText(fixedText, leftPadding + getScrollX(), getBaseline(), fixedTextPaint); //加上滚动距离，不然文本超出后固定文本会左移
         }
     }
 
