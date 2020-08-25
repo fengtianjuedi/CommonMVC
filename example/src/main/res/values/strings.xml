@@ -20,4 +20,6 @@
     <string name="bindCard_swipeCard">请刷卡/输入卡号</string>
     <string name="bindCard_ok">绑定</string>
     <string name="bindCard_add">新增</string>
+    <string name="bindCard_collection_account">我的收款账户</string>
+    <string name="bindCard_delete">删除</string>
 </resources>
