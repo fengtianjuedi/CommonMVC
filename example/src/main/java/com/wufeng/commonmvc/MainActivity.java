@@ -1,5 +1,6 @@
 package com.wufeng.commonmvc;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -13,7 +14,8 @@ import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.wufeng.commonmvc.databinding.ActivityMainBinding;
-import com.wufeng.commonmvc.ui.HomeActivity;
+import com.wufeng.commonmvc.dialog.TipOneDialog;
+import com.wufeng.commonmvc.dialog.TipTwoDialog;
 import com.wufeng.latte_core.activity.BaseActivity;
 import com.wufeng.latte_core.util.LogUtil;
 
@@ -43,8 +45,18 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                 PrintTemplate template = new PrintTemplate(new PrinterLiandiA8(getApplicationContext()));
                 template.testTemplate1(null);
                  */
-                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                //startActivity(intent);
+                TipTwoDialog tipDialog = new TipTwoDialog("提示", "签到成功!");
+                tipDialog.show(getSupportFragmentManager(), "tipdialog");
+
+                /*
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("提示")
+                        .setMessage("提示")
+                        .setPositiveButton("好的", null)
+                        .show();
+                 */
             }
         });
         /*
