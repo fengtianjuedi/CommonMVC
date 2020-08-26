@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@android:color/white">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/background_shadow_white">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_collectionAccountNo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="6001123456789098765"
+            android:textSize="@dimen/text_size_18"
+            android:textColor="@android:color/black"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_collectionAccountName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="张三"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_size_18"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp" />
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical|end"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_setCollectionAccount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bindCard_set_collection_account"
+                android:textSize="@dimen/text_size_18"
+                android:textColor="@android:color/white"
+                android:layout_marginEnd="20dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:background="@drawable/button_circle_corners__green"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_18"
+                android:textColor="@color/background_green"
+                android:text="@string/bindCard_delete"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:background="@drawable/button_circle_corners_white"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>
