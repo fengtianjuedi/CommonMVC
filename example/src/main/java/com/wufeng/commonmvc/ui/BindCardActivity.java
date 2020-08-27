@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -44,11 +45,35 @@ public class BindCardActivity extends BaseActivity<ActivityBindCardBinding> impl
                 back();
             }
         });
+        mBinding.itvAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addMerchantCard();
+            }
+        });
+        mBinding.tvDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteCollectionAccount();
+            }
+        });
     }
 
     //返回上一级
     private void back(){
         finish();
+    }
+
+    //新增绑定商户卡
+    private void addMerchantCard() {
+        Intent intent = new Intent(BindCardActivity.this, AddMerchantCardActivity.class);
+        startActivity(intent);
+    }
+
+    //删除收款账户
+    private void deleteCollectionAccount(){
+        mBinding.tvCollectionAccountNo.setText("");
+        mBinding.tvCollectionAccountName.setText("");
     }
 
     //设置收款账户

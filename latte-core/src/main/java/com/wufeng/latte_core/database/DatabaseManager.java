@@ -7,6 +7,7 @@ import org.greenrobot.greendao.database.Database;
 public class DatabaseManager {
     private DaoSession mDaoSession = null;
     private UserProfileDao mUserProfileDao = null;
+    private MerchantCardDao mMerchantCardDao = null;
 
     private DatabaseManager(){}
 
@@ -22,11 +23,14 @@ public class DatabaseManager {
     public static DatabaseManager getInstance(){return Holder.INSTANCE;}
 
     private void initDao(Context context){
-        final ReleaseOpenHelper releaseOpenHelper = new ReleaseOpenHelper(context, "wufeng.db");
+        final ReleaseOpenHelper releaseOpenHelper = new ReleaseOpenHelper(context, "nongxin.db");
         final Database db = releaseOpenHelper.getWritableDb();
         mDaoSession = new DaoMaster(db).newSession();
         mUserProfileDao = mDaoSession.getUserProfileDao();
+        mMerchantCardDao = mDaoSession.getMerchantCardDao();
     }
 
-    public final UserProfileDao getmUserProfileDao(){return mUserProfileDao;}
+    public final UserProfileDao getUserProfileDao(){return mUserProfileDao;}
+
+    public final MerchantCardDao getMerchantCardDao() {return mMerchantCardDao;}
 }
