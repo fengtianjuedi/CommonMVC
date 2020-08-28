@@ -3,11 +3,13 @@ package com.wufeng.latte_core.database;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Unique;
 
 @Entity(nameInDb = "Merchant_Card")
 public class MerchantCard {
     @Id(autoincrement = true)
     private Long id;
+    @Unique
     private String cardNo;
     private String cardName;
     private boolean isCollectionAccount;
