@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context="com.wufeng.commonmvc.ui.AddCategoryActivity"
     android:orientation="vertical"
-    tools:context="com.wufeng.commonmvc.ui.AddMerchantCardActivity"
     android:background="@android:color/white">
 
     <androidx.appcompat.widget.Toolbar
@@ -27,43 +27,32 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"/>
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_size_30"
-                android:text="@string/bindCard_add"
+                android:text="@string/categoryManager_add"
                 android:layout_centerInParent="true"/>
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <com.wufeng.latte_core.control.FixedEditText
-            android:id="@+id/fet_merchantCardNo"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="20dp">
+        <com.wufeng.latte_core.control.DrawableEditText
+            android:id="@+id/et_collectionAccountCardNo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/bindCard_swipeCard"
-            app:fixedText="@string/bindCard_merchantCode"
-            android:textSize="@dimen/text_size_25"
-            android:layout_marginTop="40dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
             android:background="@drawable/edit_border_selector"
-            android:maxLines="1"
-            android:inputType="number"
-            android:imeOptions="actionDone"/>
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/button_binding"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/button_circle_corners__green"
-            android:text="@string/bindCard_ok"
-            android:textSize="@dimen/text_size_25"
-            android:textColor="@android:color/white"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="40dp"/>
+            android:textSize="@dimen/text_size_18"
+            android:textColor="@android:color/black"
+            android:hint="@string/categoryManager_sort"
+            android:drawableEnd="@drawable/ic_sort_32"/>
+
     </androidx.appcompat.widget.LinearLayoutCompat>
+
 </androidx.appcompat.widget.LinearLayoutCompat>

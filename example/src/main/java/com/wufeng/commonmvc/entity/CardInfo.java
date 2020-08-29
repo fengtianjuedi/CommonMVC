@@ -13,4 +13,12 @@ public class CardInfo {
     public String getName(){return name;}
     public void setName(String value){name = value;}
 
+    public CardInfo(){}
+
+    public CardInfo(String cardNo, String name){
+        this.cardNo = cardNo;
+        this.name = name;
+    }
+
+
 }

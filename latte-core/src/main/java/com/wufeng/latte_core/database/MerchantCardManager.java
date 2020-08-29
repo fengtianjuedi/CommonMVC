@@ -15,13 +15,13 @@ public class MerchantCardManager {
     public static MerchantCardManager getInstance(){return MerchantCardManager.Holder.INSTANCE;}
 
     //插入一条绑卡记录
-    private boolean insert(MerchantCard record){
+    public boolean insert(MerchantCard record){
         long id = DatabaseManager.getInstance().getMerchantCardDao().insert(record);
         return id != -1;
     }
 
     //删除一条绑卡记录
-    private boolean deleteByCardNo(String cardNo){
+    public boolean deleteByCardNo(String cardNo){
         try{
             DatabaseManager.getInstance().getMerchantCardDao().queryBuilder()
                     .where(MerchantCardDao.Properties.CardNo.eq(cardNo))
@@ -35,7 +35,7 @@ public class MerchantCardManager {
     }
 
     //修改记录
-    private boolean modify(MerchantCard record){
+    public boolean modify(MerchantCard record){
         MerchantCard merchantCard = DatabaseManager.getInstance().getMerchantCardDao().queryBuilder()
                 .where(MerchantCardDao.Properties.CardNo.eq(record.getCardNo()))
                 .build().unique();
@@ -48,12 +48,12 @@ public class MerchantCardManager {
     }
 
     //查询所有记录
-    private List<MerchantCard> query(){
+    public List<MerchantCard> query(){
         return DatabaseManager.getInstance().getMerchantCardDao().queryBuilder().list();
     }
 
     //根据卡号查询记录
-    private MerchantCard queryByCardNo(String cardNo){
+    public MerchantCard queryByCardNo(String cardNo){
         return DatabaseManager.getInstance().getMerchantCardDao().queryBuilder()
                 .where(MerchantCardDao.Properties.CardNo.eq(cardNo))
                 .build()

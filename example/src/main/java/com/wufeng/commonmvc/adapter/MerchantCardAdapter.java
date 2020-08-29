@@ -3,6 +3,7 @@ package com.wufeng.commonmvc.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.wufeng.commonmvc.R;
 import com.wufeng.commonmvc.entity.CardInfo;
+import com.wufeng.latte_core.database.MerchantCardManager;
 
 import java.util.List;
 
@@ -38,14 +40,9 @@ public class MerchantCardAdapter extends RecyclerView.Adapter<MerchantCardAdapte
         collectionAccountChangedLister = lister;
     }
 
-    //设置收款账户改变监听事件
-    public void setCollectionAccountChangedLister(CollectionAccountChangedLister collectionAccountChangedLister) {
-        this.collectionAccountChangedLister = collectionAccountChangedLister;
-    }
-
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_card_info_item, parent, false);
         final ViewHolder holder = new ViewHolder(view);
         //删除子项
@@ -53,7 +50,12 @@ public class MerchantCardAdapter extends RecyclerView.Adapter<MerchantCardAdapte
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
-                mCardList.remove(position);
+                CardInfo cardInfo = mCardList.get(position);
+                if (!deleteBoundMerchantCard(cardInfo)){
+                    Toast.makeText(parent.getContext(), "删除绑定卡失败", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                mCardList.remove(cardInfo);
                 notifyItemRemoved(position);
             }
         });
@@ -79,6 +81,11 @@ public class MerchantCardAdapter extends RecyclerView.Adapter<MerchantCardAdapte
     @Override
     public int getItemCount() {
         return mCardList.size();
+    }
+
+    //删除已绑定商户卡
+    private boolean deleteBoundMerchantCard(CardInfo cardInfo){
+        return MerchantCardManager.getInstance().deleteByCardNo(cardInfo.getCardNo());
     }
 
 }

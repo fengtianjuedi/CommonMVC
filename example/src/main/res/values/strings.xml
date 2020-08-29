@@ -23,4 +23,10 @@
     <string name="bindCard_collection_account">我的收款账户</string>
     <string name="bindCard_delete">删除</string>
     <string name="bindCard_set_collection_account">设为收款账户</string>
+
+    <!-- 品种管理 -->
+    <string name="categoryManager">品种管理</string>
+    <string name="categoryManager_merchantCode">收款卡号:</string>
+    <string name="categoryManager_add">添加品种</string>
+    <string name="categoryManager_sort">请输入品种名或大写首字母</string>
 </resources>
