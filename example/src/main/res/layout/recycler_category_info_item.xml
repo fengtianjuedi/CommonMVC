@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/button_circle_corner__green">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_categoryName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text_size_18"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="10dp"
+        android:text="123"
+        android:layout_alignParentStart="true"
+        android:layout_centerInParent="true"/>
+
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/itv_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_red_dark"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerInParent="true"
+        tools:ignore="RelativeOverlap"
+        android:text="{fa-close}"
+        android:textSize="@dimen/text_size_25"/>
+
+</RelativeLayout>

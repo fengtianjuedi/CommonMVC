@@ -58,7 +58,7 @@
             android:id="@+id/button_binding"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_circle_corners__green"
+            android:background="@drawable/button_circle_corner__green"
             android:text="@string/bindCard_ok"
             android:textSize="@dimen/text_size_25"
             android:textColor="@android:color/white"

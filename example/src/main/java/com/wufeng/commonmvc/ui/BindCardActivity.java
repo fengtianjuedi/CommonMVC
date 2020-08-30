@@ -50,7 +50,7 @@ public class BindCardActivity extends BaseActivity<ActivityBindCardBinding> impl
         mBinding.itvBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                back();
+                finish();
             }
         });
         mBinding.itvAdd.setOnClickListener(new View.OnClickListener() {
@@ -83,11 +83,6 @@ public class BindCardActivity extends BaseActivity<ActivityBindCardBinding> impl
         }
     }
     //endregion
-    //返回上一级
-    private void back(){
-        finish();
-    }
-
     //打开商户卡绑定页
     private void openBindMerchantCard() {
         Intent intent = new Intent(BindCardActivity.this, AddMerchantCardActivity.class);

@@ -29,4 +29,11 @@
     <string name="categoryManager_merchantCode">收款卡号:</string>
     <string name="categoryManager_add">添加品种</string>
     <string name="categoryManager_sort">请输入品种名或大写首字母</string>
+
+    <!-- 批发交易 -->
+    <string name="wholesaleTrade">批发交易</string>
+    <string name="wholesaleTrade_bindCategory">我常卖的商品</string>
+    <string name="wholesaleTrade_addBindCategory">添加我常卖的商品+</string>
+    <string name="wholesaleTrade_more">点击查看更多</string>
+    <string name="wholesaleTrade_pay">去收款</string>
 </resources>

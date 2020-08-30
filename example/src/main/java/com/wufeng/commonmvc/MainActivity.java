@@ -17,6 +17,8 @@ import com.wufeng.commonmvc.databinding.ActivityMainBinding;
 import com.wufeng.commonmvc.dialog.TipOneDialog;
 import com.wufeng.commonmvc.dialog.TipTwoDialog;
 import com.wufeng.commonmvc.ui.BindCardActivity;
+import com.wufeng.commonmvc.ui.CategoryManagerActivity;
+import com.wufeng.commonmvc.ui.WholesaleTradeActivity;
 import com.wufeng.latte_core.activity.BaseActivity;
 import com.wufeng.latte_core.util.LogUtil;
 
@@ -46,7 +48,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                 PrintTemplate template = new PrintTemplate(new PrinterLiandiA8(getApplicationContext()));
                 template.testTemplate1(null);
                  */
-                Intent intent = new Intent(MainActivity.this, BindCardActivity.class);
+                Intent intent = new Intent(MainActivity.this, WholesaleTradeActivity.class);
                 startActivity(intent);
                 //TipTwoDialog tipDialog = new TipTwoDialog("提示", "签到成功!");
                 //tipDialog.show(getSupportFragmentManager(), "tipdialog");

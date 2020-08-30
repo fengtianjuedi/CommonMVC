@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/background_shadow_white">
+        android:background="@drawable/background_corner_shadow_white">
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_collectionAccountNo"
             android:layout_width="match_parent"
@@ -50,7 +50,7 @@
                 android:paddingEnd="20dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
-                android:background="@drawable/button_circle_corners__green"/>
+                android:background="@drawable/button_circle_corner__green"/>
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_delete"
                 android:layout_width="wrap_content"
@@ -62,7 +62,7 @@
                 android:paddingEnd="20dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
-                android:background="@drawable/button_circle_corners_white"/>
+                android:background="@drawable/button_circle_corner_white"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.appcompat.widget.LinearLayoutCompat>
 
