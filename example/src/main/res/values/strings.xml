@@ -36,4 +36,7 @@
     <string name="wholesaleTrade_addBindCategory">添加我常卖的商品+</string>
     <string name="wholesaleTrade_more">点击查看更多</string>
     <string name="wholesaleTrade_pay">去收款</string>
+    <string name="wholesaleTrade_price">单价:</string>
+    <string name="wholesaleTrade_number">数量:</string>
+    <string name="wholesaleTrade_amount">总价:</string>
 </resources>

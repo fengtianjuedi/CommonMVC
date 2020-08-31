@@ -49,7 +49,7 @@ public class WholesaleTradeActivity extends BaseActivity<ActivityWholesaleTradeB
             mCategoryRecordData.add(info);
         }
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
-        mBinding.rlvBindCategoryList.addItemDecoration(new SpaceItemDecoration(5));
+        mBinding.rlvBindCategoryList.addItemDecoration(new SpaceItemDecoration(10));
         mBinding.rlvBindCategoryList.setLayoutManager(gridLayoutManager);
         tradeCategoryAdapter = new TradeCategoryAdapter(mCategoryData, this);
         mBinding.rlvBindCategoryList.setAdapter(tradeCategoryAdapter);
@@ -67,6 +67,13 @@ public class WholesaleTradeActivity extends BaseActivity<ActivityWholesaleTradeB
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+        mBinding.tvAddMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(WholesaleTradeActivity.this, AllBindCategoryActivity.class);
+                startActivityForResult(intent, AllBindCategoryActivity.REQUESTCODE);
             }
         });
     }
@@ -95,5 +102,15 @@ public class WholesaleTradeActivity extends BaseActivity<ActivityWholesaleTradeB
     @Override
     public void onItemDelete(CategoryRecordInfo categoryRecordInfo) {
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == AllBindCategoryActivity.REQUESTCODE && resultCode == RESULT_OK) {
+            CategoryInfo info = new CategoryInfo();
+            info.setId(data.getStringExtra("id"));
+            info.setName(data.getStringExtra("name"));
+        }
     }
 }
