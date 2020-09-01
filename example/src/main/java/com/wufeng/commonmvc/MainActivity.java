@@ -20,6 +20,7 @@ import com.wufeng.commonmvc.entity.CategoryRecordInfo;
 import com.wufeng.commonmvc.ui.AddCategoryActivity;
 import com.wufeng.latte_core.activity.BaseActivity;
 import com.wufeng.latte_core.util.LogUtil;
+import com.wufeng.latte_core.util.RequestUtil;
 
 import java.util.Date;
 
@@ -32,7 +33,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             public void onClick(View view) {
                 //Loader.showLoading(MainActivity.this);
                 //timePickerView.show();
-                //RequestUtil.setMerchantAndTerminal("601100000000021", "00000021", MainActivity.this);
+                RequestUtil.setMerchantAndTerminal("601100000000021", "00000021", MainActivity.this);
                 //RequestUtil.checkIn("601100000000021", "00000021", MainActivity.this);
                 //ReadCard readCard = new LiandiA8ReadCard(getApplicationContext());
                 //ReadCard readCard = new LiandiA8ReadCard(getApplicationContext());
@@ -51,6 +52,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                 //startActivity(intent);
                 //TipTwoDialog tipDialog = new TipTwoDialog("提示", "签到成功!");
                 //tipDialog.show(getSupportFragmentManager(), "tipdialog");
+                /*
                 CategoryInfo info = new CategoryInfo();
                 info.setId("123");
                 info.setName("山竹");
@@ -61,6 +63,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                     }
                 });
                 addCategoryRecordDialog.show(getSupportFragmentManager(), "addCategoryRecordDialog");
+                */
                 /*
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setTitle("提示")
