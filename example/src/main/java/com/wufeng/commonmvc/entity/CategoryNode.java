@@ -1,22 +1,24 @@
 package com.wufeng.commonmvc.entity;
 
+import androidx.annotation.NonNull;
+
 public class CategoryNode {
+    @NonNull
+    private String nodeId; //节点id 必须唯一且不能为空
     private String id; //品种id
     private String name; //品种名
-    private String parentId; //父品种id
     private int level; //节点级别
     private boolean endNode; //是否是终节点
     private boolean expand; //是否展开
-    private boolean loadChild; //是否加载子节点
+
+    public String getNodeId(){return nodeId;}
+    public void setNodeId(String value){nodeId = value;}
 
     public String getId(){return id;}
     public void setId(String value){id = value;}
 
     public String getName(){return name;}
     public void setName(String value){name = value;}
-
-    public String getParentId(){return parentId;}
-    public void setParentId(String value){parentId = value;}
 
     public int getLevel(){return level;}
     public void setLevel(int value){level = value;}
@@ -26,7 +28,4 @@ public class CategoryNode {
 
     public boolean isExpand(){return expand;}
     public void setExpand(boolean value){expand = value;}
-
-    public boolean isLoadChild(){return loadChild;}
-    public void setLoadChild(boolean value){loadChild = value;}
 }
