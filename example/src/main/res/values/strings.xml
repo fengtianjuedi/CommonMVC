@@ -39,4 +39,11 @@
     <string name="wholesaleTrade_price">单价:</string>
     <string name="wholesaleTrade_number">数量:</string>
     <string name="wholesaleTrade_amount">总价:</string>
+    <string name="wholesaleTrade_payment">收银台</string>
+    <string name="wholesaleTrade_actual_pay">实收</string>
+    <string name="wholesaleTrade_ignore_decimals">抹零</string>
+    <string name="wholesaleTrade_pay_way">付款方式：</string>
+    <string name="wholesaleTrade_pay_card">一卡通</string>
+    <string name="wholesaleTrade_pay_cash">现金</string>
+    <string name="wholesaleTrade_pay_enter">确认收款</string>
 </resources>

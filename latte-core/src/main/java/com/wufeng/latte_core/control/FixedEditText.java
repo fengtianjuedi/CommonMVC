@@ -3,6 +3,7 @@ package com.wufeng.latte_core.control;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -27,7 +28,7 @@ public class FixedEditText extends AppCompatEditText {
         fixedTextPaint.setAntiAlias(true);
         fixedTextPaint.setDither(true);
         fixedTextPaint.setTextSize(getTextSize());
-        fixedTextPaint.setColor(getCurrentTextColor());
+        fixedTextPaint.setColor(Color.BLACK);
     }
 
     public FixedEditText(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -36,7 +37,7 @@ public class FixedEditText extends AppCompatEditText {
         fixedTextPaint.setAntiAlias(true);
         fixedTextPaint.setDither(true);
         fixedTextPaint.setTextSize(getTextSize());
-        fixedTextPaint.setColor(getCurrentTextColor());
+        fixedTextPaint.setColor(Color.BLACK);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.FixedEditText);
         String fixedText = typedArray.getString(R.styleable.FixedEditText_fixedText);
         int fixedTextGravity = typedArray.getInt(R.styleable.FixedEditText_fixedTextGravity, 0);

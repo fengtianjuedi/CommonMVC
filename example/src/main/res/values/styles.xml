@@ -13,4 +13,9 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
+
+    <style name="CheckBoxTheme">
+        <item name="colorAccent">@color/background_green</item>
+        <item name="colorControlNormal">@android:color/darker_gray</item>
+    </style>
 </resources>
