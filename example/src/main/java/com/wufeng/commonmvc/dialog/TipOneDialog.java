@@ -17,9 +17,13 @@ import androidx.fragment.app.DialogFragment;
 import com.wufeng.commonmvc.R;
 
 public class TipOneDialog extends AppCompatDialogFragment {
-
     private String mTitle;
     private String mMessage;
+    private OnOkClickListener onOkClickListener;
+
+    public interface OnOkClickListener {
+        void onOkClick();
+    }
 
     /**
      * create dialog
@@ -29,6 +33,11 @@ public class TipOneDialog extends AppCompatDialogFragment {
     public TipOneDialog(String title, String message){
         mTitle = title;
         mMessage = message;
+    }
+
+    //设置ok点击监听事件
+    public void setOnOkClickListener(OnOkClickListener listener){
+        onOkClickListener = listener;
     }
 
     @Override
@@ -51,6 +60,8 @@ public class TipOneDialog extends AppCompatDialogFragment {
             @Override
             public void onClick(View v) {
                 dismiss();
+                if (onOkClickListener != null)
+                    onOkClickListener.onOkClick();
             }
         });
         return view;

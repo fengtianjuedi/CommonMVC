@@ -2,5 +2,10 @@
 <resources>
     <declare-styleable name="FixedEditText">
         <attr name="fixedText" format="string"/>
+        <attr name="fixedTextGravity">
+            <enum name="Left" value="0"/>
+            <enum name="Right" value="1"/>
+            <enum name="Center" value="2"/>
+        </attr>
     </declare-styleable>
 </resources>
