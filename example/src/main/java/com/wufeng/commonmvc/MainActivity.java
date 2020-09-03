@@ -22,13 +22,26 @@ import com.wufeng.commonmvc.ui.PaymentActivity;
 import com.wufeng.latte_core.activity.BaseActivity;
 import com.wufeng.latte_core.util.LogUtil;
 import com.wufeng.latte_core.util.RequestUtil;
+import com.wufeng.latte_core.util.UpdateUtil;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding> {
     private TimePickerView timePickerView;
+    UpdateUtil updateUtil;
+    Map<String, Object> map;
     @Override
     protected void init(@Nullable Bundle savedInstanceState) {
+        updateUtil = new UpdateUtil(this, this);
+        map = new HashMap<>();
+        map.put("downloadUrl", "https://runtong-test.oss-cn-shanghai.aliyuncs.com/RTAgri_Update/test/example-baidu-release.apk");
+        map.put("isForceUpgrade", true);
+        map.put("title", "测试更新功能");
+        map.put("content", "安装测试Apk");
         mBinding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,8 +62,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                 PrintTemplate template = new PrintTemplate(new PrinterLiandiA8(getApplicationContext()));
                 template.testTemplate1(null);
                  */
-                Intent intent = new Intent(MainActivity.this, PaymentActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(MainActivity.this, PaymentActivity.class);
+                //startActivity(intent);
                 //TipTwoDialog tipDialog = new TipTwoDialog("提示", "签到成功!");
                 //tipDialog.show(getSupportFragmentManager(), "tipdialog");
                 /*
@@ -72,6 +85,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                         .setPositiveButton("好的", null)
                         .show();
                  */
+                updateUtil.checkUpdate(map);
             }
         });
         /*
@@ -101,9 +115,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == 1){
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                call();
+                updateUtil.checkUpdate(map);
             else
-                LogUtil.d("MainActivity", "call denied");
+                Toast.makeText(this, "你拒绝了这个权限", Toast.LENGTH_SHORT).show();
 
         }
     }
@@ -112,7 +126,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         try{
             Intent intent = new Intent(Intent.ACTION_CALL);
             intent.setData(Uri.parse("tel:10086"));
-            startActivity(intent);
+            //startActivity(intent);
         }catch (SecurityException se){
             se.printStackTrace();
         }

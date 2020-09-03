@@ -4,7 +4,7 @@ android {
     compileSdkVersion 29 //基于那个sdk编译
     defaultConfig {
         applicationId "com.wufeng.commonmvc" //包名
-        minSdkVersion 22 //最低兼容sdk版本
+        minSdkVersion 19 //最低兼容sdk版本
         targetSdkVersion 29
         versionCode 1 //版本号
         versionName "1.0" //版本名称
@@ -33,7 +33,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.config
+            //signingConfig signingConfigs.config
         }
     }
     viewBinding {
