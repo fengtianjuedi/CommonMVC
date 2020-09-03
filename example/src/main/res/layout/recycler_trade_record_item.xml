@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_corner_shadow_white">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_orderCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_18"
+        android:textColor="@android:color/black"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_receivableAmount_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/TradeRecord_receivableAmount"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text_size_18"
+        android:layout_below="@+id/tv_orderCode"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"/>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_receivableAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text_size_18"
+        android:layout_below="@+id/tv_orderCode"
+        android:layout_toEndOf="@+id/tv_receivableAmount_title"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_actualAmount_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/TradeRecord_actualAmount"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text_size_18"
+        android:layout_below="@+id/tv_receivableAmount_title"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"/>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_actualAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text_size_18"
+        android:layout_below="@+id/tv_receivableAmount_title"
+        android:layout_toEndOf="@id/tv_actualAmount_title"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"/>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_tradeTime_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/TradeRecord_tradeTime"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text_size_18"
+        android:layout_below="@+id/tv_actualAmount_title"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"/>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_tradeTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text_size_18"
+        android:layout_below="@+id/tv_actualAmount"
+        android:layout_toEndOf="@+id/tv_tradeTime_title"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"/>
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/itv_print"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="{fa-print}"
+        android:textSize="@dimen/text_size_25"
+        android:textColor="@color/background_green"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"/>
+
+</RelativeLayout>

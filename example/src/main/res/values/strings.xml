@@ -46,4 +46,13 @@
     <string name="wholesaleTrade_pay_card">一卡通</string>
     <string name="wholesaleTrade_pay_cash">现金</string>
     <string name="wholesaleTrade_pay_enter">确认收款</string>
+
+    <!-- 交易查询 -->
+    <string name="TradeRecord">交易记录</string>
+    <string name="TradeRecord_startDate">开始日期</string>
+    <string name="TradeRecord_endDate">结束日期</string>
+    <string name="TradeRecord_query">查询</string>
+    <string name="TradeRecord_receivableAmount">应收金额：</string>
+    <string name="TradeRecord_actualAmount">实收金额：</string>
+    <string name="TradeRecord_tradeTime">交易时间：</string>
 </resources>

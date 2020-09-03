@@ -19,6 +19,7 @@ import com.wufeng.commonmvc.entity.CategoryInfo;
 import com.wufeng.commonmvc.entity.CategoryRecordInfo;
 import com.wufeng.commonmvc.ui.AddCategoryActivity;
 import com.wufeng.commonmvc.ui.PaymentActivity;
+import com.wufeng.commonmvc.ui.TradeRecordActivity;
 import com.wufeng.latte_core.activity.BaseActivity;
 import com.wufeng.latte_core.util.LogUtil;
 import com.wufeng.latte_core.util.RequestUtil;
@@ -62,7 +63,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                 PrintTemplate template = new PrintTemplate(new PrinterLiandiA8(getApplicationContext()));
                 template.testTemplate1(null);
                  */
-                //Intent intent = new Intent(MainActivity.this, PaymentActivity.class);
+                //Intent intent = new Intent(MainActivity.this, TradeRecordActivity.class);
                 //startActivity(intent);
                 //TipTwoDialog tipDialog = new TipTwoDialog("提示", "签到成功!");
                 //tipDialog.show(getSupportFragmentManager(), "tipdialog");
@@ -85,7 +86,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                         .setPositiveButton("好的", null)
                         .show();
                  */
-                updateUtil.checkUpdate(map);
+                //updateUtil.checkUpdate(map);
+
             }
         });
         /*
