@@ -40,12 +40,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <com.wufeng.latte_core.control.FixedEditText
-            android:id="@+id/fet_merchantCardNo"
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_merchantCardNo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/bindCard_swipeCard"
-            app:fixedText="@string/bindCard_merchantCode"
             android:textSize="@dimen/text_size_25"
             android:layout_marginTop="40dp"
             android:layout_marginStart="10dp"

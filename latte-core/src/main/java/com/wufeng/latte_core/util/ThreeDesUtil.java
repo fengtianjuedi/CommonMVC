@@ -2,6 +2,7 @@ package com.wufeng.latte_core.util;
 
 import android.util.Base64;
 
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.crypto.Cipher;
@@ -37,13 +38,12 @@ public class ThreeDesUtil {
     /**
      * 转换成十六进制字符串
      */
-    public static byte[] hex(String key) {
-        String f = DigestUtils.md5Hex(key);
-        byte[] bkeys = f.getBytes();
+    private static byte[] hex(String key) {
+        byte[] md5 = DigestUtils.md5(key);
+        String md5Hex = new String(Hex.encodeHex(md5));
+        byte[] bkeys = md5Hex.getBytes();
         byte[] enk = new byte[24];
-        for (int i = 0; i < 24; i++) {
-            enk[i] = bkeys[i];
-        }
+        System.arraycopy(bkeys, 0, enk, 0, enk.length);
         return enk;
     }
 }

@@ -4,9 +4,10 @@
 
     <!-- 菜单 -->
     <string name="menu_wholesaleTrade">批发交易</string>
-    <string name="menu_addGoods">品种设置</string>
+    <string name="menu_addGoods">品种管理</string>
     <string name="menu_bindMerchantCard">绑卡</string>
-    <string name="menu_setTerminalCode">设置终端</string>
+    <string name="menu_tradeRecord">交易记录</string>
+    <string name="menu_setTerminalCode">终端设置</string>
     <string name="menu_signIn">签到</string>
 
     <!-- 终端设置 -->
@@ -16,7 +17,7 @@
 
     <!-- 绑卡 -->
     <string name="bindCard">绑定商户卡</string>
-    <string name="bindCard_merchantCode">商户卡号:</string>
+    <string name="bindCard_merchantCode">商户卡号</string>
     <string name="bindCard_swipeCard">请刷卡/输入卡号</string>
     <string name="bindCard_ok">绑定</string>
     <string name="bindCard_add">新增</string>
@@ -28,7 +29,7 @@
     <string name="categoryManager">品种管理</string>
     <string name="categoryManager_merchantCode">收款卡号:</string>
     <string name="categoryManager_add">添加品种</string>
-    <string name="categoryManager_sort">请输入品种名或大写首字母</string>
+    <string name="categoryManager_sort">请输入品种名大写首字母搜索</string>
 
     <!-- 批发交易 -->
     <string name="wholesaleTrade">批发交易</string>

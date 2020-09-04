@@ -5,25 +5,25 @@ import java.util.Date;
 import java.util.Locale;
 
 public class TimeUtil {
-    public final static ThreadLocal<SimpleDateFormat> dateFormatter1 = new ThreadLocal<SimpleDateFormat>() {
+    private final static ThreadLocal<SimpleDateFormat> dateFormatter1 = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
         }
     };
-    public final static ThreadLocal<SimpleDateFormat> dateFormatter2 = new ThreadLocal<SimpleDateFormat>() {
+    private final static ThreadLocal<SimpleDateFormat> dateFormatter2 = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat("yyyy-MM-dd");
+            return new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
         }
     };
-    public final static ThreadLocal<SimpleDateFormat> dateFormatter3 = new ThreadLocal<SimpleDateFormat>() {
+    private final static ThreadLocal<SimpleDateFormat> dateFormatter3 = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat("yyyyMMdd");
+            return new SimpleDateFormat("yyyyMMdd", Locale.CHINA);
         }
     };
-    public final static ThreadLocal<SimpleDateFormat> dateFormatter4 = new ThreadLocal<SimpleDateFormat>(){
+    private final static ThreadLocal<SimpleDateFormat> dateFormatter4 = new ThreadLocal<SimpleDateFormat>(){
         @Override
         protected SimpleDateFormat initialValue() {
             return new SimpleDateFormat("yyyyMMddHHmmssSSS", Locale.CHINA);
@@ -49,5 +49,19 @@ public class TimeUtil {
             e.printStackTrace();
         }
         return "";
+    }
+
+    public static String currentDateYMDHMSS(){
+        try{
+            Date date = new Date(System.currentTimeMillis());
+            return dateFormatter4.get().format(date);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public static String dateToStringYMD(Date date){
+        return dateFormatter2.get().format(date);
     }
 }

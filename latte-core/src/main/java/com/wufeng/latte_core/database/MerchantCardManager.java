@@ -12,7 +12,7 @@ public class MerchantCardManager {
         private static final MerchantCardManager INSTANCE = new MerchantCardManager();
     }
 
-    public static MerchantCardManager getInstance(){return MerchantCardManager.Holder.INSTANCE;}
+    public static MerchantCardManager getInstance(){return Holder.INSTANCE;}
 
     //插入一条绑卡记录
     public boolean insert(MerchantCard record){

@@ -7,6 +7,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.os.Bundle;
 import android.view.View;
 
+import com.bigkoo.pickerview.builder.TimePickerBuilder;
+import com.bigkoo.pickerview.listener.OnTimeSelectListener;
+import com.bigkoo.pickerview.view.TimePickerView;
 import com.wufeng.commonmvc.adapter.TradeRecordAdapter;
 import com.wufeng.commonmvc.databinding.ActivityTradeRecordBinding;
 import com.wufeng.commonmvc.entity.CardInfo;
@@ -15,8 +18,10 @@ import com.wufeng.latte_core.activity.BaseActivity;
 import com.wufeng.latte_core.control.SpaceItemDecoration;
 import com.wufeng.latte_core.database.MerchantCard;
 import com.wufeng.latte_core.database.MerchantCardManager;
+import com.wufeng.latte_core.util.TimeUtil;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TradeRecordActivity extends BaseActivity<ActivityTradeRecordBinding> {
@@ -41,6 +46,8 @@ public class TradeRecordActivity extends BaseActivity<ActivityTradeRecordBinding
         mBinding.rlvTradeRecordList.setLayoutManager(linearLayoutManager);
         mBinding.rlvTradeRecordList.addItemDecoration(decoration);
         mBinding.rlvTradeRecordList.setAdapter(tradeRecordAdapter);
+        mBinding.fetStartDate.setText(TimeUtil.currentDateYMD());
+        mBinding.fetEndDate.setText(TimeUtil.currentDateYMD());
     }
 
     //region 初始化
@@ -52,8 +59,45 @@ public class TradeRecordActivity extends BaseActivity<ActivityTradeRecordBinding
                 finish();
             }
         });
+        mBinding.fetStartDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getStartDate();
+            }
+        });
+        mBinding.fetEndDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getEndDate();
+            }
+        });
+    }
+    //endregion
 
+    //获取开始日期
+    private void getStartDate(){
+        new TimePickerBuilder(TradeRecordActivity.this, new OnTimeSelectListener() {
+            @Override
+            public void onTimeSelect(Date date, View v) {
+                mBinding.fetStartDate.setText(TimeUtil.dateToStringYMD(date));
+            }
+        }).setType(new boolean[]{true, true, true, false, false, false})
+                .setLabel("", "", "", "", "", "")
+                .build()
+        .show();
     }
 
-    //endregion
+    //获取结束日期
+    private void getEndDate(){
+        new TimePickerBuilder(TradeRecordActivity.this, new OnTimeSelectListener() {
+            @Override
+            public void onTimeSelect(Date date, View v) {
+                mBinding.fetEndDate.setText(TimeUtil.dateToStringYMD(date));
+            }
+        }).setType(new boolean[]{true, true, true, false, false, false})
+                .setLabel("", "", "", "", "", "")
+                .build()
+        .show();
+    }
+
 }

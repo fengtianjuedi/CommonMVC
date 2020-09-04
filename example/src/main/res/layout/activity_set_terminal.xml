@@ -39,7 +39,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/editText_merchantCode"
+        android:id="@+id/et_merchantCode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/setTerminal_merchantCode"
@@ -49,9 +49,9 @@
         android:background="@drawable/edit_selector"
         android:textSize="@dimen/text_size_25"
         android:maxLines="1"
-        android:inputType="text"/>
+        android:inputType="number"/>
     <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/editText_terminalCode"
+        android:id="@+id/et_terminalCode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/setTerminal_terminalCode"
@@ -61,9 +61,9 @@
         android:background="@drawable/edit_selector"
         android:textSize="@dimen/text_size_25"
         android:maxLines="1"
-        android:inputType="text"/>
+        android:inputType="number"/>
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/button_submit"
+        android:id="@+id/bt_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/setTerminal_submit"

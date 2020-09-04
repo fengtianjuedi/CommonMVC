@@ -2,7 +2,7 @@
 <androidx.appcompat.widget.LinearLayoutCompat
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@drawable/background_circle_corner_white">
     <androidx.appcompat.widget.AppCompatTextView
@@ -20,8 +20,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_message"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:textSize="@dimen/text_size_18"
         android:textColor="@android:color/black"
         android:text="提示"

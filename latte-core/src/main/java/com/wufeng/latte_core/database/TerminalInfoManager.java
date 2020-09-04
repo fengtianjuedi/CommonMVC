@@ -8,7 +8,7 @@ public class TerminalInfoManager {
         private static final TerminalInfoManager INSTANCE = new TerminalInfoManager();
     }
 
-    public static TerminalInfoManager getInstance(){return TerminalInfoManager.Holder.INSTANCE;}
+    public static TerminalInfoManager getInstance(){return Holder.INSTANCE;}
 
     //插入一条终端信息记录
     public boolean insert(TerminalInfo record){

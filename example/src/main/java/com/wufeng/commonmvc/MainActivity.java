@@ -15,10 +15,14 @@ import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.wufeng.commonmvc.databinding.ActivityMainBinding;
 import com.wufeng.commonmvc.dialog.AddCategoryRecordDialog;
+import com.wufeng.commonmvc.dialog.TipOneDialog;
+import com.wufeng.commonmvc.dialog.TipTwoDialog;
 import com.wufeng.commonmvc.entity.CategoryInfo;
 import com.wufeng.commonmvc.entity.CategoryRecordInfo;
 import com.wufeng.commonmvc.ui.AddCategoryActivity;
+import com.wufeng.commonmvc.ui.HomeActivity;
 import com.wufeng.commonmvc.ui.PaymentActivity;
+import com.wufeng.commonmvc.ui.SetTerminalActivity;
 import com.wufeng.commonmvc.ui.TradeRecordActivity;
 import com.wufeng.latte_core.activity.BaseActivity;
 import com.wufeng.latte_core.util.LogUtil;
@@ -48,8 +52,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             public void onClick(View view) {
                 //Loader.showLoading(MainActivity.this);
                 //timePickerView.show();
-                //RequestUtil.setMerchantAndTerminal("601100000000021", "00000022", MainActivity.this);
-                //RequestUtil.checkIn("601100000000021", "00000022", MainActivity.this);
+                //RequestUtil.setMerchantAndTerminal("601100000000021", "00000025", MainActivity.this);
+                //RequestUtil.checkIn("601100000000021", "00000025", MainActivity.this);
                 //ReadCard readCard = new LiandiA8ReadCard(getApplicationContext());
                 //ReadCard readCard = new LiandiA8ReadCard(getApplicationContext());
                 /*
@@ -63,9 +67,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                 PrintTemplate template = new PrintTemplate(new PrinterLiandiA8(getApplicationContext()));
                 template.testTemplate1(null);
                  */
-                //Intent intent = new Intent(MainActivity.this, TradeRecordActivity.class);
-                //startActivity(intent);
-                //TipTwoDialog tipDialog = new TipTwoDialog("提示", "签到成功!");
+                Intent intent = new Intent(MainActivity.this,  HomeActivity.class);
+                startActivity(intent);
+                //TipOneDialog tipDialog = new TipOneDialog("提示", "签到成功!");
                 //tipDialog.show(getSupportFragmentManager(), "tipdialog");
                 /*
                 CategoryInfo info = new CategoryInfo();

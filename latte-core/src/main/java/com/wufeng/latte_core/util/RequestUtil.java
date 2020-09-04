@@ -15,7 +15,7 @@ public class RequestUtil {
         String params = "data={'merchantId':'" + merchantCode + "','terminalId':'" + terminalCode + "'}";
         RestClient.builder()
                 .url("/pgcore-pos/PosTerminal/setTerminal")
-                .raw(params)
+                .xwwwformurlencoded(params)
                 .success(new ISuccess() {
                     @Override
                     public void onSuccess(String response) {
@@ -40,10 +40,13 @@ public class RequestUtil {
 
     //签到
     public static void checkIn(String merchantCode, String terminalCode, final Context context){
-        String params = "data={'merchantId':'" + merchantCode + "','terminalId':'" + terminalCode + "'}";
+        String time = TimeUtil.currentDateYMDHMS();
+        String signString = ThreeDesUtil.encode3Des("1A376BFF65A31DD41A376BFF65A31DD4", terminalCode + merchantCode + time);
+        String params = "data={'merchantId':'" + merchantCode + "','terminalId':'" + terminalCode + "','threeDESTime':'" + time +
+                 "','signString':'" + signString + "'}";
         RestClient.builder()
                 .url("/pgcore-pos/PosTerminal/checkIn")
-                .raw(params)
+                .xwwwformurlencoded(params)
                 .success(new ISuccess() {
                     @Override
                     public void onSuccess(String response) {

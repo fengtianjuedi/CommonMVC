@@ -6,6 +6,7 @@ import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.wufeng.latte_core.config.ConfigManager;
 import com.wufeng.latte_core.database.DatabaseManager;
 import com.wufeng.latte_core.device.PosDevice;
+import com.wufeng.latte_core.icon.IconFontModule;
 import com.wufeng.latte_core.net.interceptors.DebugInterceptor;
 
 public class MyApplication extends Application {
@@ -15,6 +16,7 @@ public class MyApplication extends Application {
         super.onCreate();
         ConfigManager.getInstance()
                 .withIcon(new FontAwesomeModule())
+                .withIcon(new IconFontModule())
                 .withContext(getApplicationContext())
                 .withHost("http://nongxintest.nongxintop.com:9008")
                 //.withHost("http://192.168.200.90:9008")

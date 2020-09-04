@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
@@ -16,6 +17,7 @@ import com.wufeng.commonmvc.dialog.TipOneDialog;
 import com.wufeng.commonmvc.entity.CategoryInfo;
 import com.wufeng.commonmvc.entity.CategoryNode;
 import com.wufeng.latte_core.activity.BaseActivity;
+import com.wufeng.latte_core.control.DrawableEditText;
 import com.wufeng.latte_core.database.TerminalInfo;
 import com.wufeng.latte_core.database.TerminalInfoManager;
 import com.wufeng.latte_core.net.IError;
@@ -35,35 +37,16 @@ public class AddCategoryActivity extends BaseActivity<ActivityAddCategoryBinding
     @Override
     protected void init(@Nullable Bundle savedInstanceState) {
         initClickEvent();
+        terminalInfo = TerminalInfoManager.getInstance().queryLastTerminalInfo();
         mData = new ArrayList<>();
-        for (int i = 0; i < 10; i++){
-            CategoryNode node = new CategoryNode();
-            node.setNodeId("0" + i);
-            node.setLevel(0);
-            node.setName("品类" + i);
-            mData.add(node);
-        }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         categoryTreeAdapter = new CategoryTreeAdapter(mData, this);
         mBinding.rlvCategoryTree.setLayoutManager(linearLayoutManager);
         mBinding.rlvCategoryTree.setAdapter(categoryTreeAdapter);
+        queryCategoryById("");
     }
 
     //region 初始化
-    //初始化终端信息
-    private void initTerminalInfo(){
-        terminalInfo = TerminalInfoManager.getInstance().queryLastTerminalInfo();
-        if (terminalInfo == null){
-            TipOneDialog tipOneDialog = new TipOneDialog("提示", "终端信息未设置!");
-            tipOneDialog.setOnOkClickListener(new TipOneDialog.OnOkClickListener() {
-                @Override
-                public void onOkClick() {
-                    finish();
-                }
-            });
-            tipOneDialog.show(getSupportFragmentManager(), "tipOneDialog");
-        }
-    }
     //绑定界面点击事件
     private void initClickEvent(){
         mBinding.itvBack.setOnClickListener(new View.OnClickListener() {
@@ -72,8 +55,23 @@ public class AddCategoryActivity extends BaseActivity<ActivityAddCategoryBinding
                 back();
             }
         });
+        mBinding.detSort.setOnDrawableRightListener(new DrawableEditText.OnDrawableRightListener() {
+            @Override
+            public void onDrawableRightClick() {
+                sortCategory();
+            }
+        });
+    }
+    //endregion
+
+    //品种树终节点点击事件
+    @Override
+    public void onEndNodeClick(CategoryInfo categoryInfo) {
+        currentSelectedCategory = categoryInfo;
+        backCategory();
     }
 
+    //region 功能函数
     //返回上一级
     private void back(){
         setResult(RESULT_CANCELED);
@@ -89,11 +87,12 @@ public class AddCategoryActivity extends BaseActivity<ActivityAddCategoryBinding
         finish();
     }
 
-    //品种树终节点点击事件
-    @Override
-    public void onEndNodeClick(CategoryInfo categoryInfo) {
-        currentSelectedCategory = categoryInfo;
-        backCategory();
+    //品种搜索
+    private void sortCategory(){
+        String content = mBinding.detSort.getText().toString();
+        if (TextUtils.isEmpty(content))
+            return;
+        queryCategoryByName(content);
     }
     //endregion
 
@@ -102,11 +101,11 @@ public class AddCategoryActivity extends BaseActivity<ActivityAddCategoryBinding
     private void queryCategoryById(String id){
         JSONObject params = new JSONObject();
         params.put("goodsId", id);
-        params.put("merchantId", "");
-        params.put("terminalId", "");
+        params.put("merchantId", terminalInfo.getMerchantCode());
+        params.put("terminalId", terminalInfo.getTerminalCode());
         RestClient.builder()
                 .url("/pgcore-pos/PosTerminal/operationManagement")
-                .raw(params.toJSONString())
+                .xwwwformurlencoded("data=" + params.toJSONString())
                 .success(new ISuccess() {
                     @Override
                     public void onSuccess(String response) {
@@ -133,12 +132,12 @@ public class AddCategoryActivity extends BaseActivity<ActivityAddCategoryBinding
     private void queryCategoryByName(String name){
         JSONObject params = new JSONObject();
         params.put("goodsId", "");
-        params.put("merchantId", "");
-        params.put("terminalId", "");
+        params.put("merchantId", terminalInfo.getMerchantCode());
+        params.put("terminalId", terminalInfo.getTerminalCode());
         params.put("firstFight", name);
         RestClient.builder()
                 .url("/pgcore-pos/PosTerminal/operationManagement")
-                .raw(params.toJSONString())
+                .xwwwformurlencoded("data=" + params.toJSONString())
                 .success(new ISuccess() {
                     @Override
                     public void onSuccess(String response) {
