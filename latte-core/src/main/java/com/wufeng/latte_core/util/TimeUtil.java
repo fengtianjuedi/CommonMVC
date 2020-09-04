@@ -1,5 +1,6 @@
 package com.wufeng.latte_core.util;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -63,5 +64,25 @@ public class TimeUtil {
 
     public static String dateToStringYMD(Date date){
         return dateFormatter2.get().format(date);
+    }
+
+    public static Date parseStringToDateYMD(String date){
+        try {
+            return dateFormatter2.get().parse(date);
+        }catch (ParseException pe){
+            pe.printStackTrace();
+            return null;
+        }
+
+    }
+
+    public static Date parseStringToDateYMDHMS(String date){
+        try {
+            return dateFormatter1.get().parse(date);
+        }catch (ParseException pe){
+            pe.printStackTrace();
+            return null;
+        }
+
     }
 }

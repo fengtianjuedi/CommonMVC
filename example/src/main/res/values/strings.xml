@@ -56,4 +56,6 @@
     <string name="TradeRecord_receivableAmount">应收金额：</string>
     <string name="TradeRecord_actualAmount">实收金额：</string>
     <string name="TradeRecord_tradeTime">交易时间：</string>
+    <string name="TradeRecord_start">从</string>
+    <string name="TradeRecord_end">到</string>
 </resources>

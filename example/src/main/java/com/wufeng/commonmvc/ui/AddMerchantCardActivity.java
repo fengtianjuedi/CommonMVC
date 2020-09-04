@@ -13,6 +13,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.wufeng.commonmvc.databinding.ActivityAddMerchantCardBinding;
 import com.wufeng.commonmvc.entity.CardInfo;
 import com.wufeng.latte_core.activity.BaseActivity;
+import com.wufeng.latte_core.callback.ICallback;
 import com.wufeng.latte_core.config.ConfigKeys;
 import com.wufeng.latte_core.config.ConfigManager;
 import com.wufeng.latte_core.database.MerchantCard;
@@ -61,7 +62,6 @@ public class AddMerchantCardActivity extends BaseActivity<ActivityAddMerchantCar
             public void result(boolean success, String cardNo) {
                 if (success){
                     mBinding.etMerchantCardNo.setText(cardNo);
-                    queryMerchantByCardNo(cardNo);
                 }
                 else
                     Toast.makeText(AddMerchantCardActivity.this, "读卡失败", Toast.LENGTH_SHORT).show();
@@ -71,7 +71,6 @@ public class AddMerchantCardActivity extends BaseActivity<ActivityAddMerchantCar
 
     //绑定商户卡
     private void bindingMerchantCard(){
-        if (cardInfo == null)return;
         Editable cardNo = mBinding.etMerchantCardNo.getText();
         if (TextUtils.isEmpty(cardNo)){
             Toast.makeText(this, "卡号不能为空", Toast.LENGTH_SHORT).show();
@@ -81,21 +80,22 @@ public class AddMerchantCardActivity extends BaseActivity<ActivityAddMerchantCar
             Toast.makeText(this, "该卡已绑定", Toast.LENGTH_SHORT).show();
             return;
         }
-        MerchantCard merchantCard = new MerchantCard();
-        merchantCard.setCardNo(cardInfo.getCardNo());
-        merchantCard.setCardName(cardInfo.getName());
-        merchantCard.setIsCollectionAccount(false);
-        if(!MerchantCardManager.getInstance().insert(merchantCard)){
-            Toast.makeText(this, "卡片绑定失败", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        Toast.makeText(this, "卡片绑定成功", Toast.LENGTH_SHORT).show();
-        mBinding.etMerchantCardNo.setText("");
-        cardInfo = null;
+        queryMerchantByCardNo(cardNo.toString(), new ICallback<MerchantCard>() {
+            @Override
+            public void callback(MerchantCard merchantCard) {
+                if(!MerchantCardManager.getInstance().insert(merchantCard)){
+                    Toast.makeText(AddMerchantCardActivity.this, "卡片绑定失败", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Toast.makeText(AddMerchantCardActivity.this, "卡片绑定成功", Toast.LENGTH_SHORT).show();
+                mBinding.etMerchantCardNo.setText("");
+                cardInfo = null;
+            }
+        });
     }
 
     //根据卡号查询商户
-    private void queryMerchantByCardNo(String cardNo){
+    private void queryMerchantByCardNo(final String cardNo, final ICallback<MerchantCard> callback){
         JSONObject params = new JSONObject();
         params.put("cardcode", cardNo);
         RestClient.builder()
@@ -106,7 +106,12 @@ public class AddMerchantCardActivity extends BaseActivity<ActivityAddMerchantCar
                     public void onSuccess(String response) {
                         JSONObject jsonObject = JSONObject.parseObject(response);
                         if ("0".equals(jsonObject.getString("resultCode"))){
-
+                            MerchantCard merchantCard = new MerchantCard();
+                            merchantCard.setCardNo(cardNo);
+                            merchantCard.setCardName(cardNo);
+                            merchantCard.setIsCollectionAccount(false);
+                            if (callback != null)
+                                callback.callback(merchantCard);
                         }else{
                             Toast.makeText(AddMerchantCardActivity.this, jsonObject.getString("resultMessage"), Toast.LENGTH_SHORT).show();
                         }

@@ -55,6 +55,7 @@ public class MerchantCardAdapter extends RecyclerView.Adapter<MerchantCardAdapte
                     Toast.makeText(parent.getContext(), "删除绑定卡失败", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                MerchantCardManager.getInstance().deleteByCardNo(cardInfo.getCardNo());
                 mCardList.remove(cardInfo);
                 notifyItemRemoved(position);
             }

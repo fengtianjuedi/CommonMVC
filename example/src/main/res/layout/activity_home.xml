@@ -50,13 +50,13 @@
                 android:textSize="@dimen/text_size_60"
                 android:gravity="center"
                 android:text="{fa-shopping-basket}"
-                android:textColor="@drawable/touch_menu_gray"/>
+                android:textColor="@color/background_green"/>
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textSize="@dimen/text_size_25"
-                android:textColor="@drawable/touch_menu_gray"
+                android:textColor="@color/background_green"
                 android:text="@string/menu_wholesaleTrade"
                 android:textStyle="bold"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -74,7 +74,7 @@
                 android:textSize="@dimen/text_size_60"
                 android:gravity="center"
                 android:text="{fa-th-large}"
-                android:textColor="@drawable/touch_menu_gray"/>
+                android:textColor="@color/background_green"/>
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
                 android:textSize="@dimen/text_size_60"
                 android:gravity="center"
                 android:text="{fa-credit-card}"
-                android:textColor="@drawable/touch_menu_gray"/>
+                android:textColor="@color/background_green"/>
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -131,7 +131,7 @@
                 android:textSize="@dimen/text_size_60"
                 android:gravity="center"
                 android:text="{icon-tradeRecord}"
-                android:textColor="@drawable/touch_menu_gray"/>
+                android:textColor="@color/background_green"/>
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -164,7 +164,7 @@
                 android:textSize="@dimen/text_size_60"
                 android:gravity="center"
                 android:text="{fa-hand-pointer-o}"
-                android:textColor="@drawable/touch_menu_gray"/>
+                android:textColor="@color/background_green"/>
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -188,7 +188,7 @@
                 android:textSize="@dimen/text_size_60"
                 android:gravity="center"
                 android:text="{fa-cog}"
-                android:textColor="@drawable/touch_menu_gray"/>
+                android:textColor="@color/background_green"/>
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

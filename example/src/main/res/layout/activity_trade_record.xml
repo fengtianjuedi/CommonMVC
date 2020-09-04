@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     tools:context="com.wufeng.commonmvc.ui.TradeRecordActivity"
     android:orientation="vertical"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
@@ -39,39 +41,54 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp">
-        <com.wufeng.latte_core.control.FixedEditText
-            android:id="@+id/fet_startDate"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/TradeRecord_start"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_size_18"
+            android:layout_marginStart="10dp"/>
+        <com.wufeng.latte_core.control.DrawableEditText
+            android:id="@+id/det_startDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:fixedText="@string/TradeRecord_startDate"
-            app:fixedTextGravity="Left"
             android:textSize="@dimen/text_size_18"
             android:textColor="@android:color/black"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:layout_marginStart="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginStart="5dp"
             android:background="@drawable/background_border_corner_green"
-            android:enabled="false"/>
-        <com.wufeng.latte_core.control.FixedEditText
-            android:id="@+id/fet_endDate"
+            android:drawableEnd="@drawable/ic_date_32"
+            android:maxLines="1"
+            android:inputType="date"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/TradeRecord_end"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_size_18"
+            android:layout_marginStart="10dp"/>
+
+        <com.wufeng.latte_core.control.DrawableEditText
+            android:id="@+id/det_endDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:fixedText="@string/TradeRecord_endDate"
-            app:fixedTextGravity="Left"
-            android:textSize="@dimen/text_size_18"
-            android:textColor="@android:color/black"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="5dp"
             android:layout_marginEnd="10dp"
+            android:layout_weight="1"
             android:background="@drawable/background_border_corner_green"
-            android:enabled="false"/>
+            android:drawableEnd="@drawable/ic_date_32"
+            android:inputType="date"
+            android:maxLines="1"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_size_18" />
     </LinearLayout>
 
     <Button
@@ -79,8 +96,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginEnd="60dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginEnd="80dp"
         android:text="@string/TradeRecord_query"
         android:textSize="@dimen/text_size_18"
         android:textColor="@android:color/white"

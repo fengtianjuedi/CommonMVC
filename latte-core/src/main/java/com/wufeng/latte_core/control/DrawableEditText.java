@@ -46,6 +46,8 @@ public class DrawableEditText extends AppCompatEditText {
                 if (drawableLeft != null && event.getRawX() <= (getLeft() + getTotalPaddingLeft() + drawableLeft.getBounds().width())) {
                     // 执行DrawableLeft点击事件
                     onDrawableLeftListener.onDrawableLeftClick();
+                    clearFocus();
+                    return true;
                 }
             }
 
@@ -56,6 +58,8 @@ public class DrawableEditText extends AppCompatEditText {
                 if (drawableRight != null && event.getRawX() >= (getRight() - getTotalPaddingRight() - drawableRight.getBounds().width())) {
                     // 执行DrawableRight点击事件
                     onDrawableRightListener.onDrawableRightClick();
+                    clearFocus();
+                    return true;
                 }
             }
         }

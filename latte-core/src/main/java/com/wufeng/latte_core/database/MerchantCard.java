@@ -3,18 +3,19 @@ package com.wufeng.latte_core.database;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.Unique;
 
 @Entity(nameInDb = "Merchant_Card")
 public class MerchantCard {
     @Id(autoincrement = true)
     private Long id;
-    @Unique
+    @Unique@NotNull
     private String cardNo;
     private String cardName;
     private boolean isCollectionAccount;
-    @Generated(hash = 1300660054)
-    public MerchantCard(Long id, String cardNo, String cardName,
+    @Generated(hash = 913079133)
+    public MerchantCard(Long id, @NotNull String cardNo, String cardName,
             boolean isCollectionAccount) {
         this.id = id;
         this.cardNo = cardNo;
