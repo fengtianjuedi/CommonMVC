@@ -12,7 +12,9 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSONObject;
 import com.wufeng.commonmvc.databinding.ActivityHomeBinding;
 import com.wufeng.commonmvc.dialog.TipOneDialog;
+import com.wufeng.commonmvc.entity.CategoryInfo;
 import com.wufeng.latte_core.activity.BaseActivity;
+import com.wufeng.latte_core.callback.ICallback;
 import com.wufeng.latte_core.database.TerminalInfo;
 import com.wufeng.latte_core.database.TerminalInfoManager;
 import com.wufeng.latte_core.net.IError;
@@ -20,11 +22,20 @@ import com.wufeng.latte_core.net.ISuccess;
 import com.wufeng.latte_core.net.RestClient;
 import com.wufeng.latte_core.util.ThreeDesUtil;
 import com.wufeng.latte_core.util.TimeUtil;
+import com.wufeng.latte_core.util.UpdateUtil;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
+    private UpdateUtil updateUtil;
+    private Map<String, Object> updateMap;
     @Override
     protected void init(@Nullable Bundle savedInstanceState) {
         initClickEvent();
+        updateUtil = new UpdateUtil(this, this);
     }
 
     //region 初始化
@@ -69,47 +80,101 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
 
     //批发交易
     private void wholesaleTrade(){
-        if (checkTerminalInfo()){
-            Intent intent = new Intent(HomeActivity.this, WholesaleTradeActivity.class);
-            startActivity(intent);
-        }
+        checkUpdate("pos", new ICallback<Boolean>() {
+            @Override
+            public void callback(Boolean aBoolean) {
+                if (aBoolean){
+                    updateUtil.checkUpdate(updateMap);
+                }else{
+                    if (checkTerminalInfo()){
+                        Intent intent = new Intent(HomeActivity.this, WholesaleTradeActivity.class);
+                        startActivity(intent);
+                    }
+                }
+            }
+        });
     }
 
     //品种管理
     private void categoryManager(){
-        if (checkTerminalInfo()){
-            Intent intent = new Intent(HomeActivity.this, CategoryManagerActivity.class);
-            startActivity(intent);
-        }
+        checkUpdate("pos", new ICallback<Boolean>() {
+            @Override
+            public void callback(Boolean aBoolean) {
+                if (aBoolean){
+                    updateUtil.checkUpdate(updateMap);
+                }else{
+                    if (checkTerminalInfo()){
+                        Intent intent = new Intent(HomeActivity.this, CategoryManagerActivity.class);
+                        startActivity(intent);
+                    }
+                }
+            }
+        });
     }
 
     //绑定商户卡
     private void bindCard(){
-        if (checkTerminalInfo()){
-            Intent intent = new Intent(HomeActivity.this, BindCardActivity.class);
-            startActivity(intent);
-        }
+        checkUpdate("pos", new ICallback<Boolean>() {
+            @Override
+            public void callback(Boolean aBoolean) {
+                if (aBoolean){
+                    updateUtil.checkUpdate(updateMap);
+                }else{
+                    if (checkTerminalInfo()){
+                        Intent intent = new Intent(HomeActivity.this, BindCardActivity.class);
+                        startActivity(intent);
+                    }
+                }
+            }
+        });
     }
 
     //交易记录
     private void tradeRecord(){
-        if (checkTerminalInfo()){
-            Intent intent = new Intent(HomeActivity.this, TradeRecordActivity.class);
-            startActivity(intent);
-        }
+        checkUpdate("pos", new ICallback<Boolean>() {
+            @Override
+            public void callback(Boolean aBoolean) {
+                if (aBoolean){
+                    updateUtil.checkUpdate(updateMap);
+                }else{
+                    if (checkTerminalInfo()){
+                        Intent intent = new Intent(HomeActivity.this, TradeRecordActivity.class);
+                        startActivity(intent);
+                    }
+                }
+            }
+        });
     }
 
     //签到
     private void signIn(){
-        if (!checkTerminalInfo())
-            return;
-        signInRequest();
+        checkUpdate("pos", new ICallback<Boolean>() {
+            @Override
+            public void callback(Boolean aBoolean) {
+                if (aBoolean){
+                    updateUtil.checkUpdate(updateMap);
+                }else{
+                    if (!checkTerminalInfo()) return;
+                    signInRequest();
+                }
+            }
+        });
+
     }
 
     //设置终端
     private void setTerminal(){
-        Intent intent = new Intent(HomeActivity.this, SetTerminalActivity.class);
-        startActivity(intent);
+        checkUpdate("pos", new ICallback<Boolean>() {
+            @Override
+            public void callback(Boolean aBoolean) {
+                if (aBoolean){
+                    updateUtil.checkUpdate(updateMap);
+                }else{
+                    Intent intent = new Intent(HomeActivity.this, SetTerminalActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
     }
     //endregion
 
@@ -152,6 +217,46 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
                 .error(new IError() {
                     @Override
                     public void onError(Throwable throwable) {
+                        Toast.makeText(HomeActivity.this, "请求远程服务器失败", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .loading(HomeActivity.this)
+                .build()
+                .post();
+    }
+
+    //检查更新
+    private void checkUpdate(String type, final ICallback<Boolean> callback){
+        JSONObject params = new JSONObject();
+        params.put("type", type);
+        RestClient.builder()
+                .url("/pgcore-pos/PosTerminal/AppUpgrade")
+                .xwwwformurlencoded("data=" + params.toJSONString())
+                .success(new ISuccess() {
+                    @Override
+                    public void onSuccess(String response) {
+                        JSONObject jsonObject = JSONObject.parseObject(response);
+                        if ("0".equals(jsonObject.getString("resultCode"))){
+                            updateMap = new HashMap<>();
+                            updateMap.put("downloadUrl", "https://runtong-test.oss-cn-shanghai.aliyuncs.com/RTAgri_Update/test/example-baidu-release.apk");
+                            updateMap.put("isForceUpgrade", true);
+                            updateMap.put("title", "测试更新功能");
+                            updateMap.put("content", "安装测试Apk");
+                            if (callback != null)
+                                callback.callback(true);
+                        }else{
+                            if (callback != null)
+                                callback.callback(false);
+                            Toast.makeText(HomeActivity.this, jsonObject.getString("resultMessage"), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .error(new IError() {
+                    @Override
+                    public void onError(Throwable throwable) {
+                        if (callback != null){
+                            callback.callback(false);
+                        }
                         Toast.makeText(HomeActivity.this, "请求远程服务器失败", Toast.LENGTH_SHORT).show();
                     }
                 })

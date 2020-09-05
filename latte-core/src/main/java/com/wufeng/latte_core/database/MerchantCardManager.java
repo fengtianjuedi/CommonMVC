@@ -60,4 +60,12 @@ public class MerchantCardManager {
                 .unique();
     }
 
+    //查询收款账户
+    public MerchantCard queryCollectionAccount(){
+        return DatabaseManager.getInstance().getMerchantCardDao().queryBuilder()
+                .where(MerchantCardDao.Properties.IsCollectionAccount.eq(true))
+                .build()
+                .unique();
+    }
+
 }

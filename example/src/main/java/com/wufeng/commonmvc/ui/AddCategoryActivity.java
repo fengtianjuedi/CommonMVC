@@ -74,7 +74,11 @@ public class AddCategoryActivity extends BaseActivity<ActivityAddCategoryBinding
     //region 功能函数
     //返回上一级
     private void back(){
-        setResult(RESULT_CANCELED);
+        //setResult(RESULT_CANCELED);
+        Intent intent = new Intent();
+        intent.putExtra("id", "000000001");
+        intent.putExtra("name", "辣椒2");
+        setResult(RESULT_OK, intent);
         finish();
     }
 
