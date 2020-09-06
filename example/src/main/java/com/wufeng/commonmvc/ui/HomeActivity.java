@@ -230,7 +230,7 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
         JSONObject params = new JSONObject();
         params.put("type", type);
         RestClient.builder()
-                .url("/pgcore-pos/PosTerminal/AppUpgrade")
+                .url("/pgcore-pos/PosQuery/AppUpgrade")
                 .xwwwformurlencoded("data=" + params.toJSONString())
                 .success(new ISuccess() {
                     @Override

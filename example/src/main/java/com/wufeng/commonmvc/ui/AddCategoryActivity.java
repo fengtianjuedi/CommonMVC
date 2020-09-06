@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.wufeng.commonmvc.adapter.CategoryTreeAdapter;
 import com.wufeng.commonmvc.databinding.ActivityAddCategoryBinding;
@@ -17,6 +18,7 @@ import com.wufeng.commonmvc.dialog.TipOneDialog;
 import com.wufeng.commonmvc.entity.CategoryInfo;
 import com.wufeng.commonmvc.entity.CategoryNode;
 import com.wufeng.latte_core.activity.BaseActivity;
+import com.wufeng.latte_core.callback.ICallback;
 import com.wufeng.latte_core.control.DrawableEditText;
 import com.wufeng.latte_core.database.TerminalInfo;
 import com.wufeng.latte_core.database.TerminalInfoManager;
@@ -30,7 +32,6 @@ import java.util.List;
 public class AddCategoryActivity extends BaseActivity<ActivityAddCategoryBinding> implements CategoryTreeAdapter.OnEndNodeClickListener {
     public static final int REQUESTCODE = 1; //请求码
     private List<CategoryNode> mData; //品种树数据
-    private CategoryInfo currentSelectedCategory; //当前选中的品种
     private CategoryTreeAdapter categoryTreeAdapter; //品种树适配器
     private TerminalInfo terminalInfo; //终端信息
 
@@ -40,10 +41,16 @@ public class AddCategoryActivity extends BaseActivity<ActivityAddCategoryBinding
         terminalInfo = TerminalInfoManager.getInstance().queryLastTerminalInfo();
         mData = new ArrayList<>();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        categoryTreeAdapter = new CategoryTreeAdapter(mData, this);
+        categoryTreeAdapter = new CategoryTreeAdapter(AddCategoryActivity.this, mData, this);
         mBinding.rlvCategoryTree.setLayoutManager(linearLayoutManager);
         mBinding.rlvCategoryTree.setAdapter(categoryTreeAdapter);
-        queryCategoryById("");
+        queryCategoryById("", new ICallback<List<CategoryNode>>() {
+            @Override
+            public void callback(List<CategoryNode> categoryNodes) {
+                mData.addAll(categoryNodes);
+                categoryTreeAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     //region 初始化
@@ -67,26 +74,21 @@ public class AddCategoryActivity extends BaseActivity<ActivityAddCategoryBinding
     //品种树终节点点击事件
     @Override
     public void onEndNodeClick(CategoryInfo categoryInfo) {
-        currentSelectedCategory = categoryInfo;
-        backCategory();
+        backCategory(categoryInfo);
     }
 
     //region 功能函数
     //返回上一级
     private void back(){
-        //setResult(RESULT_CANCELED);
-        Intent intent = new Intent();
-        intent.putExtra("id", "000000001");
-        intent.putExtra("name", "辣椒2");
-        setResult(RESULT_OK, intent);
+        setResult(RESULT_CANCELED);
         finish();
     }
 
     //返回要添加的品种
-    private void backCategory(){
+    private void backCategory(CategoryInfo categoryInfo){
         Intent intent = new Intent();
-        intent.putExtra("id", currentSelectedCategory.getId());
-        intent.putExtra("name", currentSelectedCategory.getName());
+        intent.putExtra("id", categoryInfo.getId());
+        intent.putExtra("name", categoryInfo.getName());
         setResult(RESULT_OK, intent);
         finish();
     }
@@ -102,20 +104,30 @@ public class AddCategoryActivity extends BaseActivity<ActivityAddCategoryBinding
 
     //region 网络请求
     //根据品种Id查询子品种 传空查询所有一级品类
-    private void queryCategoryById(String id){
+    private void queryCategoryById(String id, final ICallback<List<CategoryNode>> callback){
         JSONObject params = new JSONObject();
         params.put("goodsId", id);
-        params.put("merchantId", terminalInfo.getMerchantCode());
-        params.put("terminalId", terminalInfo.getTerminalCode());
         RestClient.builder()
-                .url("/pgcore-pos/PosTerminal/operationManagement")
+                .url("/pgcore-pos/PosQuery/operationManagement")
                 .xwwwformurlencoded("data=" + params.toJSONString())
                 .success(new ISuccess() {
                     @Override
                     public void onSuccess(String response) {
                         JSONObject jsonObject = JSONObject.parseObject(response);
                         if ("0".equals(jsonObject.getString("resultCode"))){
-
+                            JSONArray jsonArray = jsonObject.getJSONArray("data");
+                            List<CategoryNode> list= new ArrayList<>();
+                            for (int i = 0; i < jsonArray.size(); i++){
+                                CategoryNode node = new CategoryNode();
+                                node.setNodeId("0" + i);
+                                node.setLevel(0);
+                                node.setId(jsonArray.getJSONObject(i).getString("id"));
+                                node.setName(jsonArray.getJSONObject(i).getString("goodsname"));
+                                node.setEndNode("0".equals(jsonArray.getJSONObject(i).getString("lower")));
+                                list.add(node);
+                            }
+                            if (callback != null)
+                                callback.callback(list);
                         }else{
                             Toast.makeText(AddCategoryActivity.this, jsonObject.getString("resultMessage"), Toast.LENGTH_SHORT).show();
                         }
@@ -140,7 +152,7 @@ public class AddCategoryActivity extends BaseActivity<ActivityAddCategoryBinding
         params.put("terminalId", terminalInfo.getTerminalCode());
         params.put("firstFight", name);
         RestClient.builder()
-                .url("/pgcore-pos/PosTerminal/operationManagement")
+                .url("/pgcore-pos/PosQuery/operationManagement")
                 .xwwwformurlencoded("data=" + params.toJSONString())
                 .success(new ISuccess() {
                     @Override

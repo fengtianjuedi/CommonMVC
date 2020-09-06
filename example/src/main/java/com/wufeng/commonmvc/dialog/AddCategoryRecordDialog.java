@@ -78,9 +78,9 @@ public class AddCategoryRecordDialog extends AppCompatDialogFragment {
                 String price = etPrice.getText().toString();
                 String number = etNumber.getText().toString();
                 String amount = etAmount.getText().toString();
-                recordInfo.setGoodsPrice(new BigDecimal(TextUtils.isEmpty(price)?"0":price));
+                recordInfo.setGoodsPrice(new BigDecimal(TextUtils.isEmpty(price)?"0":price).toPlainString());
                 recordInfo.setGoodsNumber(Integer.parseInt(TextUtils.isEmpty(number)?"0":number));
-                recordInfo.setGoodsAmount(new BigDecimal(TextUtils.isEmpty(amount)?"0":amount));
+                recordInfo.setGoodsAmount(new BigDecimal(TextUtils.isEmpty(amount)?"0":amount).toPlainString());
                 if (onAddCategoryRecordListener != null)
                     onAddCategoryRecordListener.onAddCategoryRecord(recordInfo);
                 dismiss();

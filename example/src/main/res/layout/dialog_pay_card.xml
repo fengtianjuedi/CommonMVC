@@ -1,30 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@drawable/background_circle_corner_white">
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size_25"
-        android:textColor="@android:color/black"
-        android:gravity="start|center_vertical"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:layout_marginStart="20dp"/>
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@string/wholesaleTrade_please_pay_card"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text_size_25"
+        android:textAlignment="center"
+        android:paddingTop="10dp"
+        android:paddingBottom="20dp"/>
+
+    <com.wufeng.latte_core.control.FixedEditText
+        android:id="@+id/fet_cardNo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:fixedText="@string/wholesaleTrade_card_no"
+        app:fixedTextGravity="Left"
         android:textSize="@dimen/text_size_18"
         android:textColor="@android:color/black"
+        android:padding="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"/>
+        android:inputType="number"
+        android:maxLines="1"
+        android:background="@drawable/background_border_corner_green"/>
+
+    <com.wufeng.latte_core.control.FixedEditText
+        android:id="@+id/fet_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:fixedText="@string/wholesaleTrade_password"
+        app:fixedTextGravity="Left"
+        android:textSize="@dimen/text_size_18"
+        android:textColor="@android:color/black"
+        android:padding="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="20dp"
+        android:inputType="textPassword"
+        android:maxLines="1"
+        android:background="@drawable/background_border_corner_green"/>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

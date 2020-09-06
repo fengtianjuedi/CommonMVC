@@ -1,10 +1,13 @@
 package com.wufeng.commonmvc.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TradeRecordInfo {
+public class TradeRecordInfo implements Parcelable {
     private String tradeOrderCode; //交易订单号
     private String terminalOrderCode; //终端订单号
     private String sellerAccount; //卖家账户
@@ -48,4 +51,47 @@ public class TradeRecordInfo {
     public void setTradeTime(String value){tradeTime = value;}
 
     public List<CategoryRecordInfo> getCategoryRecordInfoList(){return categoryRecordInfoList;}
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(tradeOrderCode);
+        dest.writeString(terminalOrderCode);
+        dest.writeString(sellerAccount);
+        dest.writeString(sellerName);
+        dest.writeString(buyerAccount);
+        dest.writeString(buyerName);
+        dest.writeString(receivableAmount);
+        dest.writeString(actualAmount);
+        dest.writeString(tradeTime);
+        dest.writeTypedList(categoryRecordInfoList);
+    }
+
+    public static final Parcelable.Creator<TradeRecordInfo> CREATOR = new Parcelable.Creator<TradeRecordInfo>(){
+
+        @Override
+        public TradeRecordInfo createFromParcel(Parcel source) {
+            TradeRecordInfo tradeRecordInfo = new TradeRecordInfo();
+            tradeRecordInfo.setTradeOrderCode(source.readString());
+            tradeRecordInfo.setTerminalOrderCode(source.readString());
+            tradeRecordInfo.setSellerAccount(source.readString());
+            tradeRecordInfo.setSellerName(source.readString());
+            tradeRecordInfo.setBuyerAccount(source.readString());
+            tradeRecordInfo.setBuyerName(source.readString());
+            tradeRecordInfo.setReceivableAmount(source.readString());
+            tradeRecordInfo.setActualAmount(source.readString());
+            tradeRecordInfo.setTradeTime(source.readString());
+            source.readTypedList(tradeRecordInfo.getCategoryRecordInfoList(), CategoryRecordInfo.CREATOR);
+            return tradeRecordInfo;
+        }
+
+        @Override
+        public TradeRecordInfo[] newArray(int size) {
+            return new TradeRecordInfo[size];
+        }
+    };
 }

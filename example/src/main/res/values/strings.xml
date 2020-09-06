@@ -47,6 +47,9 @@
     <string name="wholesaleTrade_pay_card">一卡通</string>
     <string name="wholesaleTrade_pay_cash">现金</string>
     <string name="wholesaleTrade_pay_enter">确认收款</string>
+    <string name="wholesaleTrade_please_pay_card">请买家刷卡</string>
+    <string name="wholesaleTrade_card_no">卡号：</string>
+    <string name="wholesaleTrade_password">密码：</string>
 
     <!-- 交易查询 -->
     <string name="TradeRecord">交易记录</string>
@@ -58,4 +61,8 @@
     <string name="TradeRecord_tradeTime">交易时间：</string>
     <string name="TradeRecord_start">从</string>
     <string name="TradeRecord_end">到</string>
+
+    <!-- dialog -->
+    <string name="Dialog_ok">确定</string>
+    <string name="Dialog_cancel">取消</string>
 </resources>

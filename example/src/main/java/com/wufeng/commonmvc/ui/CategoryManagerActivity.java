@@ -135,7 +135,7 @@ public class CategoryManagerActivity extends BaseActivity<ActivityCategoryManage
         JSONObject params = new JSONObject();
         params.put("cardcode", cardNo);
         RestClient.builder()
-                .url("/pgcore-pos/PosTerminal/queryBinDing")
+                .url("/pgcore-pos/PosQuery/queryBinDing")
                 .xwwwformurlencoded("data=" + params.toJSONString())
                 .success(new ISuccess() {
                     @Override
@@ -167,7 +167,7 @@ public class CategoryManagerActivity extends BaseActivity<ActivityCategoryManage
         params.put("cardcode", cardNo);
         params.put("goodsid", goodsId);
         RestClient.builder()
-                .url("/pgcore-pos/PosTerminal/binDing")
+                .url("/pgcore-pos/PosQuery/binDing")
                 .xwwwformurlencoded("data=" + params.toJSONString())
                 .success(new ISuccess() {
                     @Override

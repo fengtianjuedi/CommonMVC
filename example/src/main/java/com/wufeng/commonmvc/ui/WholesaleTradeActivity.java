@@ -1,23 +1,24 @@
 package com.wufeng.commonmvc.ui;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.LinearLayoutCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.wufeng.commonmvc.adapter.CategoryRecordAdapter;
-import com.wufeng.commonmvc.adapter.MerchantCardAdapter;
 import com.wufeng.commonmvc.adapter.TradeCategoryAdapter;
 import com.wufeng.commonmvc.databinding.ActivityWholesaleTradeBinding;
 import com.wufeng.commonmvc.entity.CategoryInfo;
 import com.wufeng.commonmvc.entity.CategoryRecordInfo;
+import com.wufeng.commonmvc.entity.TradeRecordInfo;
 import com.wufeng.latte_core.activity.BaseActivity;
 import com.wufeng.latte_core.control.SpaceItemDecoration;
+import com.wufeng.latte_core.database.MerchantCard;
+import com.wufeng.latte_core.database.MerchantCardManager;
+import com.wufeng.latte_core.util.IdGenerate;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class WholesaleTradeActivity extends BaseActivity<ActivityWholesaleTradeB
     private List<CategoryRecordInfo> mCategoryRecordData; //商品记录
     private TradeCategoryAdapter tradeCategoryAdapter;
     private CategoryRecordAdapter categoryRecordAdapter;
+    private BigDecimal receivableAmount; //应收金额
 
     @Override
     protected void init(@Nullable Bundle savedInstanceState) {
@@ -43,9 +45,9 @@ public class WholesaleTradeActivity extends BaseActivity<ActivityWholesaleTradeB
         for(int i = 0; i < 10; i++){
             CategoryRecordInfo info = new CategoryRecordInfo();
             info.setGoodsName("苹果" + i);
-            info.setGoodsPrice(new BigDecimal(10));
+            info.setGoodsPrice(new BigDecimal(10).toPlainString());
             info.setGoodsNumber(i);
-            info.setGoodsAmount(new BigDecimal(18888));
+            info.setGoodsAmount(new BigDecimal(18888).toPlainString());
             mCategoryRecordData.add(info);
         }
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
@@ -72,10 +74,37 @@ public class WholesaleTradeActivity extends BaseActivity<ActivityWholesaleTradeB
         mBinding.tvAddMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(WholesaleTradeActivity.this, AllBindCategoryActivity.class);
-                startActivityForResult(intent, AllBindCategoryActivity.REQUESTCODE);
+                openMoreCategory();
             }
         });
+        mBinding.tvPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pay();
+            }
+        });
+    }
+    //endregion
+
+    //region 功能函数
+    //去支付
+    private void pay(){
+        MerchantCard merchantCard = MerchantCardManager.getInstance().queryCollectionAccount();
+        TradeRecordInfo tradeRecordInfo = new TradeRecordInfo();
+        tradeRecordInfo.setTerminalOrderCode(IdGenerate.getInstance().getId());
+        tradeRecordInfo.setReceivableAmount("100");
+        tradeRecordInfo.setActualAmount("100");
+        tradeRecordInfo.getCategoryRecordInfoList().addAll(mCategoryRecordData);
+        tradeRecordInfo.setSellerAccount(merchantCard.getCardNo());
+        tradeRecordInfo.setSellerName(merchantCard.getCardName());
+        Intent intent = new Intent(WholesaleTradeActivity.this, PaymentActivity.class);
+        intent.putExtra("tradeRecord", tradeRecordInfo);
+        startActivity(intent);
+    }
+    //打开更多品种页面
+    private void openMoreCategory(){
+        Intent intent = new Intent(WholesaleTradeActivity.this, AllBindCategoryActivity.class);
+        startActivityForResult(intent, AllBindCategoryActivity.REQUESTCODE);
     }
     //endregion
 

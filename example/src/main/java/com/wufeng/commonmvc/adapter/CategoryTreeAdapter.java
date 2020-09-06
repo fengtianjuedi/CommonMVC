@@ -1,24 +1,36 @@
 package com.wufeng.commonmvc.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.wufeng.commonmvc.R;
 import com.wufeng.commonmvc.entity.CategoryInfo;
 import com.wufeng.commonmvc.entity.CategoryNode;
+import com.wufeng.commonmvc.ui.AddCategoryActivity;
+import com.wufeng.latte_core.callback.ICallback;
+import com.wufeng.latte_core.config.ConfigKeys;
+import com.wufeng.latte_core.config.ConfigManager;
+import com.wufeng.latte_core.net.IError;
+import com.wufeng.latte_core.net.ISuccess;
+import com.wufeng.latte_core.net.RestClient;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class CategoryTreeAdapter extends RecyclerView.Adapter<CategoryTreeAdapter.ViewHolder> {
+    private Context mContext;
     private List<CategoryNode> mCategoryNodeList;
     private OnEndNodeClickListener onEndNodeClickListener;
     private HashMap<String, List<CategoryNode>> mChildNodeMap; //节点的子节点hash表
@@ -39,12 +51,12 @@ public class CategoryTreeAdapter extends RecyclerView.Adapter<CategoryTreeAdapte
         void onEndNodeClick(CategoryInfo categoryInfo);
     }
 
-    public CategoryTreeAdapter(List<CategoryNode> data, OnEndNodeClickListener listener){
+    public CategoryTreeAdapter(Context context, List<CategoryNode> data, OnEndNodeClickListener listener){
+        mContext = context;
         mCategoryNodeList = data;
         onEndNodeClickListener = listener;
         mChildNodeMap = new HashMap<>();
     }
-
 
     @NonNull
     @Override
@@ -54,7 +66,7 @@ public class CategoryTreeAdapter extends RecyclerView.Adapter<CategoryTreeAdapte
         holder.rlNode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CategoryNode node = mCategoryNodeList.get(holder.getAdapterPosition());
+                final CategoryNode node = mCategoryNodeList.get(holder.getAdapterPosition());
                 if (node.isEndNode()){
                     if (onEndNodeClickListener != null)
                         onEndNodeClickListener.onEndNodeClick(new CategoryInfo(node.getId(), node.getName()));
@@ -81,20 +93,16 @@ public class CategoryTreeAdapter extends RecyclerView.Adapter<CategoryTreeAdapte
                             notifyItemRangeChanged(holder.getAdapterPosition(), mCategoryNodeList.size() - holder.getAdapterPosition() + 1);
                         }
                     }else{
-                        List<CategoryNode> items = new ArrayList<>();
-                        //请求子节点，并加载
-                        for (int i = 0; i < 5; i++){
-                            CategoryNode childNode = new CategoryNode();
-                            childNode.setNodeId(node.getNodeId() + i);
-                            childNode.setName("子项品种" + i);
-                            childNode.setLevel(node.getLevel() + 1);
-                            childNode.setEndNode(node.getLevel() + 1 == 4);
-                            items.add(childNode);
-                        }
-                        mChildNodeMap.put(node.getNodeId(), items);
-                        mCategoryNodeList.addAll(holder.getAdapterPosition() + 1, items);
-                        node.setExpand(true);
-                        notifyItemRangeChanged(holder.getAdapterPosition(), mCategoryNodeList.size() - holder.getAdapterPosition() + 1);
+                        queryCategoryById(node, new ICallback<List<CategoryNode>>() {
+                            @Override
+                            public void callback(List<CategoryNode> categoryNodes) {
+                                mChildNodeMap.put(node.getNodeId(), categoryNodes);
+                                mCategoryNodeList.addAll(holder.getAdapterPosition() + 1, categoryNodes);
+                                node.setExpand(true);
+                                notifyItemRangeChanged(holder.getAdapterPosition(), mCategoryNodeList.size() - holder.getAdapterPosition() + 1);
+                            }
+                        });
+
                     }
                 }
             }
@@ -123,4 +131,47 @@ public class CategoryTreeAdapter extends RecyclerView.Adapter<CategoryTreeAdapte
     public int getItemCount() {
         return mCategoryNodeList.size();
     }
+
+    //region
+    //根据品种Id查询子品种
+    private void queryCategoryById(final CategoryNode parentNode, final ICallback<List<CategoryNode>> callback){
+        JSONObject params = new JSONObject();
+        params.put("goodsId", parentNode.getId());
+        RestClient.builder()
+                .url("/pgcore-pos/PosQuery/operationManagement")
+                .xwwwformurlencoded("data=" + params.toJSONString())
+                .success(new ISuccess() {
+                    @Override
+                    public void onSuccess(String response) {
+                        JSONObject jsonObject = JSONObject.parseObject(response);
+                        if ("0".equals(jsonObject.getString("resultCode"))){
+                            JSONArray jsonArray = jsonObject.getJSONArray("data");
+                            List<CategoryNode> list= new ArrayList<>();
+                            for (int i = 0; i < jsonArray.size(); i++){
+                                CategoryNode node = new CategoryNode();
+                                node.setNodeId(parentNode.getNodeId() + i);
+                                node.setLevel(parentNode.getLevel() + 1);
+                                node.setId(jsonArray.getJSONObject(i).getString("id"));
+                                node.setName(jsonArray.getJSONObject(i).getString("goodsname"));
+                                node.setEndNode("0".equals(jsonArray.getJSONObject(i).getString("lower")));
+                                list.add(node);
+                            }
+                            if (callback != null)
+                                callback.callback(list);
+                        }else{
+                            Toast.makeText(mContext, jsonObject.getString("resultMessage"), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .error(new IError() {
+                    @Override
+                    public void onError(Throwable throwable) {
+                        Toast.makeText((Context) ConfigManager.getInstance().getConfig(ConfigKeys.CONTEXT), "请求远程服务器失败", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .loading(mContext)
+                .build()
+                .post();
+    }
+    //endregion
 }
