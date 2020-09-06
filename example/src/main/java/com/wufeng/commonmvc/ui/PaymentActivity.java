@@ -13,6 +13,8 @@ import com.wufeng.commonmvc.entity.TradeRecordInfo;
 import com.wufeng.latte_core.activity.BaseActivity;
 import com.wufeng.latte_core.database.TerminalInfoManager;
 
+import java.math.BigDecimal;
+
 public class PaymentActivity extends BaseActivity<ActivityPaymentBinding> {
     private TradeRecordInfo tradeRecordInfo;
 
@@ -20,6 +22,9 @@ public class PaymentActivity extends BaseActivity<ActivityPaymentBinding> {
     protected void init(@Nullable Bundle savedInstanceState) {
         initClickEvent();
         tradeRecordInfo = getIntent().getParcelableExtra("tradeRecord");
+        String payText = tradeRecordInfo.getCategoryRecordInfoList().size() + "件商品，应收" + tradeRecordInfo.getReceivableAmount() + "元";
+        mBinding.tvTradeStatistics.setText(payText);
+        mBinding.fetActualAmount.setText(tradeRecordInfo.getActualAmount());
     }
 
     //region 初始化
@@ -33,7 +38,7 @@ public class PaymentActivity extends BaseActivity<ActivityPaymentBinding> {
         });
         mBinding.cbPayCard.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) { //一卡通支付
                 mBinding.cbPayCash.setChecked(!isChecked);
                 if (isChecked)
                     payCard();
@@ -41,8 +46,16 @@ public class PaymentActivity extends BaseActivity<ActivityPaymentBinding> {
         });
         mBinding.cbPayCash.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) { //现金支付
                 mBinding.cbPayCard.setChecked(!isChecked);
+            }
+        });
+        mBinding.tvIgnoreDecimals.setOnClickListener(new View.OnClickListener() { //抹零
+            @Override
+            public void onClick(View v) {
+                BigDecimal actualAmount = new BigDecimal(tradeRecordInfo.getActualAmount());
+                tradeRecordInfo.setActualAmount(String.valueOf(actualAmount.intValue()));
+                mBinding.fetActualAmount.setText(tradeRecordInfo.getActualAmount());
             }
         });
     }

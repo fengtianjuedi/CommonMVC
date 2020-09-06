@@ -9,12 +9,17 @@ public class BigDecimalUtil {
      * @param d2
      * @return
      */
-    public static double sum(String d1,String d2){
+    public static double sumD(String d1,String d2){
         BigDecimal bd1 = new BigDecimal(d1);
         BigDecimal bd2 = new BigDecimal(d2);
         return bd1.add(bd2).doubleValue();
     }
 
+    public static BigDecimal sumB(String d1,String d2){
+        BigDecimal bd1 = new BigDecimal(d1);
+        BigDecimal bd2 = new BigDecimal(d2);
+        return bd1.add(bd2);
+    }
 
     /**
      * double 相减
@@ -22,12 +27,17 @@ public class BigDecimalUtil {
      * @param d2
      * @return
      */
-    public static double sub(String d1,String d2){
+    public static double subD(String d1,String d2){
         BigDecimal bd1 = new BigDecimal(d1);
         BigDecimal bd2 = new BigDecimal(d2);
         return bd1.subtract(bd2).doubleValue();
     }
 
+    public static BigDecimal subB(String d1,String d2){
+        BigDecimal bd1 = new BigDecimal(d1);
+        BigDecimal bd2 = new BigDecimal(d2);
+        return bd1.subtract(bd2);
+    }
 
     /**
      * double 乘法

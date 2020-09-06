@@ -38,7 +38,7 @@ public class CategoryRecordAdapter extends RecyclerView.Adapter<CategoryRecordAd
     }
 
     public interface OnItemDeleteListener {
-        void onItemDelete(CategoryRecordInfo categoryRecordInfo);
+        void onItemDelete(int position, CategoryRecordInfo categoryRecordInfo);
     }
 
     public CategoryRecordAdapter(List<CategoryRecordInfo> data, OnItemDeleteListener listener){
@@ -56,7 +56,7 @@ public class CategoryRecordAdapter extends RecyclerView.Adapter<CategoryRecordAd
             public void onClick(View v) {
                 CategoryRecordInfo info = mCategoryRecordList.get(holder.getAdapterPosition());
                 if (onItemDeleteListener != null)
-                    onItemDeleteListener.onItemDelete(info);
+                    onItemDeleteListener.onItemDelete(holder.getAdapterPosition(), info);
             }
         });
         return holder;

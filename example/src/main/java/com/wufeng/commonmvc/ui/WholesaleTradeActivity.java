@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.wufeng.commonmvc.adapter.CategoryRecordAdapter;
 import com.wufeng.commonmvc.adapter.TradeCategoryAdapter;
 import com.wufeng.commonmvc.databinding.ActivityWholesaleTradeBinding;
+import com.wufeng.commonmvc.dialog.AddCategoryRecordDialog;
 import com.wufeng.commonmvc.entity.CategoryInfo;
 import com.wufeng.commonmvc.entity.CategoryRecordInfo;
 import com.wufeng.commonmvc.entity.TradeRecordInfo;
@@ -18,6 +19,7 @@ import com.wufeng.latte_core.activity.BaseActivity;
 import com.wufeng.latte_core.control.SpaceItemDecoration;
 import com.wufeng.latte_core.database.MerchantCard;
 import com.wufeng.latte_core.database.MerchantCardManager;
+import com.wufeng.latte_core.util.BigDecimalUtil;
 import com.wufeng.latte_core.util.IdGenerate;
 
 import java.math.BigDecimal;
@@ -37,18 +39,11 @@ public class WholesaleTradeActivity extends BaseActivity<ActivityWholesaleTradeB
         initClickEvent();
         mCategoryData = new ArrayList<>();
         mCategoryRecordData = new ArrayList<>();
+        receivableAmount = new BigDecimal(0);
         for(int i = 0; i < 10; i++){
             CategoryInfo info = new CategoryInfo();
             info.setName("苹果" + i);
             mCategoryData.add(info);
-        }
-        for(int i = 0; i < 10; i++){
-            CategoryRecordInfo info = new CategoryRecordInfo();
-            info.setGoodsName("苹果" + i);
-            info.setGoodsPrice(new BigDecimal(10).toPlainString());
-            info.setGoodsNumber(i);
-            info.setGoodsAmount(new BigDecimal(18888).toPlainString());
-            mCategoryRecordData.add(info);
         }
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
         mBinding.rlvBindCategoryList.addItemDecoration(new SpaceItemDecoration(10));
@@ -92,8 +87,8 @@ public class WholesaleTradeActivity extends BaseActivity<ActivityWholesaleTradeB
         MerchantCard merchantCard = MerchantCardManager.getInstance().queryCollectionAccount();
         TradeRecordInfo tradeRecordInfo = new TradeRecordInfo();
         tradeRecordInfo.setTerminalOrderCode(IdGenerate.getInstance().getId());
-        tradeRecordInfo.setReceivableAmount("100");
-        tradeRecordInfo.setActualAmount("100");
+        tradeRecordInfo.setReceivableAmount(receivableAmount.toPlainString());
+        tradeRecordInfo.setActualAmount(receivableAmount.toPlainString());
         tradeRecordInfo.getCategoryRecordInfoList().addAll(mCategoryRecordData);
         tradeRecordInfo.setSellerAccount(merchantCard.getCardNo());
         tradeRecordInfo.setSellerName(merchantCard.getCardName());
@@ -111,7 +106,17 @@ public class WholesaleTradeActivity extends BaseActivity<ActivityWholesaleTradeB
     //品种子项点击事件
     @Override
     public void onItemClick(CategoryInfo categoryInfo) {
-
+        AddCategoryRecordDialog addCategoryRecordDialog = new AddCategoryRecordDialog(categoryInfo, new AddCategoryRecordDialog.OnAddCategoryRecordListener() {
+            @Override
+            public void onAddCategoryRecord(CategoryRecordInfo categoryRecordInfo) {
+                mCategoryRecordData.add(categoryRecordInfo);
+                categoryRecordAdapter.notifyItemInserted(mCategoryRecordData.size() - 1);
+                receivableAmount = BigDecimalUtil.sumB(receivableAmount.toPlainString(), categoryRecordInfo.getGoodsAmount());
+                String payText = mCategoryRecordData.size() + "件商品，共记" + receivableAmount.toPlainString() + "元，去收款";
+                mBinding.tvPay.setText(payText);
+            }
+        });
+        addCategoryRecordDialog.show(getSupportFragmentManager(), null);
     }
 
     @Override
@@ -129,8 +134,12 @@ public class WholesaleTradeActivity extends BaseActivity<ActivityWholesaleTradeB
     }
 
     @Override
-    public void onItemDelete(CategoryRecordInfo categoryRecordInfo) {
-
+    public void onItemDelete(int position, CategoryRecordInfo categoryRecordInfo) {
+        mCategoryRecordData.remove(position);
+        categoryRecordAdapter.notifyItemRemoved(position);
+        receivableAmount = BigDecimalUtil.subB(receivableAmount.toPlainString(), categoryRecordInfo.getGoodsAmount());
+        String payText = mCategoryRecordData.size() + "件商品，共记" + receivableAmount.toPlainString() + "元，去收款";
+        mBinding.tvPay.setText(payText);
     }
 
     @Override
