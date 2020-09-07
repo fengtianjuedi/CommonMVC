@@ -102,7 +102,8 @@
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
             android:inputType="numberDecimal"
-            tools:ignore="RtlSymmetry" />
+            tools:ignore="RtlSymmetry"
+            android:focusable="false"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
     <View
         android:layout_width="match_parent"

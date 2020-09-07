@@ -9,6 +9,8 @@ public class DatabaseManager {
     private UserProfileDao mUserProfileDao = null;
     private MerchantCardDao mMerchantCardDao = null;
     private TerminalInfoDao mTerminalInfoDao = null;
+    private MerchantTradeDao mMerchantTradeDao = null;
+    private MerchantTradeGoodsDao mMerchantTradeGoodsDao = null;
 
     private DatabaseManager(){}
 
@@ -30,11 +32,19 @@ public class DatabaseManager {
         mUserProfileDao = mDaoSession.getUserProfileDao();
         mMerchantCardDao = mDaoSession.getMerchantCardDao();
         mTerminalInfoDao = mDaoSession.getTerminalInfoDao();
+        mMerchantTradeDao = mDaoSession.getMerchantTradeDao();
+        mMerchantTradeGoodsDao = mDaoSession.getMerchantTradeGoodsDao();
     }
+
+    public final DaoSession getDaoSession() {return mDaoSession;}
 
     public final UserProfileDao getUserProfileDao(){return mUserProfileDao;}
 
     public final MerchantCardDao getMerchantCardDao() {return mMerchantCardDao;}
 
     public final TerminalInfoDao getmTerminalInfoDao() {return mTerminalInfoDao;}
+
+    public final MerchantTradeDao getMerchantTradeDao() {return mMerchantTradeDao;}
+
+    public final MerchantTradeGoodsDao getMerchantTradeGoodsDao() {return mMerchantTradeGoodsDao;}
 }

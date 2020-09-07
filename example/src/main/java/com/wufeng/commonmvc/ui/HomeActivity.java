@@ -15,6 +15,8 @@ import com.wufeng.commonmvc.dialog.TipOneDialog;
 import com.wufeng.commonmvc.entity.CategoryInfo;
 import com.wufeng.latte_core.activity.BaseActivity;
 import com.wufeng.latte_core.callback.ICallback;
+import com.wufeng.latte_core.database.MerchantCard;
+import com.wufeng.latte_core.database.MerchantCardManager;
 import com.wufeng.latte_core.database.TerminalInfo;
 import com.wufeng.latte_core.database.TerminalInfoManager;
 import com.wufeng.latte_core.net.IError;
@@ -86,7 +88,7 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
                 if (aBoolean){
                     updateUtil.checkUpdate(updateMap);
                 }else{
-                    if (checkTerminalInfo()){
+                    if (checkTerminalInfo() && checkCollectionAccount()){
                         Intent intent = new Intent(HomeActivity.this, WholesaleTradeActivity.class);
                         startActivity(intent);
                     }
@@ -103,7 +105,7 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
                 if (aBoolean){
                     updateUtil.checkUpdate(updateMap);
                 }else{
-                    if (checkTerminalInfo()){
+                    if (checkTerminalInfo()  && checkCollectionAccount()){
                         Intent intent = new Intent(HomeActivity.this, CategoryManagerActivity.class);
                         startActivity(intent);
                     }
@@ -137,7 +139,7 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
                 if (aBoolean){
                     updateUtil.checkUpdate(updateMap);
                 }else{
-                    if (checkTerminalInfo()){
+                    if (checkTerminalInfo() && checkCollectionAccount()){
                         Intent intent = new Intent(HomeActivity.this, TradeRecordActivity.class);
                         startActivity(intent);
                     }
@@ -189,7 +191,18 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
         return true;
     }
 
+    //检查收款账户是否设置
+    private boolean checkCollectionAccount(){
+        MerchantCard merchantCard = MerchantCardManager.getInstance().queryCollectionAccount();
+        if (merchantCard == null){
+            TipOneDialog dialog = new TipOneDialog("提示", "收款账户未设置，请先进入绑卡中进行设置");
+            dialog.show(getSupportFragmentManager(), "home");
+            return false;
+        }
+        return true;
+    }
 
+    //region 网络请求
     //签到请求
     private void signInRequest(){
         TerminalInfo terminalInfo = TerminalInfoManager.getInstance().queryLastTerminalInfo();
@@ -264,4 +277,5 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
                 .build()
                 .post();
     }
+    //endregion
 }
