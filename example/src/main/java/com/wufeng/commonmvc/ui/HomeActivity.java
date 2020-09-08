@@ -281,7 +281,7 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
                         }else{
                             if (callback != null)
                                 callback.callback(false);
-                            Toast.makeText(HomeActivity.this, jsonObject.getString("resultMessage"), Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(HomeActivity.this, jsonObject.getString("resultMessage"), Toast.LENGTH_SHORT).show();
                         }
                     }
                 })
