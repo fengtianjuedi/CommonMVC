@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_size_30"
-                android:text="@string/TradeRecord"
+                android:text="@string/tradeRecord"
                 android:layout_centerInParent="true"/>
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
@@ -44,7 +44,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/TradeRecord_start"
+            android:text="@string/tradeRecord_start"
             android:textColor="@android:color/black"
             android:textSize="@dimen/text_size_18"
             android:layout_marginStart="10dp"/>
@@ -67,7 +67,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/TradeRecord_end"
+            android:text="@string/tradeRecord_end"
             android:textColor="@android:color/black"
             android:textSize="@dimen/text_size_18"
             android:layout_marginStart="10dp"/>
@@ -98,7 +98,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginStart="80dp"
         android:layout_marginEnd="80dp"
-        android:text="@string/TradeRecord_query"
+        android:text="@string/tradeRecord_query"
         android:textSize="@dimen/text_size_18"
         android:textColor="@android:color/white"
         android:background="@drawable/button_circle_corner__green"/>

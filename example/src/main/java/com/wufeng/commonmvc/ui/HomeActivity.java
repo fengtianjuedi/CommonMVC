@@ -78,6 +78,12 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
                 setTerminal();
             }
         });
+        mBinding.llTerminalParams.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                terminalParams();
+            }
+        });
     }
 
     //批发交易
@@ -173,6 +179,21 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
                     updateUtil.checkUpdate(updateMap);
                 }else{
                     Intent intent = new Intent(HomeActivity.this, SetTerminalActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
+    }
+
+    //参数设置
+    private void terminalParams(){
+        checkUpdate("pos", new ICallback<Boolean>() {
+            @Override
+            public void callback(Boolean aBoolean) {
+                if (aBoolean){
+                    updateUtil.checkUpdate(updateMap);
+                }else{
+                    Intent intent = new Intent(HomeActivity.this, TerminalParamsActivity.class);
                     startActivity(intent);
                 }
             }

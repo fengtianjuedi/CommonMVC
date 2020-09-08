@@ -9,6 +9,7 @@
     <string name="menu_tradeRecord">交易记录</string>
     <string name="menu_setTerminalCode">终端设置</string>
     <string name="menu_signIn">签到</string>
+    <string name="menu_terminalParams">参数设置</string>
 
     <!-- 终端设置 -->
     <string name="setTerminal_merchantCode">商户号</string>
@@ -52,15 +53,23 @@
     <string name="wholesaleTrade_password">密码：</string>
 
     <!-- 交易查询 -->
-    <string name="TradeRecord">交易记录</string>
-    <string name="TradeRecord_startDate">开始日期</string>
-    <string name="TradeRecord_endDate">结束日期</string>
-    <string name="TradeRecord_query">查询</string>
-    <string name="TradeRecord_receivableAmount">应收金额：</string>
-    <string name="TradeRecord_actualAmount">实收金额：</string>
-    <string name="TradeRecord_tradeTime">交易时间：</string>
-    <string name="TradeRecord_start">从</string>
-    <string name="TradeRecord_end">到</string>
+    <string name="tradeRecord">交易记录</string>
+    <string name="tradeRecord_startDate">开始日期</string>
+    <string name="tradeRecord_endDate">结束日期</string>
+    <string name="tradeRecord_query">查询</string>
+    <string name="tradeRecord_receivableAmount">应收金额：</string>
+    <string name="tradeRecord_actualAmount">实收金额：</string>
+    <string name="tradeRecord_tradeTime">交易时间：</string>
+    <string name="tradeRecord_start">从</string>
+    <string name="tradeRecord_end">到</string>
+
+    <!-- 终端参数设置 -->
+    <string name="terminalParams">参数设置</string>
+    <string name="terminalParams_deviceModel">设备型号：</string>
+    <string name="terminalParams_device_liandiA8">联迪A8</string>
+    <string name="terminalParams_device_aisinoA90">艾体威尔A90</string>
+    <string name="terminalParams_printNumber">打印数量：</string>
+    <string name="terminalParams_submit">设置</string>
 
     <!-- dialog -->
     <string name="Dialog_ok">确定</string>

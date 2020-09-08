@@ -71,6 +71,11 @@ public class ConfigManager {
         return this;
     }
 
+    public final ConfigManager withPrintNumber(int number){
+        CONFIGS.put(ConfigKeys.PRINTNUMBER, number);
+        return this;
+    }
+
     //初始化图标库
     private void initIcons(){
         if (ICONS.size() > 0){

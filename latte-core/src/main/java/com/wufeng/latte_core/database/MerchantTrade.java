@@ -19,6 +19,7 @@ public class MerchantTrade {
     @Unique
     @NotNull
     private String terminalOrderCode; //终端订单号
+    private String tradeOrderCode; //交易订单号
     private String sellerAccount; //卖家账户
     private String sellerName; //卖家姓名
     private String buyerAccount; //买家账户
@@ -28,6 +29,7 @@ public class MerchantTrade {
     private String tradeTime; //交易时间
     @NonNull
     private int tradeStatus; //交易状态 0:成功 1:失败 2:未知
+    private int payType; //支付方式 0:一卡通 1:现金
 
     @ToMany(referencedJoinProperty = "tradeId")
     private List<MerchantTradeGoods> merchantTradeGoodsList; //交易品种列表
@@ -38,12 +40,14 @@ public class MerchantTrade {
     @Generated(hash = 725032744)
     private transient MerchantTradeDao myDao;
 
-    @Generated(hash = 203997020)
-    public MerchantTrade(Long id, @NotNull String terminalOrderCode, String sellerAccount,
-            String sellerName, String buyerAccount, String buyerName, String receivableAmount,
-            String actualAmount, String tradeTime, int tradeStatus) {
+    @Generated(hash = 163877842)
+    public MerchantTrade(Long id, @NotNull String terminalOrderCode, String tradeOrderCode,
+            String sellerAccount, String sellerName, String buyerAccount, String buyerName,
+            String receivableAmount, String actualAmount, String tradeTime, int tradeStatus,
+            int payType) {
         this.id = id;
         this.terminalOrderCode = terminalOrderCode;
+        this.tradeOrderCode = tradeOrderCode;
         this.sellerAccount = sellerAccount;
         this.sellerName = sellerName;
         this.buyerAccount = buyerAccount;
@@ -52,6 +56,7 @@ public class MerchantTrade {
         this.actualAmount = actualAmount;
         this.tradeTime = tradeTime;
         this.tradeStatus = tradeStatus;
+        this.payType = payType;
     }
 
     @Generated(hash = 1095239998)
@@ -201,6 +206,22 @@ public class MerchantTrade {
 
     public void setTradeStatus(int tradeStatus) {
         this.tradeStatus = tradeStatus;
+    }
+
+    public String getTradeOrderCode() {
+        return this.tradeOrderCode;
+    }
+
+    public void setTradeOrderCode(String tradeOrderCode) {
+        this.tradeOrderCode = tradeOrderCode;
+    }
+
+    public int getPayType() {
+        return this.payType;
+    }
+
+    public void setPayType(int payType) {
+        this.payType = payType;
     }
 
     /** called by internal mechanisms, do not call yourself. */

@@ -22,6 +22,7 @@ public class MyApplication extends Application {
                 //.withHost("http://192.168.200.90:9008")
                 .withInterceptor(new DebugInterceptor())
                 .withPosModel(PosDevice.LIANDIA8)
+                .withPrintNumber(2)
                 .config();
         PosDevice.Init(getApplicationContext());
         //初始化数据库
