@@ -6,7 +6,7 @@ android {
         applicationId "com.wufeng.commonmvc" //包名
         minSdkVersion 19 //最低兼容sdk版本
         targetSdkVersion 29
-        versionCode 1 //版本号
+        versionCode 2 //版本号
         versionName "1.0" //版本名称
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         flavorDimensions "default"

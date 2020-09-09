@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.wufeng.commonmvc.adapter.CategoryAdapter;
 import com.wufeng.commonmvc.databinding.ActivityCategoryManagerBinding;
@@ -29,7 +30,7 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class CategoryManagerActivity extends BaseActivity<ActivityCategoryManagerBinding> {
+public class CategoryManagerActivity extends BaseActivity<ActivityCategoryManagerBinding> implements CategoryAdapter.OnDeleteItemListener {
     private List<CategoryInfo> mData; //品种列表
     private CategoryAdapter categoryAdapter; //品种列表适配器
 
@@ -41,6 +42,7 @@ public class CategoryManagerActivity extends BaseActivity<ActivityCategoryManage
         mBinding.rlvCategoryList.setLayoutManager(linearLayoutManager);
         mBinding.rlvCategoryList.addItemDecoration(new SpaceItemDecoration(0,0,0,30));
         categoryAdapter = new CategoryAdapter(mData);
+        categoryAdapter.setOnDeleteItemListener(this);
         mBinding.rlvCategoryList.setAdapter(categoryAdapter);
         initCategoryList();
     }
@@ -100,6 +102,21 @@ public class CategoryManagerActivity extends BaseActivity<ActivityCategoryManage
         }
     }
 
+    //删除列表子项事件
+    @Override
+    public void onDeleteItem(final int position, CategoryInfo categoryInfo) {
+        String cardNo = MerchantCardManager.getInstance().queryCollectionAccount().getCardNo();
+        deleteBindCategoryRequest(cardNo, categoryInfo.getId(), new ICallback<Boolean>() {
+            @Override
+            public void callback(Boolean aBoolean) {
+                if (aBoolean){
+                    mData.remove(position);
+                    categoryAdapter.notifyItemRemoved(position);
+                }
+            }
+        });
+    }
+
     //region 功能函数
     //绑定品种
     private void bindCategory(final CategoryInfo categoryInfo){
@@ -124,7 +141,6 @@ public class CategoryManagerActivity extends BaseActivity<ActivityCategoryManage
                 }
             }
         });
-
     }
 
     //endregion
@@ -143,6 +159,13 @@ public class CategoryManagerActivity extends BaseActivity<ActivityCategoryManage
                         JSONObject jsonObject = JSONObject.parseObject(response);
                         if ("0".equals(jsonObject.getString("resultCode"))){
                             List<CategoryInfo> list = new ArrayList<>();
+                            JSONArray data = jsonObject.getJSONArray("data");
+                            for (int i = 0; i < data.size(); i++){
+                                CategoryInfo categoryInfo = new CategoryInfo();
+                                categoryInfo.setId(data.getJSONObject(i).getString("id"));
+                                categoryInfo.setName(data.getJSONObject(i).getString("goodsname"));
+                                list.add(categoryInfo);
+                            }
                             if (callback != null){
                                 callback.callback(list);
                             }
@@ -168,6 +191,38 @@ public class CategoryManagerActivity extends BaseActivity<ActivityCategoryManage
         params.put("goodsid", goodsId);
         RestClient.builder()
                 .url("/pgcore-pos/PosQuery/binDing")
+                .xwwwformurlencoded("data=" + params.toJSONString())
+                .success(new ISuccess() {
+                    @Override
+                    public void onSuccess(String response) {
+                        JSONObject jsonObject = JSONObject.parseObject(response);
+                        if ("0".equals(jsonObject.getString("resultCode"))){
+                            if (callback != null){
+                                callback.callback(true);
+                            }
+                        }else{
+                            Toast.makeText(CategoryManagerActivity.this, jsonObject.getString("resultMessage"), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .error(new IError() {
+                    @Override
+                    public void onError(Throwable throwable) {
+                        Toast.makeText(CategoryManagerActivity.this, "请求远程服务器失败", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .loading(CategoryManagerActivity.this)
+                .build()
+                .post();
+    }
+
+    //解除品种绑定
+    private void deleteBindCategoryRequest(String cardNo, String goodsId, final ICallback<Boolean> callback){
+        JSONObject params = new JSONObject();
+        params.put("cardcode", cardNo);
+        params.put("goodsid", goodsId);
+        RestClient.builder()
+                .url("/pgcore-pos/PosQuery/noBinDing")
                 .xwwwformurlencoded("data=" + params.toJSONString())
                 .success(new ISuccess() {
                     @Override

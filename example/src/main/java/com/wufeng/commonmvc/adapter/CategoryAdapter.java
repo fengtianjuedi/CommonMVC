@@ -11,11 +11,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.wufeng.commonmvc.R;
 import com.wufeng.commonmvc.entity.CategoryInfo;
+import com.wufeng.latte_core.callback.ICallback;
 
 import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
     private List<CategoryInfo> mCategoryList;
+    private OnDeleteItemListener onDeleteItemListener;
+
+    public interface OnDeleteItemListener {
+        void onDeleteItem(int position, CategoryInfo categoryInfo);
+    }
 
     static class ViewHolder extends RecyclerView.ViewHolder{
         AppCompatTextView tvCategoryName;
@@ -26,6 +32,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             tvCategoryName = itemView.findViewById(R.id.tv_categoryName);
             itvDelete = itemView.findViewById(R.id.itv_delete);
         }
+    }
+
+    public void setOnDeleteItemListener(OnDeleteItemListener listener){
+        onDeleteItemListener = listener;
     }
 
     public CategoryAdapter(List<CategoryInfo> data){
@@ -43,8 +53,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
                 CategoryInfo categoryInfo = mCategoryList.get(position);
-                mCategoryList.remove(position);
-                notifyItemRemoved(position);
+                if (onDeleteItemListener != null)
+                    onDeleteItemListener.onDeleteItem(position, categoryInfo);
             }
         });
         return holder;
@@ -60,6 +70,5 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public int getItemCount() {
         return mCategoryList.size();
     }
-
 
 }

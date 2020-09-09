@@ -14,9 +14,11 @@ public class TradeRecordInfo implements Parcelable {
     private String sellerName; //卖家姓名
     private String buyerAccount; //买家账户
     private String buyerName; //买家姓名
+    private String buyerPassword; //买家密码
     private String receivableAmount; //应收金额
     private String actualAmount; //实收金额
     private String tradeTime; //交易时间
+    private int payType; //支付方式 0:一卡通 1:现金
     private List<CategoryRecordInfo> categoryRecordInfoList; //商品列表
 
     public TradeRecordInfo(){
@@ -41,6 +43,9 @@ public class TradeRecordInfo implements Parcelable {
     public String getBuyerName(){return buyerName;}
     public void setBuyerName(String value){buyerName = value;}
 
+    public String getBuyerPassword() {return buyerPassword;}
+    public void setBuyerPassword(String value){buyerPassword = value;}
+
     public String getReceivableAmount(){return receivableAmount;}
     public void setReceivableAmount(String value){receivableAmount = value;}
 
@@ -49,6 +54,9 @@ public class TradeRecordInfo implements Parcelable {
 
     public String getTradeTime(){return tradeTime;}
     public void setTradeTime(String value){tradeTime = value;}
+
+    public int getPayType(){return payType;}
+    public void setPayType(int value){payType = value;}
 
     public List<CategoryRecordInfo> getCategoryRecordInfoList(){return categoryRecordInfoList;}
 

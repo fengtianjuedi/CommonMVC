@@ -14,7 +14,7 @@
         android:textSize="@dimen/text_size_25"
         android:textAlignment="center"
         android:paddingTop="10dp"
-        android:paddingBottom="20dp"/>
+        android:paddingBottom="10dp"/>
 
     <com.wufeng.latte_core.control.FixedEditText
         android:id="@+id/fet_cardNo"
