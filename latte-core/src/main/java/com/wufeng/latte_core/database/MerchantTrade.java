@@ -22,8 +22,10 @@ public class MerchantTrade {
     private String tradeOrderCode; //交易订单号
     private String sellerAccount; //卖家账户
     private String sellerName; //卖家姓名
+    private String sellerCode; //卖家编码
     private String buyerAccount; //买家账户
     private String buyerName; //买家姓名
+    private String buyerCode; //买家编码
     private String receivableAmount; //应收金额
     private String actualAmount; //实收金额
     private String tradeTime; //交易时间

@@ -243,7 +243,8 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
                     public void onSuccess(String response) {
                         JSONObject jsonObject = JSONObject.parseObject(response);
                         if ("0".equals(jsonObject.getString("resultCode"))){
-                            Toast.makeText(HomeActivity.this, "签到成功", Toast.LENGTH_SHORT).show();
+                            TipOneDialog tipOneDialog = new TipOneDialog("提示", "签到成功");
+                            tipOneDialog.show(getSupportFragmentManager(), null);
                         }else{
                             Toast.makeText(HomeActivity.this, jsonObject.getString("resultMessage"), Toast.LENGTH_SHORT).show();
                         }
