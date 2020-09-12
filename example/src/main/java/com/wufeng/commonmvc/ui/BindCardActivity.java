@@ -8,17 +8,23 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.alibaba.fastjson.JSONObject;
 import com.wufeng.commonmvc.adapter.MerchantCardAdapter;
 import com.wufeng.commonmvc.databinding.ActivityBindCardBinding;
+import com.wufeng.commonmvc.dialog.PasswordDialog;
 import com.wufeng.commonmvc.entity.CardInfo;
 import com.wufeng.latte_core.activity.BaseActivity;
 import com.wufeng.latte_core.database.MerchantCard;
 import com.wufeng.latte_core.database.MerchantCardManager;
+import com.wufeng.latte_core.net.IError;
+import com.wufeng.latte_core.net.ISuccess;
+import com.wufeng.latte_core.net.RestClient;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BindCardActivity extends BaseActivity<ActivityBindCardBinding> implements MerchantCardAdapter.CollectionAccountChangedLister {
+public class BindCardActivity extends BaseActivity<ActivityBindCardBinding>
+        implements MerchantCardAdapter.CollectionAccountChangedListener, MerchantCardAdapter.QueryCardBalanceListener {
     private List<CardInfo> mData; //绑定卡列表
     private CardInfo currentCollectionAccount; //当前收款账户
     private MerchantCardAdapter merchantCardAdapter;
@@ -28,7 +34,7 @@ public class BindCardActivity extends BaseActivity<ActivityBindCardBinding> impl
         mData = new ArrayList<>();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mBinding.rlvBindCardList.setLayoutManager(linearLayoutManager);
-        merchantCardAdapter = new MerchantCardAdapter(mData, this);
+        merchantCardAdapter = new MerchantCardAdapter(mData, this, this);
         mBinding.rlvBindCardList.setAdapter(merchantCardAdapter);
     }
 
@@ -40,6 +46,7 @@ public class BindCardActivity extends BaseActivity<ActivityBindCardBinding> impl
             mBinding.tvCollectionAccountNo.setText(currentCollectionAccount.getCardNo());
             mBinding.tvCollectionAccountName.setText(currentCollectionAccount.getName());
             mBinding.tvDelete.setVisibility(View.VISIBLE);
+            mBinding.tvQueryCardBalance.setVisibility(View.VISIBLE);
         }
         merchantCardAdapter.notifyDataSetChanged();
     }
@@ -53,16 +60,22 @@ public class BindCardActivity extends BaseActivity<ActivityBindCardBinding> impl
                 finish();
             }
         });
-        mBinding.itvAdd.setOnClickListener(new View.OnClickListener() {
+        mBinding.itvAdd.setOnClickListener(new View.OnClickListener() { //添加绑卡
             @Override
             public void onClick(View v) {
                 openBindMerchantCard();
             }
         });
-        mBinding.tvDelete.setOnClickListener(new View.OnClickListener() {
+        mBinding.tvDelete.setOnClickListener(new View.OnClickListener() { //删除收款账户
             @Override
             public void onClick(View v) {
                 deleteCollectionAccount();
+            }
+        });
+        mBinding.tvQueryCardBalance.setOnClickListener(new View.OnClickListener() { //查询卡余额
+            @Override
+            public void onClick(View v) {
+                queryCardBalance(currentCollectionAccount.getCardNo());
             }
         });
     }
@@ -100,7 +113,24 @@ public class BindCardActivity extends BaseActivity<ActivityBindCardBinding> impl
         mBinding.tvCollectionAccountNo.setText("");
         mBinding.tvCollectionAccountName.setText("");
         mBinding.tvDelete.setVisibility(View.INVISIBLE);
+        mBinding.tvQueryCardBalance.setVisibility(View.INVISIBLE);
         merchantCardAdapter.notifyDataSetChanged();
+    }
+
+    //查询卡余额
+    private void queryCardBalance(final String cardNo){
+        PasswordDialog passwordDialog = new PasswordDialog(BindCardActivity.this);
+        passwordDialog.setOnClickListener(new PasswordDialog.OnClickListener() {
+            @Override
+            public void onOkClick(String password) {
+                queryCardBalanceRequest(cardNo, password);
+            }
+
+            @Override
+            public void onCancelClick() {
+            }
+        });
+        passwordDialog.show(getSupportFragmentManager(), null);
     }
 
     //设置收款账户
@@ -122,8 +152,15 @@ public class BindCardActivity extends BaseActivity<ActivityBindCardBinding> impl
             return;
         }
         mBinding.tvDelete.setVisibility(View.VISIBLE);
+        mBinding.tvQueryCardBalance.setVisibility(View.VISIBLE);
         mData.remove(cardInfo);
         merchantCardAdapter.notifyDataSetChanged();
+    }
+
+    //卡余额查询
+    @Override
+    public void queryBalance(String cardNo) {
+        queryCardBalance(cardNo);
     }
 
     //region 功能函数
@@ -149,6 +186,36 @@ public class BindCardActivity extends BaseActivity<ActivityBindCardBinding> impl
             return MerchantCardManager.getInstance().modify(currentCollectionAccount);
         }
         return true;
+    }
+
+    //查询卡余额
+    private void queryCardBalanceRequest(String cardNo, String password){
+        JSONObject params = new JSONObject();
+        params.put("cardcode", cardNo);
+        params.put("password", password);
+        RestClient.builder()
+                .url("/pgcore-pos/PosTrade/withdrawQuery")
+                .xwwwformurlencoded("data=" + params.toJSONString())
+                .success(new ISuccess() {
+                    @Override
+                    public void onSuccess(String response) {
+                        JSONObject jsonObject = JSONObject.parseObject(response);
+                        if ("0".equals(jsonObject.getString("resultCode"))){
+
+                        }else{
+                            Toast.makeText(BindCardActivity.this, jsonObject.getString("resultMessage"), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .error(new IError() {
+                    @Override
+                    public void onError(Throwable throwable) {
+                        Toast.makeText(BindCardActivity.this, "请求远程服务器失败", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .loading(BindCardActivity.this)
+                .build()
+                .post();
     }
     //endregion
 }

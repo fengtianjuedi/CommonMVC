@@ -42,18 +42,20 @@ public class MerchantTrade {
     @Generated(hash = 725032744)
     private transient MerchantTradeDao myDao;
 
-    @Generated(hash = 163877842)
+    @Generated(hash = 1895366882)
     public MerchantTrade(Long id, @NotNull String terminalOrderCode, String tradeOrderCode,
-            String sellerAccount, String sellerName, String buyerAccount, String buyerName,
-            String receivableAmount, String actualAmount, String tradeTime, int tradeStatus,
-            int payType) {
+            String sellerAccount, String sellerName, String sellerCode, String buyerAccount,
+            String buyerName, String buyerCode, String receivableAmount, String actualAmount,
+            String tradeTime, int tradeStatus, int payType) {
         this.id = id;
         this.terminalOrderCode = terminalOrderCode;
         this.tradeOrderCode = tradeOrderCode;
         this.sellerAccount = sellerAccount;
         this.sellerName = sellerName;
+        this.sellerCode = sellerCode;
         this.buyerAccount = buyerAccount;
         this.buyerName = buyerName;
+        this.buyerCode = buyerCode;
         this.receivableAmount = receivableAmount;
         this.actualAmount = actualAmount;
         this.tradeTime = tradeTime;
@@ -224,6 +226,22 @@ public class MerchantTrade {
 
     public void setPayType(int payType) {
         this.payType = payType;
+    }
+
+    public String getSellerCode() {
+        return this.sellerCode;
+    }
+
+    public void setSellerCode(String sellerCode) {
+        this.sellerCode = sellerCode;
+    }
+
+    public String getBuyerCode() {
+        return this.buyerCode;
+    }
+
+    public void setBuyerCode(String buyerCode) {
+        this.buyerCode = buyerCode;
     }
 
     /** called by internal mechanisms, do not call yourself. */

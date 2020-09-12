@@ -20,15 +20,28 @@
             android:textColor="@android:color/black"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"/>
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_collectionAccountName"
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="张三"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/text_size_18"
+            android:orientation="horizontal"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp" />
+            android:layout_marginTop="20dp">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_collectionAccountName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_18" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_query_card_balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bindCard_query_balance"
+                android:textColor="@color/background_green"
+                android:textSize="@dimen/text_size_18"
+                android:layout_marginEnd="20dp"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

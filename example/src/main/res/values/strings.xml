@@ -25,6 +25,8 @@
     <string name="bindCard_collection_account">我的收款账户</string>
     <string name="bindCard_delete">删除</string>
     <string name="bindCard_set_collection_account">设为收款账户</string>
+    <string name="bindCard_please_input_password">请输入密码</string>
+    <string name="bindCard_query_balance">查询卡余额</string>
 
     <!-- 品种管理 -->
     <string name="categoryManager">品种管理</string>

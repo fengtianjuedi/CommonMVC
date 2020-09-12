@@ -21,16 +21,13 @@
         <activity android:name=".ui.AddMerchantCardActivity" />
         <activity android:name=".ui.BindCardActivity" />
         <activity android:name=".ui.SetTerminalActivity" />
-        <activity android:name=".ui.HomeActivity" />
-        <activity
-            android:name=".MainActivity"
-            android:launchMode="singleTask">
+        <activity android:name=".ui.HomeActivity" android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MainActivity"/>
     </application>
 
 </manifest>
