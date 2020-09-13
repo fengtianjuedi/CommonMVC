@@ -13,13 +13,15 @@ public class MerchantCard {
     @Unique@NotNull
     private String cardNo;
     private String cardName;
+    private String merchantCode;
     private boolean isCollectionAccount;
-    @Generated(hash = 913079133)
+    @Generated(hash = 1746110463)
     public MerchantCard(Long id, @NotNull String cardNo, String cardName,
-            boolean isCollectionAccount) {
+            String merchantCode, boolean isCollectionAccount) {
         this.id = id;
         this.cardNo = cardNo;
         this.cardName = cardName;
+        this.merchantCode = merchantCode;
         this.isCollectionAccount = isCollectionAccount;
     }
     @Generated(hash = 718650106)
@@ -48,5 +50,11 @@ public class MerchantCard {
     }
     public void setIsCollectionAccount(boolean isCollectionAccount) {
         this.isCollectionAccount = isCollectionAccount;
+    }
+    public String getMerchantCode() {
+        return this.merchantCode;
+    }
+    public void setMerchantCode(String merchantCode) {
+        this.merchantCode = merchantCode;
     }
 }

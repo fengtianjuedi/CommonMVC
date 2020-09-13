@@ -1,7 +1,6 @@
 package com.wufeng.commonmvc.ui;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -11,7 +10,7 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wufeng.commonmvc.databinding.ActivityAddMerchantCardBinding;
-import com.wufeng.commonmvc.entity.CardInfo;
+import com.wufeng.latte_core.entity.CardInfo;
 import com.wufeng.latte_core.activity.BaseActivity;
 import com.wufeng.latte_core.callback.ICallback;
 import com.wufeng.latte_core.config.ConfigKeys;
@@ -109,6 +108,7 @@ public class AddMerchantCardActivity extends BaseActivity<ActivityAddMerchantCar
                             MerchantCard merchantCard = new MerchantCard();
                             merchantCard.setCardNo(cardNo);
                             merchantCard.setCardName(jsonObject.getJSONObject("merchant").getString("cname"));
+                            merchantCard.setMerchantCode(jsonObject.getJSONObject("merchant").getString("merchantcode"));
                             merchantCard.setIsCollectionAccount(false);
                             if (callback != null)
                                 callback.callback(merchantCard);

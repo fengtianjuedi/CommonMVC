@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.joanzapata.iconify.widget.IconTextView;
 import com.wufeng.commonmvc.R;
-import com.wufeng.commonmvc.entity.TradeRecordInfo;
+import com.wufeng.latte_core.entity.TradeRecordInfo;
 
 import java.util.List;
 

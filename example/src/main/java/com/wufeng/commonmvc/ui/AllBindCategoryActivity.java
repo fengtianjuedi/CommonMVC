@@ -1,7 +1,6 @@
 package com.wufeng.commonmvc.ui;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import android.content.Intent;
@@ -10,12 +9,9 @@ import android.view.View;
 
 import com.wufeng.commonmvc.adapter.TradeCategoryAdapter;
 import com.wufeng.commonmvc.databinding.ActivityAllBindCategoryBinding;
-import com.wufeng.commonmvc.entity.CardInfo;
-import com.wufeng.commonmvc.entity.CategoryInfo;
+import com.wufeng.latte_core.entity.CategoryInfo;
 import com.wufeng.latte_core.activity.BaseActivity;
 import com.wufeng.latte_core.control.SpaceItemDecoration;
-import com.wufeng.latte_core.database.MerchantCard;
-import com.wufeng.latte_core.database.MerchantCardManager;
 
 import java.util.ArrayList;
 import java.util.List;

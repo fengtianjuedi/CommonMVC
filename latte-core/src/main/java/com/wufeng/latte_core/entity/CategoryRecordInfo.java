@@ -1,9 +1,7 @@
-package com.wufeng.commonmvc.entity;
+package com.wufeng.latte_core.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.math.BigDecimal;
 
 //商品记录
 public class CategoryRecordInfo implements Parcelable {

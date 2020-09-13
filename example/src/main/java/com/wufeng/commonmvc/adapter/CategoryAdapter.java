@@ -10,8 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.joanzapata.iconify.widget.IconTextView;
 import com.wufeng.commonmvc.R;
-import com.wufeng.commonmvc.entity.CategoryInfo;
-import com.wufeng.latte_core.callback.ICallback;
+import com.wufeng.latte_core.entity.CategoryInfo;
 
 import java.util.List;
 

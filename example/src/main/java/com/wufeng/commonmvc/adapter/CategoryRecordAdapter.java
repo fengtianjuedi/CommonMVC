@@ -1,6 +1,5 @@
 package com.wufeng.commonmvc.adapter;
 
-import android.animation.LayoutTransition;
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.joanzapata.iconify.widget.IconTextView;
 import com.wufeng.commonmvc.R;
-import com.wufeng.commonmvc.entity.CategoryRecordInfo;
+import com.wufeng.latte_core.entity.CategoryRecordInfo;
 
 import java.util.List;
 

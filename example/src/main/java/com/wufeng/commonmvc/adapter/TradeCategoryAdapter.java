@@ -10,8 +10,7 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.wufeng.commonmvc.R;
-import com.wufeng.commonmvc.entity.CardInfo;
-import com.wufeng.commonmvc.entity.CategoryInfo;
+import com.wufeng.latte_core.entity.CategoryInfo;
 
 import java.util.List;
 

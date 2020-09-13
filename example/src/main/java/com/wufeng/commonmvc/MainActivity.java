@@ -14,26 +14,13 @@ import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.wufeng.commonmvc.databinding.ActivityMainBinding;
-import com.wufeng.commonmvc.dialog.AddCategoryRecordDialog;
-import com.wufeng.commonmvc.dialog.TipOneDialog;
-import com.wufeng.commonmvc.dialog.TipTwoDialog;
-import com.wufeng.commonmvc.entity.CategoryInfo;
-import com.wufeng.commonmvc.entity.CategoryRecordInfo;
-import com.wufeng.commonmvc.ui.AddCategoryActivity;
 import com.wufeng.commonmvc.ui.HomeActivity;
-import com.wufeng.commonmvc.ui.PaymentActivity;
-import com.wufeng.commonmvc.ui.SetTerminalActivity;
-import com.wufeng.commonmvc.ui.TradeRecordActivity;
 import com.wufeng.latte_core.activity.BaseActivity;
-import com.wufeng.latte_core.util.LogUtil;
-import com.wufeng.latte_core.util.RequestUtil;
 import com.wufeng.latte_core.util.UpdateUtil;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding> {
     private TimePickerView timePickerView;

@@ -19,8 +19,8 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.DialogFragment;
 
 import com.wufeng.commonmvc.R;
-import com.wufeng.commonmvc.entity.CategoryInfo;
-import com.wufeng.commonmvc.entity.CategoryRecordInfo;
+import com.wufeng.latte_core.entity.CategoryInfo;
+import com.wufeng.latte_core.entity.CategoryRecordInfo;
 import com.wufeng.latte_core.util.BigDecimalUtil;
 
 import java.math.BigDecimal;

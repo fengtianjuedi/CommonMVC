@@ -12,13 +12,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.wufeng.commonmvc.adapter.MerchantCardAdapter;
 import com.wufeng.commonmvc.databinding.ActivityBindCardBinding;
 import com.wufeng.commonmvc.dialog.PasswordDialog;
-import com.wufeng.commonmvc.entity.CardInfo;
 import com.wufeng.latte_core.activity.BaseActivity;
 import com.wufeng.latte_core.database.MerchantCard;
 import com.wufeng.latte_core.database.MerchantCardManager;
 import com.wufeng.latte_core.net.IError;
 import com.wufeng.latte_core.net.ISuccess;
 import com.wufeng.latte_core.net.RestClient;
+import com.wufeng.latte_core.entity.CardInfo;
 
 import java.util.ArrayList;
 import java.util.List;

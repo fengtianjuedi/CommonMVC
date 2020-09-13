@@ -10,9 +10,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.wufeng.commonmvc.R;
-import com.wufeng.commonmvc.dialog.PasswordDialog;
-import com.wufeng.commonmvc.entity.CardInfo;
-import com.wufeng.commonmvc.ui.BindCardActivity;
+import com.wufeng.latte_core.entity.CardInfo;
 import com.wufeng.latte_core.database.MerchantCardManager;
 
 import java.util.List;

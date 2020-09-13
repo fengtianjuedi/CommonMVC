@@ -9,14 +9,15 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.wufeng.commonmvc.adapter.CategoryRecordAdapter;
 import com.wufeng.commonmvc.adapter.TradeCategoryAdapter;
 import com.wufeng.commonmvc.databinding.ActivityWholesaleTradeBinding;
 import com.wufeng.commonmvc.dialog.AddCategoryRecordDialog;
-import com.wufeng.commonmvc.entity.CategoryInfo;
-import com.wufeng.commonmvc.entity.CategoryRecordInfo;
-import com.wufeng.commonmvc.entity.TradeRecordInfo;
+import com.wufeng.latte_core.entity.CategoryInfo;
+import com.wufeng.latte_core.entity.CategoryRecordInfo;
+import com.wufeng.latte_core.entity.TradeRecordInfo;
 import com.wufeng.latte_core.activity.BaseActivity;
 import com.wufeng.latte_core.callback.ICallback;
 import com.wufeng.latte_core.control.SpaceItemDecoration;
@@ -103,6 +104,7 @@ public class WholesaleTradeActivity extends BaseActivity<ActivityWholesaleTradeB
                     mBinding.tvAddMore.setVisibility(View.VISIBLE);
                     mBinding.rlvBindCategoryList.setVisibility(View.VISIBLE);
                     mBinding.tvAddBindCategory.setVisibility(View.GONE);
+                    tradeCategoryAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -120,6 +122,7 @@ public class WholesaleTradeActivity extends BaseActivity<ActivityWholesaleTradeB
         tradeRecordInfo.getCategoryRecordInfoList().addAll(mCategoryRecordData);
         tradeRecordInfo.setSellerAccount(merchantCard.getCardNo());
         tradeRecordInfo.setSellerName(merchantCard.getCardName());
+        tradeRecordInfo.setSellerCode(merchantCard.getMerchantCode());
         Intent intent = new Intent(WholesaleTradeActivity.this, PaymentActivity.class);
         intent.putExtra("tradeRecord", tradeRecordInfo);
         startActivity(intent);
@@ -211,7 +214,15 @@ public class WholesaleTradeActivity extends BaseActivity<ActivityWholesaleTradeB
                     public void onSuccess(String response) {
                         JSONObject jsonObject = JSONObject.parseObject(response);
                         if ("0".equals(jsonObject.getString("resultCode"))){
+                            JSONArray data = jsonObject.getJSONArray("data");
                             List<CategoryInfo> list = new ArrayList<>();
+                            for (int i = 0; i < data.size(); i++){
+                                JSONObject item = data.getJSONObject(i);
+                                CategoryInfo categoryInfo = new CategoryInfo();
+                                categoryInfo.setId(item.getString("id"));
+                                categoryInfo.setName(item.getString("goodsname"));
+                                list.add(categoryInfo);
+                            }
                             if (callback != null)
                                 callback.callback(list);
                         }else{

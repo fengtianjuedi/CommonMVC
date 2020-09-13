@@ -1,7 +1,6 @@
 package com.wufeng.commonmvc.ui;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
@@ -14,9 +13,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.wufeng.commonmvc.adapter.CategoryTreeAdapter;
 import com.wufeng.commonmvc.databinding.ActivityAddCategoryBinding;
-import com.wufeng.commonmvc.dialog.TipOneDialog;
-import com.wufeng.commonmvc.entity.CategoryInfo;
-import com.wufeng.commonmvc.entity.CategoryNode;
+import com.wufeng.latte_core.entity.CategoryInfo;
+import com.wufeng.latte_core.entity.CategoryNode;
 import com.wufeng.latte_core.activity.BaseActivity;
 import com.wufeng.latte_core.callback.ICallback;
 import com.wufeng.latte_core.control.DrawableEditText;

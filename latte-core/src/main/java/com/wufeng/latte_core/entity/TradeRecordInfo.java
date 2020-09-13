@@ -1,9 +1,8 @@
-package com.wufeng.commonmvc.entity;
+package com.wufeng.latte_core.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,8 +10,10 @@ public class TradeRecordInfo implements Parcelable {
     private String tradeOrderCode; //交易订单号
     private String terminalOrderCode; //终端订单号
     private String sellerAccount; //卖家账户
+    private String sellerCode; //卖家商户编号
     private String sellerName; //卖家姓名
     private String buyerAccount; //买家账户
+    private String buyerCode; //买家商户编号
     private String buyerName; //买家姓名
     private String buyerPassword; //买家密码
     private String receivableAmount; //应收金额
@@ -34,11 +35,17 @@ public class TradeRecordInfo implements Parcelable {
     public String getSellerAccount(){return sellerAccount;}
     public void setSellerAccount(String value){sellerAccount = value;}
 
+    public String getSellerCode(){return sellerCode;}
+    public void setSellerCode(String value){sellerCode = value;}
+
     public String getSellerName(){return sellerName;}
     public void setSellerName(String value){sellerName = value;}
 
     public String getBuyerAccount(){return buyerAccount;}
     public void setBuyerAccount(String value){buyerAccount = value;}
+
+    public String getBuyerCode(){return buyerCode;}
+    public void setBuyerCode(String value){buyerCode = value;}
 
     public String getBuyerName(){return buyerName;}
     public void setBuyerName(String value){buyerName = value;}
@@ -70,6 +77,7 @@ public class TradeRecordInfo implements Parcelable {
         dest.writeString(tradeOrderCode);
         dest.writeString(terminalOrderCode);
         dest.writeString(sellerAccount);
+        dest.writeString(sellerCode);
         dest.writeString(sellerName);
         dest.writeString(buyerAccount);
         dest.writeString(buyerName);
@@ -87,6 +95,7 @@ public class TradeRecordInfo implements Parcelable {
             tradeRecordInfo.setTradeOrderCode(source.readString());
             tradeRecordInfo.setTerminalOrderCode(source.readString());
             tradeRecordInfo.setSellerAccount(source.readString());
+            tradeRecordInfo.setSellerCode(source.readString());
             tradeRecordInfo.setSellerName(source.readString());
             tradeRecordInfo.setBuyerAccount(source.readString());
             tradeRecordInfo.setBuyerName(source.readString());

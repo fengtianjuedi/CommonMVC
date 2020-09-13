@@ -1,4 +1,4 @@
-package com.wufeng.commonmvc.entity;
+package com.wufeng.latte_core.entity;
 
 public class CategoryInfo {
     private String id;

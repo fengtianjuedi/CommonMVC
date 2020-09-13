@@ -1,7 +1,6 @@
 package com.wufeng.commonmvc.ui;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
@@ -10,16 +9,12 @@ import android.widget.Toast;
 
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
-import com.bigkoo.pickerview.view.TimePickerView;
 import com.wufeng.commonmvc.adapter.TradeRecordAdapter;
 import com.wufeng.commonmvc.databinding.ActivityTradeRecordBinding;
-import com.wufeng.commonmvc.entity.CardInfo;
-import com.wufeng.commonmvc.entity.TradeRecordInfo;
+import com.wufeng.latte_core.entity.TradeRecordInfo;
 import com.wufeng.latte_core.activity.BaseActivity;
 import com.wufeng.latte_core.control.DrawableEditText;
 import com.wufeng.latte_core.control.SpaceItemDecoration;
-import com.wufeng.latte_core.database.MerchantCard;
-import com.wufeng.latte_core.database.MerchantCardManager;
 import com.wufeng.latte_core.util.SoftKeyBoardUtil;
 import com.wufeng.latte_core.util.TimeUtil;
 
