@@ -14,14 +14,16 @@ public class MerchantCard {
     private String cardNo;
     private String cardName;
     private String merchantCode;
+    private String accountCode;
     private boolean isCollectionAccount;
-    @Generated(hash = 1746110463)
+    @Generated(hash = 1723549829)
     public MerchantCard(Long id, @NotNull String cardNo, String cardName,
-            String merchantCode, boolean isCollectionAccount) {
+            String merchantCode, String accountCode, boolean isCollectionAccount) {
         this.id = id;
         this.cardNo = cardNo;
         this.cardName = cardName;
         this.merchantCode = merchantCode;
+        this.accountCode = accountCode;
         this.isCollectionAccount = isCollectionAccount;
     }
     @Generated(hash = 718650106)
@@ -56,5 +58,11 @@ public class MerchantCard {
     }
     public void setMerchantCode(String merchantCode) {
         this.merchantCode = merchantCode;
+    }
+    public String getAccountCode() {
+        return this.accountCode;
+    }
+    public void setAccountCode(String accountCode) {
+        this.accountCode = accountCode;
     }
 }

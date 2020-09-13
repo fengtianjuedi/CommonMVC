@@ -13,6 +13,9 @@ public class IdGenerate {
     public static IdGenerate getInstance(){return Holder.INSTANCE;}
 
     public String getId(){
-        return TimeUtil.currentDateYMDHMSS() + id;
+        id.incrementAndGet();
+        if (id.get() >= 10)
+            id.set(0);
+        return TimeUtil.currentDateYMDHMSS() + id.get();
     }
 }

@@ -9,9 +9,11 @@ import java.util.List;
 public class TradeRecordInfo implements Parcelable {
     private String tradeOrderCode; //交易订单号
     private String terminalOrderCode; //终端订单号
+    private String sellerCardNo; //卖家卡号
     private String sellerAccount; //卖家账户
     private String sellerCode; //卖家商户编号
     private String sellerName; //卖家姓名
+    private String buyerCardNo; //买家卡号
     private String buyerAccount; //买家账户
     private String buyerCode; //买家商户编号
     private String buyerName; //买家姓名
@@ -32,6 +34,9 @@ public class TradeRecordInfo implements Parcelable {
     public String getTerminalOrderCode(){return terminalOrderCode;}
     public void setTerminalOrderCode(String value){terminalOrderCode = value;}
 
+    public String getSellerCardNo(){return sellerCardNo;}
+    public void setSellerCardNo(String value){sellerCardNo = value;}
+
     public String getSellerAccount(){return sellerAccount;}
     public void setSellerAccount(String value){sellerAccount = value;}
 
@@ -40,6 +45,9 @@ public class TradeRecordInfo implements Parcelable {
 
     public String getSellerName(){return sellerName;}
     public void setSellerName(String value){sellerName = value;}
+
+    public String getBuyerCardNo(){return buyerCardNo;}
+    public void setBuyerCardNo(String value){buyerCardNo = value;}
 
     public String getBuyerAccount(){return buyerAccount;}
     public void setBuyerAccount(String value){buyerAccount = value;}
@@ -76,9 +84,11 @@ public class TradeRecordInfo implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(tradeOrderCode);
         dest.writeString(terminalOrderCode);
+        dest.writeString(sellerCardNo);
         dest.writeString(sellerAccount);
         dest.writeString(sellerCode);
         dest.writeString(sellerName);
+        dest.writeString(buyerCardNo);
         dest.writeString(buyerAccount);
         dest.writeString(buyerName);
         dest.writeString(receivableAmount);
@@ -94,9 +104,11 @@ public class TradeRecordInfo implements Parcelable {
             TradeRecordInfo tradeRecordInfo = new TradeRecordInfo();
             tradeRecordInfo.setTradeOrderCode(source.readString());
             tradeRecordInfo.setTerminalOrderCode(source.readString());
+            tradeRecordInfo.setSellerCardNo(source.readString());
             tradeRecordInfo.setSellerAccount(source.readString());
             tradeRecordInfo.setSellerCode(source.readString());
             tradeRecordInfo.setSellerName(source.readString());
+            tradeRecordInfo.setBuyerCardNo(source.readString());
             tradeRecordInfo.setBuyerAccount(source.readString());
             tradeRecordInfo.setBuyerName(source.readString());
             tradeRecordInfo.setReceivableAmount(source.readString());

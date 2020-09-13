@@ -120,7 +120,8 @@ public class WholesaleTradeActivity extends BaseActivity<ActivityWholesaleTradeB
         tradeRecordInfo.setReceivableAmount(receivableAmount.toPlainString());
         tradeRecordInfo.setActualAmount(receivableAmount.toPlainString());
         tradeRecordInfo.getCategoryRecordInfoList().addAll(mCategoryRecordData);
-        tradeRecordInfo.setSellerAccount(merchantCard.getCardNo());
+        tradeRecordInfo.setSellerCardNo(merchantCard.getCardNo());
+        tradeRecordInfo.setSellerAccount(merchantCard.getAccountCode());
         tradeRecordInfo.setSellerName(merchantCard.getCardName());
         tradeRecordInfo.setSellerCode(merchantCard.getMerchantCode());
         Intent intent = new Intent(WholesaleTradeActivity.this, PaymentActivity.class);

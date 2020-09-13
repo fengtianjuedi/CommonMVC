@@ -94,9 +94,10 @@ public class PaymentActivity extends BaseActivity<ActivityPaymentBinding> {
                 RequestUtil.queryMerchantByCardNo(PaymentActivity.this, cardNo, new ICallback<MerchantCard>() {
                     @Override
                     public void callback(MerchantCard merchantCard) {
+                        tradeRecordInfo.setBuyerCardNo(merchantCard.getCardNo());
                         tradeRecordInfo.setBuyerName(merchantCard.getCardName());
                         tradeRecordInfo.setBuyerCode(merchantCard.getMerchantCode());
-                        tradeRecordInfo.setBuyerAccount(cardNo);
+                        tradeRecordInfo.setBuyerAccount(merchantCard.getAccountCode());
                         tradeRecordInfo.setBuyerPassword(password);
                     }
                 });
@@ -121,71 +122,12 @@ public class PaymentActivity extends BaseActivity<ActivityPaymentBinding> {
         }
         tradeRecordInfo.setActualAmount(mBinding.fetActualAmount.getText().toString());
         //提交交易请求
-        wholesaleTradeRequest(new ICallback<Boolean>() {
+        RequestUtil.wholesaleTrade(PaymentActivity.this, tradeRecordInfo, new ICallback<Boolean>() {
             @Override
             public void callback(Boolean aBoolean) {
 
             }
         });
-    }
-    //endregion
-
-    //region 网络请求
-
-    //批发交易请求请求
-    private void wholesaleTradeRequest(final ICallback<Boolean> callback){
-        JSONObject params = new JSONObject();
-        params.put("inMerchantCardAccount", tradeRecordInfo.getSellerAccount());
-        params.put("inMerchantCode", tradeRecordInfo.getSellerCode());
-        params.put("inMerchantName", tradeRecordInfo.getSellerName());
-        params.put("outMerchantCardAccount", tradeRecordInfo.getBuyerAccount());
-        params.put("outMerchantCode", tradeRecordInfo.getBuyerCode());
-        params.put("outMerchantName", tradeRecordInfo.getBuyerName());
-        params.put("pwdString", tradeRecordInfo.getBuyerPassword());
-        params.put("payType", tradeRecordInfo.getPayType());
-        params.put("originalTotalAmount", tradeRecordInfo.getReceivableAmount());
-        params.put("actualTransactionAmount", tradeRecordInfo.getActualAmount());
-        TerminalInfo terminalInfo = TerminalInfoManager.getInstance().queryLastTerminalInfo();
-        params.put("merchantCode", terminalInfo.getMerchantCode());
-        params.put("terminalId", terminalInfo.getTerminalCode());
-        params.put("transTime", TimeUtil.currentDateYMDHMS());
-        params.put("signString", "");
-        JSONArray goodsList = new JSONArray();
-        for (int i = 0; i < tradeRecordInfo.getCategoryRecordInfoList().size(); i++){
-            CategoryRecordInfo info = tradeRecordInfo.getCategoryRecordInfoList().get(i);
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("goodsid", info.getGoodsId());
-            jsonObject.put("goodsname", info.getGoodsName());
-            jsonObject.put("goodsprice", info.getGoodsPrice());
-            jsonObject.put("goodsnum", info.getGoodsNumber());
-            jsonObject.put("goodsmoney", info.getGoodsAmount());
-            goodsList.add(jsonObject);
-        }
-        params.put("commodityList", goodsList);
-        RestClient.builder()
-                .url("/pgcore-pos/PosTrade/posTrade")
-                .xwwwformurlencoded("data=" + params.toJSONString())
-                .success(new ISuccess() {
-                    @Override
-                    public void onSuccess(String response) {
-                        JSONObject jsonObject = JSONObject.parseObject(response);
-                        if ("0".equals(jsonObject.getString("resultCode"))) {
-                            if (callback != null)
-                                callback.callback(true);
-                        } else {
-                            Toast.makeText(PaymentActivity.this, jsonObject.getString("resultMessage"), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                })
-                .error(new IError() {
-                    @Override
-                    public void onError(Throwable throwable) {
-                        Toast.makeText(PaymentActivity.this, "请求远程服务器失败", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .loading(PaymentActivity.this)
-                .build()
-                .post();
     }
     //endregion
 }

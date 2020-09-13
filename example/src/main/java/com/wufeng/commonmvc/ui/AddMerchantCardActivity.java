@@ -109,6 +109,7 @@ public class AddMerchantCardActivity extends BaseActivity<ActivityAddMerchantCar
                             merchantCard.setCardNo(cardNo);
                             merchantCard.setCardName(jsonObject.getJSONObject("merchant").getString("cname"));
                             merchantCard.setMerchantCode(jsonObject.getJSONObject("merchant").getString("merchantcode"));
+                            merchantCard.setAccountCode(jsonObject.getJSONObject("account").getString("account"));
                             merchantCard.setIsCollectionAccount(false);
                             if (callback != null)
                                 callback.callback(merchantCard);

@@ -36,6 +36,7 @@ public class RequestUtil {
                             merchantCard.setCardNo(cardNo);
                             merchantCard.setCardName(jsonObject.getJSONObject("merchant").getString("cname"));
                             merchantCard.setMerchantCode(jsonObject.getJSONObject("merchant").getString("merchantcode"));
+                            merchantCard.setAccountCode(jsonObject.getJSONObject("account").getString("account"));
                             merchantCard.setIsCollectionAccount(false);
                             if (callback != null)
                                 callback.callback(merchantCard);
@@ -58,9 +59,12 @@ public class RequestUtil {
     //批发交易请求
     public static void wholesaleTrade(final Context context, TradeRecordInfo tradeRecordInfo, final ICallback<Boolean> callback){
         JSONObject params = new JSONObject();
+        params.put("terminalOrderCode", IdGenerate.getInstance().getId());
+        params.put("inMerchantCardId", tradeRecordInfo.getSellerCardNo());
         params.put("inMerchantCardAccount", tradeRecordInfo.getSellerAccount());
         params.put("inMerchantCode", tradeRecordInfo.getSellerCode());
         params.put("inMerchantName", tradeRecordInfo.getSellerName());
+        params.put("outMerchantCardId", tradeRecordInfo.getBuyerCardNo());
         params.put("outMerchantCardAccount", tradeRecordInfo.getBuyerAccount());
         params.put("outMerchantCode", tradeRecordInfo.getBuyerCode());
         params.put("outMerchantName", tradeRecordInfo.getBuyerName());
@@ -69,7 +73,7 @@ public class RequestUtil {
         params.put("originalTotalAmount", tradeRecordInfo.getReceivableAmount());
         params.put("actualTransactionAmount", tradeRecordInfo.getActualAmount());
         TerminalInfo terminalInfo = TerminalInfoManager.getInstance().queryLastTerminalInfo();
-        params.put("merchantCode", terminalInfo.getMerchantCode());
+        params.put("terminalMerchantCode", terminalInfo.getMerchantCode());
         params.put("terminalId", terminalInfo.getTerminalCode());
         params.put("transTime", TimeUtil.currentDateYMDHMS());
         params.put("signString", "");
@@ -79,7 +83,7 @@ public class RequestUtil {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("goodsid", info.getGoodsId());
             jsonObject.put("goodsname", info.getGoodsName());
-            jsonObject.put("goodsprice", info.getGoodsPrice());
+            jsonObject.put("price", info.getGoodsPrice());
             jsonObject.put("goodsnum", info.getGoodsNumber());
             jsonObject.put("goodsmoney", info.getGoodsAmount());
             goodsList.add(jsonObject);
