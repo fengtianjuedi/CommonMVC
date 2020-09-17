@@ -2,6 +2,7 @@ package com.wufeng.commonmvc.ui;
 
 import androidx.annotation.Nullable;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,6 +13,16 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.wufeng.commonmvc.databinding.ActivityPaymentBinding;
 import com.wufeng.commonmvc.dialog.PayCardDialog;
+import com.wufeng.commonmvc.dialog.TipTwoDialog;
+import com.wufeng.latte_core.callback.ICallbackTwoParams;
+import com.wufeng.latte_core.config.ConfigKeys;
+import com.wufeng.latte_core.config.ConfigManager;
+import com.wufeng.latte_core.database.MerchantTrade;
+import com.wufeng.latte_core.database.MerchantTradeGoods;
+import com.wufeng.latte_core.database.MerchantTradeManager;
+import com.wufeng.latte_core.device.print.PrintTemplate;
+import com.wufeng.latte_core.device.print.Printer;
+import com.wufeng.latte_core.device.print.PrinterFactory;
 import com.wufeng.latte_core.entity.CategoryRecordInfo;
 import com.wufeng.latte_core.entity.TradeRecordInfo;
 import com.wufeng.latte_core.activity.BaseActivity;
@@ -28,6 +39,7 @@ import com.wufeng.latte_core.util.TimeUtil;
 import java.math.BigDecimal;
 
 public class PaymentActivity extends BaseActivity<ActivityPaymentBinding> {
+    public static final int REQUESTCODE = 3;
     private TradeRecordInfo tradeRecordInfo;
     private int payType; //支付方式
 
@@ -125,7 +137,88 @@ public class PaymentActivity extends BaseActivity<ActivityPaymentBinding> {
         RequestUtil.wholesaleTrade(PaymentActivity.this, tradeRecordInfo, new ICallback<Boolean>() {
             @Override
             public void callback(Boolean aBoolean) {
+                if (aBoolean){
+                    Toast.makeText(PaymentActivity.this, "交易成功", Toast.LENGTH_SHORT).show();
+                    Printer printer = PrinterFactory.getPrinter(ConfigManager.getInstance().getConfig(ConfigKeys.P0SMODEL).toString(), PaymentActivity.this);
+                    if (printer != null){
+                        PrintTemplate printTemplate = new PrintTemplate(printer);
+                        printTemplate.tradeTemplate(tradeRecordInfo, new PrintTemplate.PrintResultCallback() {
+                            @Override
+                            public void result(int code, String message) {
+                                if (code != 0)
+                                    Toast.makeText(PaymentActivity.this, message, Toast.LENGTH_SHORT).show();
+                                setResult(RESULT_OK);
+                                finish();
+                            }
+                        });
+                    }
+                }else{ //未获取到交易状态，将交易数据记录到数据库中，等待查询确认
+                    final MerchantTrade merchantTrade = new MerchantTrade();
+                    merchantTrade.setTerminalOrderCode(tradeRecordInfo.getTerminalOrderCode());
+                    merchantTrade.setSellerAccount(tradeRecordInfo.getSellerAccount());
+                    merchantTrade.setSellerCode(tradeRecordInfo.getSellerCode());
+                    merchantTrade.setSellerName(tradeRecordInfo.getSellerName());
+                    merchantTrade.setBuyerAccount(tradeRecordInfo.getBuyerAccount());
+                    merchantTrade.setBuyerCode(tradeRecordInfo.getBuyerCode());
+                    merchantTrade.setBuyerName(tradeRecordInfo.getBuyerName());
+                    merchantTrade.setReceivableAmount(tradeRecordInfo.getReceivableAmount());
+                    merchantTrade.setActualAmount(tradeRecordInfo.getActualAmount());
+                    merchantTrade.setTradeTime(tradeRecordInfo.getTradeTime());
+                    merchantTrade.setPayType(tradeRecordInfo.getPayType());
+                    merchantTrade.setTradeStatus(2); //状态未知
+                    MerchantTradeManager.getInstance().insert(merchantTrade);
+                    TipTwoDialog tipTwoDialog = new TipTwoDialog("提示", "交易状态未知是否进行交易查询确认？");
+                    tipTwoDialog.setOnClickListener(new TipTwoDialog.OnClickListener() {
+                        @Override
+                        public void onOkClick() {
+                            RequestUtil.tradeStatusConfirm(PaymentActivity.this, merchantTrade.getTerminalOrderCode(), new ICallbackTwoParams<Integer, TradeRecordInfo>() {
+                                @Override
+                                public void callback(Integer integer, TradeRecordInfo tradeRecordInfo) {
+                                    if (integer == 0){ //交易成功
+                                        tradeRecordInfo.setSellerCardNo(merchantTrade.getSellerAccount());
+                                        tradeRecordInfo.setSellerName(merchantTrade.getSellerName());
+                                        tradeRecordInfo.setBuyerCardNo(merchantTrade.getBuyerAccount());
+                                        tradeRecordInfo.setBuyerName(merchantTrade.getBuyerName());
+                                        tradeRecordInfo.setReceivableAmount(merchantTrade.getReceivableAmount());
+                                        tradeRecordInfo.setActualAmount(merchantTrade.getActualAmount());
+                                        tradeRecordInfo.setPayType(merchantTrade.getPayType());
+                                        for (MerchantTradeGoods item : merchantTrade.getMerchantTradeGoodsList()){
+                                            CategoryRecordInfo categoryRecordInfo = new CategoryRecordInfo();
+                                            categoryRecordInfo.setGoodsName(item.getGoodsName());
+                                            categoryRecordInfo.setGoodsPrice(item.getGoodsPrice());
+                                            categoryRecordInfo.setGoodsNumber(item.getGoodsNumber());
+                                            categoryRecordInfo.setGoodsAmount(item.getGoodsAmount());
+                                            tradeRecordInfo.getCategoryRecordInfoList().add(categoryRecordInfo);
+                                        }
+                                        PrintTemplate printTemplate = new PrintTemplate(PrinterFactory.getPrinter(ConfigManager.getInstance().getConfig(ConfigKeys.P0SMODEL).toString(), PaymentActivity.this));
+                                        printTemplate.tradeTemplate(tradeRecordInfo, new PrintTemplate.PrintResultCallback() {
+                                            @Override
+                                            public void result(int code, String message) {
+                                                if (code != 0)
+                                                    Toast.makeText(PaymentActivity.this, message, Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                        MerchantTradeManager.getInstance().delete(merchantTrade);
+                                    }else if (integer == 1){ //交易失败
+                                        Toast.makeText(PaymentActivity.this, "交易失败", Toast.LENGTH_SHORT).show();
+                                        MerchantTradeManager.getInstance().delete(merchantTrade);
+                                    }else if (integer == 2){ //交易状态未知
+                                        Toast.makeText(PaymentActivity.this, "交易状态查询失败", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(PaymentActivity.this, HomeActivity.class);
+                                        startActivity(intent);
+                                    }
+                                }
+                            });
+                        }
 
+                        @Override
+                        public void onCancelClick() {
+                            Intent intent = new Intent(PaymentActivity.this, HomeActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+                    tipTwoDialog.show(getSupportFragmentManager(), null);
+                }
             }
         });
     }

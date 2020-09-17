@@ -1,29 +1,32 @@
 package com.wufeng.commonmvc.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.wufeng.commonmvc.R;
+import com.wufeng.commonmvc.dialog.PasswordDialog;
+import com.wufeng.commonmvc.ui.BindCardActivity;
+import com.wufeng.latte_core.callback.ICallback;
 import com.wufeng.latte_core.entity.CardInfo;
 import com.wufeng.latte_core.database.MerchantCardManager;
+import com.wufeng.latte_core.util.RequestUtil;
 
 import java.util.List;
 
 public class MerchantCardAdapter extends RecyclerView.Adapter<MerchantCardAdapter.ViewHolder> {
+    private Context mContext;
     private List<CardInfo> mCardList;
     private CollectionAccountChangedListener collectionAccountChangedLister;
-    private QueryCardBalanceListener queryCardBalanceListener;
     public interface CollectionAccountChangedListener {
         void setCollectionAccount(CardInfo cardInfo);
-    }
-    public interface QueryCardBalanceListener{
-        void queryBalance(String cardNo);
     }
     static class ViewHolder extends RecyclerView.ViewHolder {
         AppCompatTextView tvCollectionAccountNo;
@@ -41,10 +44,10 @@ public class MerchantCardAdapter extends RecyclerView.Adapter<MerchantCardAdapte
         }
     }
 
-    public MerchantCardAdapter(List<CardInfo> cardList, CollectionAccountChangedListener lister, QueryCardBalanceListener listener){
+    public MerchantCardAdapter(Context context, List<CardInfo> cardList, CollectionAccountChangedListener lister){
+        mContext = context;
         mCardList = cardList;
         collectionAccountChangedLister = lister;
-        queryCardBalanceListener = listener;
     }
 
     @NonNull
@@ -80,9 +83,24 @@ public class MerchantCardAdapter extends RecyclerView.Adapter<MerchantCardAdapte
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
-                CardInfo cardInfo = mCardList.get(position);
-                if (queryCardBalanceListener != null)
-                    queryCardBalanceListener.queryBalance(cardInfo.getCardNo());
+                final CardInfo cardInfo = mCardList.get(position);
+                PasswordDialog passwordDialog = new PasswordDialog(mContext);
+                passwordDialog.setOnClickListener(new PasswordDialog.OnClickListener() {
+                    @Override
+                    public void onOkClick(String password) {
+                        RequestUtil.queryCardBalance(mContext, cardInfo.getCardNo(), password, new ICallback<String>() {
+                            @Override
+                            public void callback(String s) {
+                                holder.tvQueryCardBalance.setText(s);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelClick() {
+                    }
+                });
+                passwordDialog.show(((AppCompatActivity)mContext).getSupportFragmentManager(), null);
             }
         });
         return holder;

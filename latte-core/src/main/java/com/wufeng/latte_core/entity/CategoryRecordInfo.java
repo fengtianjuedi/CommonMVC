@@ -8,7 +8,7 @@ public class CategoryRecordInfo implements Parcelable {
     private String goodsId; //商品ID
     private String goodsName; //商品名称
     private String goodsPrice; //商品单价
-    private int goodsNumber; //商品数量
+    private String goodsNumber; //商品数量
     private String goodsAmount; //商品金额
 
     public String getGoodsId() {return goodsId;}
@@ -20,8 +20,8 @@ public class CategoryRecordInfo implements Parcelable {
     public String getGoodsPrice() {return goodsPrice;}
     public void setGoodsPrice(String value) {goodsPrice = value;}
 
-    public int getGoodsNumber(){return goodsNumber;}
-    public void setGoodsNumber(int value){goodsNumber = value;}
+    public String getGoodsNumber(){return goodsNumber;}
+    public void setGoodsNumber(String value){goodsNumber = value;}
 
     public String getGoodsAmount(){return goodsAmount;}
     public void setGoodsAmount(String value){goodsAmount = value;}
@@ -36,7 +36,7 @@ public class CategoryRecordInfo implements Parcelable {
         dest.writeString(goodsId);
         dest.writeString(goodsName);
         dest.writeString(goodsPrice);
-        dest.writeInt(goodsNumber);
+        dest.writeString(goodsNumber);
         dest.writeString(goodsAmount);
     }
 
@@ -47,7 +47,7 @@ public class CategoryRecordInfo implements Parcelable {
             categoryRecordInfo.setGoodsId(source.readString());
             categoryRecordInfo.setGoodsName(source.readString());
             categoryRecordInfo.setGoodsPrice(source.readString());
-            categoryRecordInfo.setGoodsNumber(source.readInt());
+            categoryRecordInfo.setGoodsNumber(source.readString());
             categoryRecordInfo.setGoodsAmount(source.readString());
             return categoryRecordInfo;
         }

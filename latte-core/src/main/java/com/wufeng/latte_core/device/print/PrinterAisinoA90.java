@@ -64,6 +64,11 @@ public class PrinterAisinoA90 extends Printer {
         inputStream.close();
     }
 
+    @Override
+    public void feedLine(int line) {
+        PrinterApi.printFeedLine_Api(line);
+    }
+
     /**
      * 获取艾体威尔A90打印错误描述
      */

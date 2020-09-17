@@ -9,25 +9,30 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.wufeng.commonmvc.adapter.CategoryRecordAdapter;
 import com.wufeng.commonmvc.adapter.TradeCategoryAdapter;
 import com.wufeng.commonmvc.databinding.ActivityWholesaleTradeBinding;
 import com.wufeng.commonmvc.dialog.AddCategoryRecordDialog;
-import com.wufeng.latte_core.entity.CategoryInfo;
-import com.wufeng.latte_core.entity.CategoryRecordInfo;
-import com.wufeng.latte_core.entity.TradeRecordInfo;
+import com.wufeng.commonmvc.dialog.TipTwoDialog;
 import com.wufeng.latte_core.activity.BaseActivity;
 import com.wufeng.latte_core.callback.ICallback;
+import com.wufeng.latte_core.callback.ICallbackTwoParams;
+import com.wufeng.latte_core.config.ConfigKeys;
+import com.wufeng.latte_core.config.ConfigManager;
 import com.wufeng.latte_core.control.SpaceItemDecoration;
 import com.wufeng.latte_core.database.MerchantCard;
 import com.wufeng.latte_core.database.MerchantCardManager;
-import com.wufeng.latte_core.net.IError;
-import com.wufeng.latte_core.net.ISuccess;
-import com.wufeng.latte_core.net.RestClient;
+import com.wufeng.latte_core.database.MerchantTrade;
+import com.wufeng.latte_core.database.MerchantTradeGoods;
+import com.wufeng.latte_core.database.MerchantTradeManager;
+import com.wufeng.latte_core.device.print.PrintTemplate;
+import com.wufeng.latte_core.device.print.PrinterFactory;
+import com.wufeng.latte_core.entity.CategoryInfo;
+import com.wufeng.latte_core.entity.CategoryRecordInfo;
+import com.wufeng.latte_core.entity.TradeRecordInfo;
 import com.wufeng.latte_core.util.BigDecimalUtil;
 import com.wufeng.latte_core.util.IdGenerate;
+import com.wufeng.latte_core.util.RequestUtil;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -58,6 +63,7 @@ public class WholesaleTradeActivity extends BaseActivity<ActivityWholesaleTradeB
         categoryRecordAdapter = new CategoryRecordAdapter(mCategoryRecordData, this);
         mBinding.rlvCategoryRecordList.setAdapter(categoryRecordAdapter);
         initCategoryList();
+        checkoutTradeResult();
     }
 
     //region 初始化
@@ -92,10 +98,15 @@ public class WholesaleTradeActivity extends BaseActivity<ActivityWholesaleTradeB
     //初始化品种列表
     private void initCategoryList(){
         MerchantCard merchantCard = MerchantCardManager.getInstance().queryCollectionAccount();
-        queryCategoryByCardNoRequest(merchantCard.getCardNo(), new ICallback<List<CategoryInfo>>() {
+        RequestUtil.queryCategoryByCardNo(WholesaleTradeActivity.this, merchantCard.getCardNo(), new ICallback<List<CategoryInfo>>() {
             @Override
             public void callback(List<CategoryInfo> categoryInfos) {
-                mCategoryData.addAll(categoryInfos);
+                if(categoryInfos.size() > 7){
+                    List<CategoryInfo> data = categoryInfos.subList(0, 7);
+                    mCategoryData.addAll(data);
+                }else{
+                    mCategoryData.addAll(categoryInfos);
+                }
                 if (mCategoryData.size() == 0){
                     mBinding.tvAddMore.setVisibility(View.INVISIBLE);
                     mBinding.rlvBindCategoryList.setVisibility(View.GONE);
@@ -108,6 +119,64 @@ public class WholesaleTradeActivity extends BaseActivity<ActivityWholesaleTradeB
                 }
             }
         });
+    }
+
+    //确认交易结果
+    private void checkoutTradeResult(){
+        final MerchantTrade merchantTrade = MerchantTradeManager.getInstance().queryUnKnowStatusTrade();
+        if (merchantTrade != null) {
+            TipTwoDialog tipTwoDialog = new TipTwoDialog("提示", "有交易状态未知的交易，是否进行交易查询确认?");
+            tipTwoDialog.show(getSupportFragmentManager(), null);
+            tipTwoDialog.setOnClickListener(new TipTwoDialog.OnClickListener() {
+                @Override
+                public void onOkClick() {
+                    RequestUtil.tradeStatusConfirm(WholesaleTradeActivity.this, merchantTrade.getTerminalOrderCode(), new ICallbackTwoParams<Integer, TradeRecordInfo>() {
+                        @Override
+                        public void callback(Integer integer, TradeRecordInfo tradeRecordInfo) {
+                            if (integer == 0) { //交易成功
+                                tradeRecordInfo.setSellerCardNo(merchantTrade.getSellerAccount());
+                                tradeRecordInfo.setSellerName(merchantTrade.getSellerName());
+                                tradeRecordInfo.setBuyerCardNo(merchantTrade.getBuyerAccount());
+                                tradeRecordInfo.setBuyerName(merchantTrade.getBuyerName());
+                                tradeRecordInfo.setReceivableAmount(merchantTrade.getReceivableAmount());
+                                tradeRecordInfo.setActualAmount(merchantTrade.getActualAmount());
+                                tradeRecordInfo.setPayType(merchantTrade.getPayType());
+                                for (MerchantTradeGoods item : merchantTrade.getMerchantTradeGoodsList()) {
+                                    CategoryRecordInfo categoryRecordInfo = new CategoryRecordInfo();
+                                    categoryRecordInfo.setGoodsName(item.getGoodsName());
+                                    categoryRecordInfo.setGoodsPrice(item.getGoodsPrice());
+                                    categoryRecordInfo.setGoodsNumber(item.getGoodsNumber());
+                                    categoryRecordInfo.setGoodsAmount(item.getGoodsAmount());
+                                    tradeRecordInfo.getCategoryRecordInfoList().add(categoryRecordInfo);
+                                }
+                                PrintTemplate printTemplate = new PrintTemplate(PrinterFactory.getPrinter(ConfigManager.getInstance().getConfig(ConfigKeys.P0SMODEL).toString(), WholesaleTradeActivity.this));
+                                printTemplate.tradeTemplate(tradeRecordInfo, new PrintTemplate.PrintResultCallback() {
+                                    @Override
+                                    public void result(int code, String message) {
+                                        if (code != 0)
+                                            Toast.makeText(WholesaleTradeActivity.this, message, Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                                MerchantTradeManager.getInstance().delete(merchantTrade);
+                            } else if (integer == 1) { //交易失败
+                                Toast.makeText(WholesaleTradeActivity.this, "交易失败", Toast.LENGTH_SHORT).show();
+                                MerchantTradeManager.getInstance().delete(merchantTrade);
+                            } else if (integer == 2) { //交易状态未知
+                                Toast.makeText(WholesaleTradeActivity.this, "交易状态查询失败", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(WholesaleTradeActivity.this, HomeActivity.class);
+                                startActivity(intent);
+                            }
+                        }
+                    });
+                }
+
+                @Override
+                public void onCancelClick() {
+                    Intent intent = new Intent(WholesaleTradeActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
     }
     //endregion
 
@@ -126,7 +195,7 @@ public class WholesaleTradeActivity extends BaseActivity<ActivityWholesaleTradeB
         tradeRecordInfo.setSellerCode(merchantCard.getMerchantCode());
         Intent intent = new Intent(WholesaleTradeActivity.this, PaymentActivity.class);
         intent.putExtra("tradeRecord", tradeRecordInfo);
-        startActivity(intent);
+        startActivityForResult(intent, PaymentActivity.REQUESTCODE);
     }
     //打开更多品种页面
     private void openMoreCategory(){
@@ -158,12 +227,15 @@ public class WholesaleTradeActivity extends BaseActivity<ActivityWholesaleTradeB
     //添加品种
     private void addCategory(final CategoryInfo categoryInfo){
         MerchantCard merchantCard = MerchantCardManager.getInstance().queryCollectionAccount();
-        bindCategoryRequest(merchantCard.getCardNo(), categoryInfo.getId(), new ICallback<Boolean>() {
+        RequestUtil.bindCategory(WholesaleTradeActivity.this, merchantCard.getCardNo(), categoryInfo.getId(), new ICallback<Boolean>() {
             @Override
             public void callback(Boolean aBoolean) {
                 if (aBoolean){
                     mCategoryData.add(categoryInfo);
-                    tradeCategoryAdapter.notifyItemInserted(mCategoryData.size() - 1);
+                    mBinding.tvAddMore.setVisibility(View.VISIBLE);
+                    mBinding.rlvBindCategoryList.setVisibility(View.VISIBLE);
+                    mBinding.tvAddBindCategory.setVisibility(View.GONE);
+                    tradeCategoryAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -199,79 +271,11 @@ public class WholesaleTradeActivity extends BaseActivity<ActivityWholesaleTradeB
             info.setId(data.getStringExtra("id"));
             info.setName(data.getStringExtra("name"));
             addCategory(info);
+        }else if (requestCode == PaymentActivity.REQUESTCODE && resultCode == RESULT_OK){
+            receivableAmount = new BigDecimal(0);
+            mBinding.tvPay.setText("去收款");
+            mCategoryRecordData.clear();
+            categoryRecordAdapter.notifyDataSetChanged();
         }
     }
-
-    //region 网络请求
-    //查询商户绑定品种
-    private void queryCategoryByCardNoRequest(String cardNo, final ICallback<List<CategoryInfo>> callback){
-        JSONObject params = new JSONObject();
-        params.put("cardcode", cardNo);
-        RestClient.builder()
-                .url("/pgcore-pos/PosQuery/queryBinDing")
-                .xwwwformurlencoded("data=" + params.toJSONString())
-                .success(new ISuccess() {
-                    @Override
-                    public void onSuccess(String response) {
-                        JSONObject jsonObject = JSONObject.parseObject(response);
-                        if ("0".equals(jsonObject.getString("resultCode"))){
-                            JSONArray data = jsonObject.getJSONArray("data");
-                            List<CategoryInfo> list = new ArrayList<>();
-                            for (int i = 0; i < data.size(); i++){
-                                JSONObject item = data.getJSONObject(i);
-                                CategoryInfo categoryInfo = new CategoryInfo();
-                                categoryInfo.setId(item.getString("id"));
-                                categoryInfo.setName(item.getString("goodsname"));
-                                list.add(categoryInfo);
-                            }
-                            if (callback != null)
-                                callback.callback(list);
-                        }else{
-                            Toast.makeText(WholesaleTradeActivity.this, jsonObject.getString("resultMessage"), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                })
-                .error(new IError() {
-                    @Override
-                    public void onError(Throwable throwable) {
-                        Toast.makeText(WholesaleTradeActivity.this, "请求远程服务器失败", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .loading(WholesaleTradeActivity.this)
-                .build()
-                .post();
-    }
-
-    //绑定品种
-    private void bindCategoryRequest(String cardNo, String goodsId, final ICallback<Boolean> callback){
-        JSONObject params = new JSONObject();
-        params.put("cardcode", cardNo);
-        params.put("goodsid", goodsId);
-        RestClient.builder()
-                .url("/pgcore-pos/PosQuery/binDing")
-                .xwwwformurlencoded("data=" + params.toJSONString())
-                .success(new ISuccess() {
-                    @Override
-                    public void onSuccess(String response) {
-                        JSONObject jsonObject = JSONObject.parseObject(response);
-                        if ("0".equals(jsonObject.getString("resultCode"))){
-                            if (callback != null){
-                                callback.callback(true);
-                            }
-                        }else{
-                            Toast.makeText(WholesaleTradeActivity.this, jsonObject.getString("resultMessage"), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                })
-                .error(new IError() {
-                    @Override
-                    public void onError(Throwable throwable) {
-                        Toast.makeText(WholesaleTradeActivity.this, "请求远程服务器失败", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .loading(WholesaleTradeActivity.this)
-                .build()
-                .post();
-    }
-    //endregion
 }

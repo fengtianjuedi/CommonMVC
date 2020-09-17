@@ -16,11 +16,11 @@ public class MerchantTradeGoods {
     private String goodsId; //商品ID
     private String goodsName; //商品名称
     private String goodsPrice; //商品单价
-    private int goodsNumber; //商品数量
+    private String goodsNumber; //商品数量
     private String goodsAmount; //商品金额
-    @Generated(hash = 654017548)
+    @Generated(hash = 1907830745)
     public MerchantTradeGoods(Long id, @NotNull Long tradeId, String goodsId,
-            String goodsName, String goodsPrice, int goodsNumber,
+            String goodsName, String goodsPrice, String goodsNumber,
             String goodsAmount) {
         this.id = id;
         this.tradeId = tradeId;
@@ -63,10 +63,10 @@ public class MerchantTradeGoods {
     public void setGoodsPrice(String goodsPrice) {
         this.goodsPrice = goodsPrice;
     }
-    public int getGoodsNumber() {
+    public String getGoodsNumber() {
         return this.goodsNumber;
     }
-    public void setGoodsNumber(int goodsNumber) {
+    public void setGoodsNumber(String goodsNumber) {
         this.goodsNumber = goodsNumber;
     }
     public String getGoodsAmount() {
@@ -75,4 +75,5 @@ public class MerchantTradeGoods {
     public void setGoodsAmount(String goodsAmount) {
         this.goodsAmount = goodsAmount;
     }
+
 }

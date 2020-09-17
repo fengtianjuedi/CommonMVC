@@ -162,6 +162,16 @@ public class PrinterLiandiA8 extends com.wufeng.latte_core.device.print.Printer 
         });
     }
 
+    @Override
+    public void feedLine(final int line) {
+        stepList.add(new Printer.Step() {
+            @Override
+            public void doPrint(Printer printer) throws Exception {
+                printer.feedLine(line);
+            }
+        });
+    }
+
     /**
      * 打印错误描述
      * @param code 错误码

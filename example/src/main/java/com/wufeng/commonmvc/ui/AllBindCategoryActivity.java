@@ -6,12 +6,18 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.wufeng.commonmvc.adapter.TradeCategoryAdapter;
 import com.wufeng.commonmvc.databinding.ActivityAllBindCategoryBinding;
+import com.wufeng.commonmvc.dialog.TipOneDialog;
+import com.wufeng.latte_core.callback.ICallback;
+import com.wufeng.latte_core.database.MerchantCard;
+import com.wufeng.latte_core.database.MerchantCardManager;
 import com.wufeng.latte_core.entity.CategoryInfo;
 import com.wufeng.latte_core.activity.BaseActivity;
 import com.wufeng.latte_core.control.SpaceItemDecoration;
+import com.wufeng.latte_core.util.RequestUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,16 +30,12 @@ public class AllBindCategoryActivity extends BaseActivity<ActivityAllBindCategor
     protected void init(@Nullable Bundle savedInstanceState) {
         initClickEvent();
         mData = new ArrayList<>();
-        for(int i = 0; i < 10; i++){
-            CategoryInfo info = new CategoryInfo();
-            info.setName("苹果" + i);
-            mData.add(info);
-        }
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
         mBinding.rlvBindCategoryList.addItemDecoration(new SpaceItemDecoration(10));
         mBinding.rlvBindCategoryList.setLayoutManager(gridLayoutManager);
         tradeCategoryAdapter = new TradeCategoryAdapter(mData, this);
         mBinding.rlvBindCategoryList.setAdapter(tradeCategoryAdapter);
+        initCategoryList();
     }
 
     //region 初始化
@@ -49,6 +51,18 @@ public class AllBindCategoryActivity extends BaseActivity<ActivityAllBindCategor
             @Override
             public void onClick(View v) {
                 openAddCategory();
+            }
+        });
+    }
+
+    //初始化品种列表
+    private void initCategoryList(){
+        MerchantCard merchantCard = MerchantCardManager.getInstance().queryCollectionAccount();
+        RequestUtil.queryCategoryByCardNo(AllBindCategoryActivity.this, merchantCard.getCardNo(), new ICallback<List<CategoryInfo>>() {
+            @Override
+            public void callback(List<CategoryInfo> categoryInfos) {
+                mData.addAll(categoryInfos);
+                tradeCategoryAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -84,8 +98,32 @@ public class AllBindCategoryActivity extends BaseActivity<ActivityAllBindCategor
             CategoryInfo info = new CategoryInfo();
             info.setId(data.getStringExtra("id"));
             info.setName(data.getStringExtra("name"));
-            mData.add(info);
-            tradeCategoryAdapter.notifyDataSetChanged();
+            bindCategory(info);
         }
+    }
+
+    //绑定品种
+    private void bindCategory(final CategoryInfo categoryInfo){
+        MerchantCard merchantCard = MerchantCardManager.getInstance().queryCollectionAccount();
+        if (merchantCard == null){
+            TipOneDialog dialog = new TipOneDialog("提示", "添加品种失败！请先设置收款账户");
+            dialog.show(getSupportFragmentManager(), "categoryManager");
+            return;
+        }
+        for (CategoryInfo item : mData) {
+            if (item.getId().equals(categoryInfo.getId())){
+                Toast.makeText(AllBindCategoryActivity.this, "品种已绑定", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+        RequestUtil.bindCategory(AllBindCategoryActivity.this, merchantCard.getCardNo(), categoryInfo.getId(), new ICallback<Boolean>() {
+            @Override
+            public void callback(Boolean aBoolean) {
+                if (aBoolean){
+                    mData.add(categoryInfo);
+                    tradeCategoryAdapter.notifyDataSetChanged();
+                }
+            }
+        });
     }
 }

@@ -13,6 +13,7 @@ public abstract class Printer {
     public abstract  void printBarCode(int align, int width, int height, String text) throws Exception;
     public abstract  void printQrCode(int align, int height, String text) throws Exception;
     public abstract  void printImage(int resourceId) throws IOException;
+    public abstract  void feedLine(int line);
     public abstract  String getErrorDescription(int code);
 
     public interface PrintEndCallback{

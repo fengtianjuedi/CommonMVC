@@ -18,7 +18,12 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.DialogFragment;
 
 import com.wufeng.commonmvc.R;
+import com.wufeng.latte_core.callback.ICallback;
+import com.wufeng.latte_core.config.ConfigKeys;
+import com.wufeng.latte_core.config.ConfigManager;
 import com.wufeng.latte_core.control.FixedEditText;
+import com.wufeng.latte_core.device.card.ReadCard;
+import com.wufeng.latte_core.device.card.ReadCardFactory;
 
 public class PayCardDialog extends AppCompatDialogFragment {
     private Context mContext;
@@ -74,6 +79,16 @@ public class PayCardDialog extends AppCompatDialogFragment {
                     onClickListener.onCancelClick();
             }
         });
+        ReadCard readCard = ReadCardFactory.getReadCard(ConfigManager.getInstance().getConfig(ConfigKeys.P0SMODEL).toString(), mContext);
+        if (readCard != null){
+            readCard.read(new ReadCard.ReadCardCallback() {
+                @Override
+                public void result(boolean success, String cardNo) {
+                    if (success)
+                        fetCardNo.setText(cardNo);
+                }
+            });
+        }
         return view;
     }
 

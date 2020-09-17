@@ -1,5 +1,6 @@
 package com.wufeng.latte_core.database;
 
+import java.util.List;
 import java.util.concurrent.Callable;
 
 //商户交易记录管理
@@ -51,10 +52,13 @@ public class MerchantTradeManager {
     }
 
     //查询未知状态交易
-    public MerchantTrade queryUnknowStatusTrade(){
-        return DatabaseManager.getInstance().getMerchantTradeDao().queryBuilder()
+    public MerchantTrade queryUnKnowStatusTrade(){
+        List<MerchantTrade> list = DatabaseManager.getInstance().getMerchantTradeDao().queryBuilder()
                 .where(MerchantTradeDao.Properties.TradeStatus.eq(2))
-                .build()
-                .unique();
+                .build().list();
+        if (list.size() != 0)
+            return list.get(0);
+        else
+            return null;
     }
 }

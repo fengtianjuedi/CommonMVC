@@ -14,10 +14,17 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.DialogFragment;
 
 import com.wufeng.commonmvc.R;
+import com.wufeng.commonmvc.adapter.TradeCategoryAdapter;
 
 public class TipTwoDialog extends DialogFragment {
     private String mTitle;
     private String mMessage;
+    private OnClickListener onClickListener;
+
+    public interface OnClickListener{
+        void onOkClick();
+        void onCancelClick();
+    }
 
     /**
      * create dialog
@@ -27,6 +34,10 @@ public class TipTwoDialog extends DialogFragment {
     public TipTwoDialog(String title, String message){
         mTitle = title;
         mMessage = message;
+    }
+
+    public void setOnClickListener(OnClickListener listener){
+        onClickListener = listener;
     }
 
     @Override
@@ -50,12 +61,16 @@ public class TipTwoDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 dismiss();
+                if (onClickListener != null)
+                    onClickListener.onOkClick();
             }
         });
         tv_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismiss();
+                if (onClickListener != null)
+                    onClickListener.onCancelClick();
             }
         });
         return view;

@@ -23,6 +23,7 @@ import com.wufeng.latte_core.database.TerminalInfoManager;
 import com.wufeng.latte_core.net.IError;
 import com.wufeng.latte_core.net.ISuccess;
 import com.wufeng.latte_core.net.RestClient;
+import com.wufeng.latte_core.util.RequestUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,7 @@ public class AddCategoryActivity extends BaseActivity<ActivityAddCategoryBinding
         categoryTreeAdapter = new CategoryTreeAdapter(AddCategoryActivity.this, mData, this);
         mBinding.rlvCategoryTree.setLayoutManager(linearLayoutManager);
         mBinding.rlvCategoryTree.setAdapter(categoryTreeAdapter);
-        queryCategoryById("", new ICallback<List<CategoryNode>>() {
+        RequestUtil.queryCategoryById(AddCategoryActivity.this,"", new ICallback<List<CategoryNode>>() {
             @Override
             public void callback(List<CategoryNode> categoryNodes) {
                 mData.addAll(categoryNodes);
@@ -96,82 +97,14 @@ public class AddCategoryActivity extends BaseActivity<ActivityAddCategoryBinding
         String content = mBinding.detSort.getText().toString();
         if (TextUtils.isEmpty(content))
             return;
-        queryCategoryByName(content);
-    }
-    //endregion
-
-    //region 网络请求
-    //根据品种Id查询子品种 传空查询所有一级品类
-    private void queryCategoryById(String id, final ICallback<List<CategoryNode>> callback){
-        JSONObject params = new JSONObject();
-        params.put("goodsId", id);
-        RestClient.builder()
-                .url("/pgcore-pos/PosQuery/operationManagement")
-                .xwwwformurlencoded("data=" + params.toJSONString())
-                .success(new ISuccess() {
-                    @Override
-                    public void onSuccess(String response) {
-                        JSONObject jsonObject = JSONObject.parseObject(response);
-                        if ("0".equals(jsonObject.getString("resultCode"))){
-                            JSONArray jsonArray = jsonObject.getJSONArray("data");
-                            List<CategoryNode> list= new ArrayList<>();
-                            for (int i = 0; i < jsonArray.size(); i++){
-                                CategoryNode node = new CategoryNode();
-                                node.setNodeId("0" + i);
-                                node.setLevel(0);
-                                node.setId(jsonArray.getJSONObject(i).getString("id"));
-                                node.setName(jsonArray.getJSONObject(i).getString("goodsname"));
-                                node.setEndNode("0".equals(jsonArray.getJSONObject(i).getString("lower")));
-                                list.add(node);
-                            }
-                            if (callback != null)
-                                callback.callback(list);
-                        }else{
-                            Toast.makeText(AddCategoryActivity.this, jsonObject.getString("resultMessage"), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                })
-                .error(new IError() {
-                    @Override
-                    public void onError(Throwable throwable) {
-                        Toast.makeText(AddCategoryActivity.this, "请求远程服务器失败", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .loading(AddCategoryActivity.this)
-                .build()
-                .post();
-    }
-
-    //模糊查询，根据品种名称进行模糊查询
-    private void queryCategoryByName(String name){
-        JSONObject params = new JSONObject();
-        params.put("goodsId", "");
-        params.put("merchantId", terminalInfo.getMerchantCode());
-        params.put("terminalId", terminalInfo.getTerminalCode());
-        params.put("firstFight", name);
-        RestClient.builder()
-                .url("/pgcore-pos/PosQuery/operationManagement")
-                .xwwwformurlencoded("data=" + params.toJSONString())
-                .success(new ISuccess() {
-                    @Override
-                    public void onSuccess(String response) {
-                        JSONObject jsonObject = JSONObject.parseObject(response);
-                        if ("0".equals(jsonObject.getString("resultCode"))){
-
-                        }else{
-                            Toast.makeText(AddCategoryActivity.this, jsonObject.getString("resultMessage"), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                })
-                .error(new IError() {
-                    @Override
-                    public void onError(Throwable throwable) {
-                        Toast.makeText(AddCategoryActivity.this, "请求远程服务器失败", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .loading(AddCategoryActivity.this)
-                .build()
-                .post();
+        RequestUtil.queryCategoryByName(AddCategoryActivity.this, content, new ICallback<List<CategoryNode>>() {
+            @Override
+            public void callback(List<CategoryNode> categoryNodes) {
+                mData.clear();
+                mData.addAll(categoryNodes);
+                categoryTreeAdapter.notifyDataSetChanged();
+            }
+        });
     }
     //endregion
 }

@@ -20,6 +20,8 @@ public class ThreeDesUtil {
      * @param srcStr 将加密的字符串
      */
     public static String encode3Des(String key, String srcStr) {
+        if (key == null || srcStr == null)
+            return null;
         byte[] keybyte = hex(key);
         byte[] src = srcStr.getBytes();
         try {

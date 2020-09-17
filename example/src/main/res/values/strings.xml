@@ -32,7 +32,7 @@
     <string name="categoryManager">品种管理</string>
     <string name="categoryManager_merchantCode">收款卡号:</string>
     <string name="categoryManager_add">添加品种</string>
-    <string name="categoryManager_sort">请输入品种名大写首字母搜索</string>
+    <string name="categoryManager_sort">请输入品种名拼音首字母搜索</string>
 
     <!-- 批发交易 -->
     <string name="wholesaleTrade">批发交易</string>

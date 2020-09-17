@@ -19,7 +19,7 @@ public class MyApplication extends Application {
                 .withIcon(new IconFontModule())
                 .withContext(getApplicationContext())
                 .withHost("http://nongxintest.nongxintop.com:9008")
-                //.withHost("http://192.168.200.90:9008")
+                //.withHost("http://192.168.10.3:9008")
                 .withInterceptor(new DebugInterceptor())
                 .withPosModel(PosDevice.LIANDIA8)
                 .withPrintNumber(2)
