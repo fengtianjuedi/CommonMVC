@@ -72,7 +72,7 @@ public class LiandiA8ReadCard extends ReadCard {
                                     }
                                     Beeper.startBeep(300);
                                     if (callback != null)
-                                        callback.result(true, bytesBuffer.toHexString().substring(0, 20));
+                                        callback.result(true, bytesBuffer.toHexString().substring(1, 20));
                                 }catch (RequestException re){
                                     if (callback != null)
                                         callback.result(false, re.getMessage());

@@ -284,7 +284,7 @@ public class RequestUtil {
         TerminalInfo terminalInfo = TerminalInfoManager.getInstance().queryLastTerminalInfo();
         JSONObject params = new JSONObject();
         params.put("merchantCode", terminalInfo.getMerchantCode());
-        params.put("transNoPos", terminalInfo.getTerminalCode());
+        params.put("terminalId", terminalInfo.getTerminalCode());
         params.put("startTime", startDate);
         params.put("endTime", endDate);
         RestClient.builder()

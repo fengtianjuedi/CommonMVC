@@ -47,7 +47,7 @@ public class AISINOA90ReadCard extends ReadCard {
         }
         SystemApi.Beef_Api(4, 300);
         if (callback != null)
-            callback.result(true, CommonConvert.bytes2HexString(data).substring(0, 20));
+            callback.result(true, CommonConvert.bytes2HexString(data).substring(1, 20));
         PiccApi.PiccClose_Api();
     }
 
