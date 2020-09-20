@@ -1,6 +1,7 @@
 package com.wufeng.latte_core.util;
 
 import android.app.Activity;
+import android.content.Context;
 import android.media.MediaPlayer;
 
 import com.wufeng.latte_core.R;
@@ -39,6 +40,21 @@ public class MediaPlayerUtil {
             e.printStackTrace();
         }
     }
+
+    //播放语音文件
+    public static void play(Context context, int resourcesId){
+        MediaPlayer mediaPlayer = MediaPlayer.create(context, resourcesId);
+        mediaPlayer.start();
+    }
+
+    public static void pleaseBrushCard(Context context){
+        play(context, R.raw.tip_brush_client_card);
+    }
+
+    public static void pleaseInputPassword(Context context){
+        play(context, R.raw.tip_brush_client_password);
+    }
+
 
     /**
      * release all media player

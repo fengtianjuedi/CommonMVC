@@ -91,4 +91,9 @@ public class AISINOA90ReadCard extends ReadCard {
             callback.result(true, "");
         PiccApi.PiccClose_Api();
     }
+
+    @Override
+    public void stop() {
+
+    }
 }

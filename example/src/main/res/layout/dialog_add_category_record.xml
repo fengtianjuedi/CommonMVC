@@ -47,7 +47,8 @@
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
             android:inputType="numberDecimal"
-            tools:ignore="RtlSymmetry" />
+            tools:ignore="RtlSymmetry"
+            android:imeOptions="actionNext"/>
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_number"
             android:layout_width="wrap_content"
@@ -70,7 +71,8 @@
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
             android:inputType="numberDecimal"
-            tools:ignore="RtlSymmetry" />
+            tools:ignore="RtlSymmetry"
+            android:imeOptions="actionDone"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/ll_amount"

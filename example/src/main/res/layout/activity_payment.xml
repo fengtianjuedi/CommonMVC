@@ -90,6 +90,34 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"/>
+    <com.wufeng.latte_core.control.FixedEditText
+        android:id="@+id/fet_cardNo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:fixedTextGravity="Left"
+        app:fixedText="@string/wholesaleTrade_card_no"
+        android:textSize="@dimen/text_size_18"
+        android:padding="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:enabled="false"
+        android:visibility="invisible"
+        android:background="@drawable/background_border_corner_green"/>
+    <com.wufeng.latte_core.control.FixedEditText
+        android:id="@+id/fet_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:fixedTextGravity="Left"
+        app:fixedText="@string/wholesaleTrade_password"
+        android:textSize="@dimen/text_size_18"
+        android:padding="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:inputType="textPassword"
+        android:visibility="invisible"
+        android:background="@drawable/background_border_corner_green"/>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

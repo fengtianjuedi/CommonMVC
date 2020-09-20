@@ -224,6 +224,15 @@ public class LiandiA8ReadCard extends ReadCard {
         }
     }
 
+    @Override
+    public void stop() {
+        try {
+            reader.stopSearch();
+        } catch (RequestException e) {
+            e.printStackTrace();
+        }
+    }
+
     //设置驱动名称
     private void setDriverName(int cardType){
         switch (cardType){
@@ -237,9 +246,6 @@ public class LiandiA8ReadCard extends ReadCard {
                 break;
             case RFCardReader.OnSearchListener.CPU_CARD:
                 driverName = DRIVER_NAME_CPU;
-                break;
-            case RFCardReader.OnSearchListener.PRO_CARD:
-                driverName = DRIVER_NAME_PRO;
                 break;
             default:
                 driverName = DRIVER_NAME_PRO;

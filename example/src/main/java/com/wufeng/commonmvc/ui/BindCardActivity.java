@@ -151,16 +151,15 @@ public class BindCardActivity extends BaseActivity<ActivityBindCardBinding>
             Toast.makeText(this, "删除旧收款账户失败", Toast.LENGTH_SHORT).show();
             return;
         }
-        currentCollectionAccount = cardInfo;
-        mBinding.tvCollectionAccountNo.setText(cardInfo.getCardNo());
-        mBinding.tvCollectionAccountName.setText(cardInfo.getName());
         if(!setNewCollectionAccount(cardInfo)){
             Toast.makeText(this, "设置新收款账户失败", Toast.LENGTH_SHORT).show();
             return;
         }
+        initBindCard();
+        mBinding.tvCollectionAccountNo.setText(currentCollectionAccount.getCardNo());
+        mBinding.tvCollectionAccountName.setText(currentCollectionAccount.getName());
         mBinding.tvDelete.setVisibility(View.VISIBLE);
         mBinding.tvQueryCardBalance.setVisibility(View.VISIBLE);
-        mData.remove(cardInfo);
         merchantCardAdapter.notifyDataSetChanged();
     }
 

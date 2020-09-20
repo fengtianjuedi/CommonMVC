@@ -101,6 +101,7 @@ public class WholesaleTradeActivity extends BaseActivity<ActivityWholesaleTradeB
         RequestUtil.queryCategoryByCardNo(WholesaleTradeActivity.this, merchantCard.getCardNo(), new ICallback<List<CategoryInfo>>() {
             @Override
             public void callback(List<CategoryInfo> categoryInfos) {
+                mCategoryData.clear();
                 if(categoryInfos.size() > 7){
                     List<CategoryInfo> data = categoryInfos.subList(0, 7);
                     mCategoryData.addAll(data);
@@ -266,7 +267,10 @@ public class WholesaleTradeActivity extends BaseActivity<ActivityWholesaleTradeB
             info.setId(data.getStringExtra("id"));
             info.setName(data.getStringExtra("name"));
             openCategoryInputDialog(info);
-        }else if (requestCode == AddCategoryActivity.REQUESTCODE && resultCode == RESULT_OK){
+        }else if (requestCode == AllBindCategoryActivity.REQUESTCODE && resultCode == RESULT_CANCELED){
+            initCategoryList();
+        }
+        else if (requestCode == AddCategoryActivity.REQUESTCODE && resultCode == RESULT_OK){
             CategoryInfo info = new CategoryInfo();
             info.setId(data.getStringExtra("id"));
             info.setName(data.getStringExtra("name"));
