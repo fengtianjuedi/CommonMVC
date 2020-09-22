@@ -64,6 +64,7 @@ public class PrintTemplate {
                 mPrinter.printStr(Printer.AlignLeft, "买家卡号：" + trade.getBuyerCardNo());
                 mPrinter.printStr(Printer.AlignLeft, "买家名称： " + trade.getBuyerName());
             }
+            mPrinter.printStr(Printer.AlignLeft, "------------------------------");
             mPrinter.printStr(Printer.AlignLeft, "本人确认以上交易同意记入本卡账户");
             mPrinter.printStr(Printer.AlignLeft, "签名：");
             mPrinter.feedLine(6);

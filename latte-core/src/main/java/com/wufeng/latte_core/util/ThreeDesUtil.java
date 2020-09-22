@@ -5,6 +5,8 @@ import android.util.Base64;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 
+import java.net.URLEncoder;
+
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -30,7 +32,7 @@ public class ThreeDesUtil {
             //加密
             Cipher c1 = Cipher.getInstance("DESede");
             c1.init(Cipher.ENCRYPT_MODE, deskey);
-            return Base64.encodeToString(c1.doFinal(src), Base64.NO_WRAP);
+            return URLEncoder.encode(Base64.encodeToString(c1.doFinal(src), Base64.NO_WRAP), "UTF-8");
         } catch (Exception e1) {
             e1.printStackTrace();
         }

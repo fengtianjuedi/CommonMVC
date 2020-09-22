@@ -100,7 +100,7 @@
         android:padding="10dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:enabled="false"
+        android:focusable="false"
         android:visibility="invisible"
         android:background="@drawable/background_border_corner_green"/>
     <com.wufeng.latte_core.control.FixedEditText
@@ -114,9 +114,10 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:inputType="textPassword"
         android:visibility="invisible"
+        android:maxLength="6"
         android:background="@drawable/background_border_corner_green"/>
     <RelativeLayout
         android:layout_width="match_parent"

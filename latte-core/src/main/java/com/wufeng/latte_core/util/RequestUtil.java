@@ -19,6 +19,8 @@ import com.wufeng.latte_core.net.IError;
 import com.wufeng.latte_core.net.ISuccess;
 import com.wufeng.latte_core.net.RestClient;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,13 +64,13 @@ public class RequestUtil {
     }
 
     //批发交易请求
-    public static void wholesaleTrade(final Context context, final TradeRecordInfo tradeRecordInfo, final ICallback<Boolean> callback){
+    public static void wholesaleTrade(final Context context, final TradeRecordInfo tradeRecordInfo, final ICallback<Boolean> callback) {
         TerminalInfo terminalInfo = TerminalInfoManager.getInstance().queryLastTerminalInfo();
         String encryptPassword = ThreeDesUtil.encode3Des(terminalInfo.getMasterKey(), tradeRecordInfo.getBuyerPassword());
         String time = TimeUtil.currentDateYMDHMS();
         String signString = ThreeDesUtil.encode3Des(terminalInfo.getMasterKey(), terminalInfo.getTerminalCode() + terminalInfo.getMerchantCode() + time);
         JSONObject params = new JSONObject();
-        params.put("terminalOrderCode", IdGenerate.getInstance().getId());
+        params.put("terminalOrderCode", tradeRecordInfo.getTerminalOrderCode());
         params.put("inMerchantCardId", tradeRecordInfo.getSellerCardNo());
         params.put("inMerchantCardAccount", tradeRecordInfo.getSellerAccount());
         params.put("inMerchantCode", tradeRecordInfo.getSellerCode());

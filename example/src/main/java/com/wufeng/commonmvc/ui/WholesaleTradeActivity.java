@@ -186,7 +186,6 @@ public class WholesaleTradeActivity extends BaseActivity<ActivityWholesaleTradeB
     private void pay(){
         MerchantCard merchantCard = MerchantCardManager.getInstance().queryCollectionAccount();
         TradeRecordInfo tradeRecordInfo = new TradeRecordInfo();
-        tradeRecordInfo.setTerminalOrderCode(IdGenerate.getInstance().getId());
         tradeRecordInfo.setReceivableAmount(receivableAmount.toPlainString());
         tradeRecordInfo.setActualAmount(receivableAmount.toPlainString());
         tradeRecordInfo.getCategoryRecordInfoList().addAll(mCategoryRecordData);
@@ -242,6 +241,13 @@ public class WholesaleTradeActivity extends BaseActivity<ActivityWholesaleTradeB
         });
     }
 
+    //清理数据
+    private void clearData(){
+        receivableAmount = new BigDecimal(0);
+        mBinding.tvPay.setText("去收款");
+        mCategoryRecordData.clear();
+        categoryRecordAdapter.notifyDataSetChanged();
+    }
     //endregion
 
     //品种子项点击事件
@@ -276,10 +282,9 @@ public class WholesaleTradeActivity extends BaseActivity<ActivityWholesaleTradeB
             info.setName(data.getStringExtra("name"));
             addCategory(info);
         }else if (requestCode == PaymentActivity.REQUESTCODE && resultCode == RESULT_OK){
-            receivableAmount = new BigDecimal(0);
-            mBinding.tvPay.setText("去收款");
-            mCategoryRecordData.clear();
-            categoryRecordAdapter.notifyDataSetChanged();
+            clearData();
+        }else if (requestCode == PaymentActivity.REQUESTCODE && resultCode == RESULT_CANCELED){
+            clearData();
         }
     }
 }

@@ -36,10 +36,12 @@ import com.wufeng.latte_core.database.TerminalInfoManager;
 import com.wufeng.latte_core.net.IError;
 import com.wufeng.latte_core.net.ISuccess;
 import com.wufeng.latte_core.net.RestClient;
+import com.wufeng.latte_core.util.IdGenerate;
 import com.wufeng.latte_core.util.MediaPlayerUtil;
 import com.wufeng.latte_core.util.RequestUtil;
 import com.wufeng.latte_core.util.TimeUtil;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 
 public class PaymentActivity extends BaseActivity<ActivityPaymentBinding> {
@@ -106,6 +108,12 @@ public class PaymentActivity extends BaseActivity<ActivityPaymentBinding> {
                 mBinding.fetActualAmount.setText(tradeRecordInfo.getActualAmount());
             }
         });
+        mBinding.fetCardNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                payCard();
+            }
+        });
         mBinding.tvPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,13 +140,12 @@ public class PaymentActivity extends BaseActivity<ActivityPaymentBinding> {
                             tradeRecordInfo.setBuyerName(merchantCard.getCardName());
                             tradeRecordInfo.setBuyerCode(merchantCard.getMerchantCode());
                             tradeRecordInfo.setBuyerAccount(merchantCard.getAccountCode());
-                            mBinding.fetCardNo.setText(merchantCard.getCardNo() + "  " + merchantCard.getCardName());
+                            mBinding.fetCardNo.setText(merchantCard.getCardNo() + " " + merchantCard.getCardName());
                             mBinding.fetPassword.requestFocus();
-                            //请输入密码
+                            MediaPlayerUtil.pleaseInputPassword(PaymentActivity.this);
                         }
                     });
                 }
-
             }
         });
     }
@@ -159,7 +166,12 @@ public class PaymentActivity extends BaseActivity<ActivityPaymentBinding> {
             Toast.makeText(PaymentActivity.this, "请买家输入密码", Toast.LENGTH_SHORT).show();
             return;
         }
+        if (payType == 0 && tradeRecordInfo.getBuyerPassword().length() < 6){
+            Toast.makeText(PaymentActivity.this, "请输入6位数密码", Toast.LENGTH_SHORT).show();
+            return;
+        }
         tradeRecordInfo.setActualAmount(mBinding.fetActualAmount.getText().toString());
+        tradeRecordInfo.setTerminalOrderCode(IdGenerate.getInstance().getId()); //生成终端流水号
         //提交交易请求
         RequestUtil.wholesaleTrade(PaymentActivity.this, tradeRecordInfo, new ICallback<Boolean>() {
             @Override
@@ -226,9 +238,11 @@ public class PaymentActivity extends BaseActivity<ActivityPaymentBinding> {
                                             }
                                         });
                                         MerchantTradeManager.getInstance().delete(merchantTrade);
+                                        finish();
                                     }else if (integer == 1){ //交易失败
                                         Toast.makeText(PaymentActivity.this, "交易失败", Toast.LENGTH_SHORT).show();
                                         MerchantTradeManager.getInstance().delete(merchantTrade);
+                                        finish();
                                     }else if (integer == 2){ //交易状态未知
                                         Toast.makeText(PaymentActivity.this, "交易状态查询失败", Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(PaymentActivity.this, HomeActivity.class);
