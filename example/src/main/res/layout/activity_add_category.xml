@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     tools:context="com.wufeng.commonmvc.ui.AddCategoryActivity"
     android:orientation="vertical"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"

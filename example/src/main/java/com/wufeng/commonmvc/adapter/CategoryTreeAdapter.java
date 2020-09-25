@@ -23,6 +23,7 @@ import com.wufeng.latte_core.config.ConfigManager;
 import com.wufeng.latte_core.net.IError;
 import com.wufeng.latte_core.net.ISuccess;
 import com.wufeng.latte_core.net.RestClient;
+import com.wufeng.latte_core.util.RequestUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -92,7 +93,7 @@ public class CategoryTreeAdapter extends RecyclerView.Adapter<CategoryTreeAdapte
                             notifyItemRangeChanged(holder.getAdapterPosition(), mCategoryNodeList.size() - holder.getAdapterPosition() + 1);
                         }
                     }else{
-                        queryCategoryById(node, new ICallback<List<CategoryNode>>() {
+                        RequestUtil.queryCategoryById(mContext, node, new ICallback<List<CategoryNode>>() {
                             @Override
                             public void callback(List<CategoryNode> categoryNodes) {
                                 mChildNodeMap.put(node.getNodeId(), categoryNodes);
@@ -130,47 +131,4 @@ public class CategoryTreeAdapter extends RecyclerView.Adapter<CategoryTreeAdapte
     public int getItemCount() {
         return mCategoryNodeList.size();
     }
-
-    //region
-    //根据品种Id查询子品种
-    private void queryCategoryById(final CategoryNode parentNode, final ICallback<List<CategoryNode>> callback){
-        JSONObject params = new JSONObject();
-        params.put("goodsId", parentNode.getId());
-        RestClient.builder()
-                .url("/pgcore-pos/PosQuery/operationManagement")
-                .xwwwformurlencoded("data=" + params.toJSONString())
-                .success(new ISuccess() {
-                    @Override
-                    public void onSuccess(String response) {
-                        JSONObject jsonObject = JSONObject.parseObject(response);
-                        if ("0".equals(jsonObject.getString("resultCode"))){
-                            JSONArray jsonArray = jsonObject.getJSONArray("data");
-                            List<CategoryNode> list= new ArrayList<>();
-                            for (int i = 0; i < jsonArray.size(); i++){
-                                CategoryNode node = new CategoryNode();
-                                node.setNodeId(parentNode.getNodeId() + i);
-                                node.setLevel(parentNode.getLevel() + 1);
-                                node.setId(jsonArray.getJSONObject(i).getString("id"));
-                                node.setName(jsonArray.getJSONObject(i).getString("goodsname"));
-                                node.setEndNode("0".equals(jsonArray.getJSONObject(i).getString("lower")));
-                                list.add(node);
-                            }
-                            if (callback != null)
-                                callback.callback(list);
-                        }else{
-                            Toast.makeText(mContext, jsonObject.getString("resultMessage"), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                })
-                .error(new IError() {
-                    @Override
-                    public void onError(Throwable throwable) {
-                        Toast.makeText((Context) ConfigManager.getInstance().getConfig(ConfigKeys.CONTEXT), "请求远程服务器失败", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .loading(mContext)
-                .build()
-                .post();
-    }
-    //endregion
 }

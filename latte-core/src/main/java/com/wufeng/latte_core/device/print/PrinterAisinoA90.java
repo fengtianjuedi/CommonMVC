@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.vanstone.trans.api.PrinterApi;
+import com.wufeng.latte_core.loader.Loader;
 import com.wufeng.latte_core.util.ImageUtil;
 
 import java.io.IOException;
@@ -29,9 +30,11 @@ public class PrinterAisinoA90 extends Printer {
 
     @Override
     public void startPrint(PrintEndCallback printEndCallback) {
+        Loader.showLoading(mContext);
         int reslut = PrinterApi.PrnStart_Api();
         if (printEndCallback != null)
             printEndCallback.result(reslut, getErrorDescription(reslut));
+        Loader.stopLoading();
     }
 
     @Override

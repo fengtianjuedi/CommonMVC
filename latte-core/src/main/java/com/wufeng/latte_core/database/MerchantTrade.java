@@ -31,7 +31,7 @@ public class MerchantTrade {
     private String tradeTime; //交易时间
     @NonNull
     private int tradeStatus; //交易状态 0:成功 1:失败 2:未知
-    private int payType; //支付方式 0:一卡通 1:现金
+    private int payType; //支付方式  0:现金 1:一卡通
 
     @ToMany(referencedJoinProperty = "tradeId")
     private List<MerchantTradeGoods> merchantTradeGoodsList; //交易品种列表

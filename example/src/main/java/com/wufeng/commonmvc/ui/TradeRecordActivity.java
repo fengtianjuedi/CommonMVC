@@ -69,6 +69,7 @@ public class TradeRecordActivity extends BaseActivity<ActivityTradeRecordBinding
                 RequestUtil.queryTradeRecord(TradeRecordActivity.this, mBinding.detStartDate.getText().toString() + " 00:00:00", mBinding.detEndDate.getText().toString() + " 23:59:59", new ICallback<List<TradeRecordInfo>>() {
                     @Override
                     public void callback(List<TradeRecordInfo> tradeRecordInfos) {
+                        mData.clear();
                         mData.addAll(tradeRecordInfos);
                         tradeRecordAdapter.notifyDataSetChanged();
                     }

@@ -115,7 +115,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="10dp"
-        android:inputType="textPassword"
+        android:inputType="numberPassword"
         android:visibility="invisible"
         android:maxLength="6"
         android:background="@drawable/background_border_corner_green"/>

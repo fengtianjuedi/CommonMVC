@@ -21,7 +21,7 @@ public class TradeRecordInfo implements Parcelable {
     private String receivableAmount; //应收金额
     private String actualAmount; //实收金额
     private String tradeTime; //交易时间
-    private int payType; //支付方式 0:一卡通 1:现金
+    private int payType; //支付方式  0:现金 1:一卡通
     private List<CategoryRecordInfo> categoryRecordInfoList; //商品列表
 
     public TradeRecordInfo(){

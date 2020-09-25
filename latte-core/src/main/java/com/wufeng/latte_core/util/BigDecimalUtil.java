@@ -45,10 +45,10 @@ public class BigDecimalUtil {
      * @param d2
      * @return
      */
-    public static double mul(String d1,String d2){
+    public static BigDecimal mul(String d1,String d2){
         BigDecimal bd1 = new BigDecimal(d1);
         BigDecimal bd2 = new BigDecimal(d2);
-        return bd1.multiply(bd2).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+        return bd1.multiply(bd2).setScale(2,BigDecimal.ROUND_HALF_UP);
     }
 
     /**

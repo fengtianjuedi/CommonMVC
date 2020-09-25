@@ -2,8 +2,11 @@ package com.wufeng.latte_core.util;
 
 import android.content.Context;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class SoftKeyBoardUtil {
 
@@ -16,8 +19,15 @@ public class SoftKeyBoardUtil {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null){
             editText.requestFocus();
-            imm.showSoftInput(editText, 0);
+            imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
         }
+    }
+
+    public static void showSoftKeyBoard(AppCompatActivity context, EditText editText){
+        editText.setFocusable(true);
+        editText.setFocusableInTouchMode(true);
+        editText.requestFocus();
+        context.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     }
 
     /**

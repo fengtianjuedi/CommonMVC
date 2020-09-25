@@ -22,6 +22,7 @@ import com.wufeng.latte_core.database.MerchantCardManager;
 import com.wufeng.latte_core.net.IError;
 import com.wufeng.latte_core.net.ISuccess;
 import com.wufeng.latte_core.net.RestClient;
+import com.wufeng.latte_core.util.RequestUtil;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -75,7 +76,7 @@ public class CategoryManagerActivity extends BaseActivity<ActivityCategoryManage
             dialog.show(getSupportFragmentManager(), "categoryManager");
             return;
         }
-        queryMerchantCategoryList(merchantCard.getCardNo(), new ICallback<List<CategoryInfo>>() {
+        RequestUtil.queryCategoryByCardNo(CategoryManagerActivity.this,merchantCard.getCardNo(), new ICallback<List<CategoryInfo>>() {
             @Override
             public void callback(List<CategoryInfo> categoryInfos) {
                 if (categoryInfos != null){
@@ -103,7 +104,7 @@ public class CategoryManagerActivity extends BaseActivity<ActivityCategoryManage
     @Override
     public void onDeleteItem(final int position, CategoryInfo categoryInfo) {
         String cardNo = MerchantCardManager.getInstance().queryCollectionAccount().getCardNo();
-        deleteBindCategoryRequest(cardNo, categoryInfo.getId(), new ICallback<Boolean>() {
+        RequestUtil.deleteBindCategory(CategoryManagerActivity.this, cardNo, categoryInfo.getId(), new ICallback<Boolean>() {
             @Override
             public void callback(Boolean aBoolean) {
                 if (aBoolean){
@@ -129,7 +130,7 @@ public class CategoryManagerActivity extends BaseActivity<ActivityCategoryManage
                 return;
             }
         }
-        bindCategoryRequest(merchantCard.getCardNo(), categoryInfo.getId(), new ICallback<Boolean>() {
+        RequestUtil.bindCategory(CategoryManagerActivity.this, merchantCard.getCardNo(), categoryInfo.getId(), new ICallback<Boolean>() {
             @Override
             public void callback(Boolean aBoolean) {
                 if (aBoolean){
@@ -140,109 +141,5 @@ public class CategoryManagerActivity extends BaseActivity<ActivityCategoryManage
         });
     }
 
-    //endregion
-
-    //region 网络请求
-    //查询收款账户绑定品种
-    private void queryMerchantCategoryList(String cardNo, final ICallback<List<CategoryInfo>> callback){
-        JSONObject params = new JSONObject();
-        params.put("cardcode", cardNo);
-        RestClient.builder()
-                .url("/pgcore-pos/PosQuery/queryBinDing")
-                .xwwwformurlencoded("data=" + params.toJSONString())
-                .success(new ISuccess() {
-                    @Override
-                    public void onSuccess(String response) {
-                        JSONObject jsonObject = JSONObject.parseObject(response);
-                        if ("0".equals(jsonObject.getString("resultCode"))){
-                            List<CategoryInfo> list = new ArrayList<>();
-                            JSONArray data = jsonObject.getJSONArray("data");
-                            for (int i = 0; i < data.size(); i++){
-                                CategoryInfo categoryInfo = new CategoryInfo();
-                                categoryInfo.setId(data.getJSONObject(i).getString("id"));
-                                categoryInfo.setName(data.getJSONObject(i).getString("goodsname"));
-                                list.add(categoryInfo);
-                            }
-                            if (callback != null){
-                                callback.callback(list);
-                            }
-                        }else{
-                            Toast.makeText(CategoryManagerActivity.this, jsonObject.getString("resultMessage"), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                })
-                .error(new IError() {
-                    @Override
-                    public void onError(Throwable throwable) {
-                        Toast.makeText(CategoryManagerActivity.this, "请求远程服务器失败", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .loading(CategoryManagerActivity.this)
-                .build()
-                .post();
-    }
-    //绑定品种
-    private void bindCategoryRequest(String cardNo, String goodsId, final ICallback<Boolean> callback){
-        JSONObject params = new JSONObject();
-        params.put("cardcode", cardNo);
-        params.put("goodsid", goodsId);
-        RestClient.builder()
-                .url("/pgcore-pos/PosQuery/binDing")
-                .xwwwformurlencoded("data=" + params.toJSONString())
-                .success(new ISuccess() {
-                    @Override
-                    public void onSuccess(String response) {
-                        JSONObject jsonObject = JSONObject.parseObject(response);
-                        if ("0".equals(jsonObject.getString("resultCode"))){
-                            if (callback != null){
-                                callback.callback(true);
-                            }
-                        }else{
-                            Toast.makeText(CategoryManagerActivity.this, jsonObject.getString("resultMessage"), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                })
-                .error(new IError() {
-                    @Override
-                    public void onError(Throwable throwable) {
-                        Toast.makeText(CategoryManagerActivity.this, "请求远程服务器失败", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .loading(CategoryManagerActivity.this)
-                .build()
-                .post();
-    }
-
-    //解除品种绑定
-    private void deleteBindCategoryRequest(String cardNo, String goodsId, final ICallback<Boolean> callback){
-        JSONObject params = new JSONObject();
-        params.put("cardcode", cardNo);
-        params.put("goodsid", goodsId);
-        RestClient.builder()
-                .url("/pgcore-pos/PosQuery/noBinDing")
-                .xwwwformurlencoded("data=" + params.toJSONString())
-                .success(new ISuccess() {
-                    @Override
-                    public void onSuccess(String response) {
-                        JSONObject jsonObject = JSONObject.parseObject(response);
-                        if ("0".equals(jsonObject.getString("resultCode"))){
-                            if (callback != null){
-                                callback.callback(true);
-                            }
-                        }else{
-                            Toast.makeText(CategoryManagerActivity.this, jsonObject.getString("resultMessage"), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                })
-                .error(new IError() {
-                    @Override
-                    public void onError(Throwable throwable) {
-                        Toast.makeText(CategoryManagerActivity.this, "请求远程服务器失败", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .loading(CategoryManagerActivity.this)
-                .build()
-                .post();
-    }
     //endregion
 }

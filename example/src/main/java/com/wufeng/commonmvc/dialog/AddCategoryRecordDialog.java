@@ -3,6 +3,7 @@ package com.wufeng.commonmvc.dialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -21,9 +22,13 @@ import androidx.fragment.app.DialogFragment;
 import com.wufeng.commonmvc.R;
 import com.wufeng.latte_core.entity.CategoryInfo;
 import com.wufeng.latte_core.entity.CategoryRecordInfo;
+import com.wufeng.latte_core.filter.AmountRangeInputFilter;
+import com.wufeng.latte_core.filter.WeightRangeInputFilter;
 import com.wufeng.latte_core.util.BigDecimalUtil;
 
 import java.math.BigDecimal;
+
+import static com.wufeng.commonmvc.ui.WholesaleTradeActivity.MAXAMOUNT;
 
 public class AddCategoryRecordDialog extends AppCompatDialogFragment {
     private CategoryInfo categoryInfo;
@@ -62,6 +67,8 @@ public class AddCategoryRecordDialog extends AppCompatDialogFragment {
         etPrice = view.findViewById(R.id.et_price);
         etNumber = view.findViewById(R.id.et_number);
         etAmount = view.findViewById(R.id.et_amount);
+        etPrice.setFilters(new InputFilter[]{new AmountRangeInputFilter()});
+        etNumber.setFilters(new InputFilter[]{new WeightRangeInputFilter()});
         tvTitle.setText(categoryInfo.getName());
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,42 +93,8 @@ public class AddCategoryRecordDialog extends AppCompatDialogFragment {
                 dismiss();
             }
         });
-        etPrice.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String price = s.toString();
-                String number = etNumber.getText().toString();
-                etAmount.setText(String.valueOf(BigDecimalUtil.mul(TextUtils.isEmpty(price)?"0":price, TextUtils.isEmpty(number)?"0":number)));
-            }
-        });
-        etNumber.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String price = etPrice.getText().toString();
-                String number = s.toString();
-                etAmount.setText(String.valueOf(BigDecimalUtil.mul(TextUtils.isEmpty(price)?"0":price, TextUtils.isEmpty(number)?"0":number)));
-            }
-        });
+        etPrice.addTextChangedListener(priceTextWatcher);
+        etNumber.addTextChangedListener(numberTextWatcher);
         return view;
     }
 
@@ -136,6 +109,69 @@ public class AddCategoryRecordDialog extends AppCompatDialogFragment {
             lp.width = (int) (dm.widthPixels * 0.8);
             lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
             dialog.getWindow().setAttributes(lp);
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
     }
+
+    //region 文本框输入限制函数
+    //单价输入框
+    private TextWatcher priceTextWatcher = new TextWatcher() {
+        String mBeforeText;
+        int mCursor;
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            mBeforeText = s.toString();
+            mCursor = start;
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            etPrice.removeTextChangedListener(priceTextWatcher);
+            String price = s.toString();
+            String number = etNumber.getText().toString();
+            BigDecimal amount = BigDecimalUtil.mul(TextUtils.isEmpty(price)?"0":price, TextUtils.isEmpty(number)?"0":number);
+            if (amount.compareTo(new BigDecimal(MAXAMOUNT)) > 0){
+                etPrice.setText(mBeforeText);
+                etPrice.setSelection(mCursor > mBeforeText.length()?mBeforeText.length():mCursor);
+            }else
+                etAmount.setText(String.valueOf(amount));
+            etPrice.addTextChangedListener(priceTextWatcher);
+        }
+    };
+
+    //数量输入框
+    private TextWatcher numberTextWatcher = new TextWatcher() {
+        String mBeforeText;
+        int mCursor;
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            mBeforeText = s.toString();
+            mCursor = start;
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            etNumber.removeTextChangedListener(numberTextWatcher);
+            String price = etPrice.getText().toString();
+            String number = s.toString();
+            BigDecimal amount = BigDecimalUtil.mul(TextUtils.isEmpty(price)?"0":price, TextUtils.isEmpty(number)?"0":number);
+            if (amount.compareTo(new BigDecimal(MAXAMOUNT)) > 0){
+                etNumber.setText(mBeforeText);
+                etNumber.setSelection(mCursor > mBeforeText.length()?mBeforeText.length():mCursor);
+            }else
+                etAmount.setText(String.valueOf(amount));
+            etNumber.addTextChangedListener(numberTextWatcher);
+        }
+    };
+    //endregion
 }

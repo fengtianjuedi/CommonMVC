@@ -17,8 +17,8 @@ android {
         }
     }
     productFlavors {
-        baidu {
-            applicationId "com.wufeng.baidu" //多渠道打包，重定义包名
+        juye {
+            applicationId "com.wufeng.juye" //多渠道打包，重定义包名
         }
     }
     signingConfigs {

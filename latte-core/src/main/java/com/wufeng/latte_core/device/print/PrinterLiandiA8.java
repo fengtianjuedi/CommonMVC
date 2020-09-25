@@ -12,6 +12,7 @@ import com.landicorp.android.eptapi.exception.ServiceOccupiedException;
 import com.landicorp.android.eptapi.exception.UnsupportMultiProcess;
 import com.landicorp.android.eptapi.utils.ImageTransformer;
 import com.landicorp.android.eptapi.utils.QrCode;
+import com.wufeng.latte_core.loader.Loader;
 import com.wufeng.latte_core.util.ImageUtil;
 
 import java.io.ByteArrayInputStream;
@@ -54,6 +55,7 @@ public class PrinterLiandiA8 extends com.wufeng.latte_core.device.print.Printer 
 
             @Override
             public void onFinish(int i) {
+                Loader.stopLoading();
                 unbindService();
                 if (printEndCallback != null)
                     printEndCallback.result(i, getErrorDescription(i));
@@ -61,6 +63,7 @@ public class PrinterLiandiA8 extends com.wufeng.latte_core.device.print.Printer 
 
             @Override
             public void onCrash() {
+                Loader.stopLoading();
                 unbindService();
                 if (printEndCallback != null)
                     printEndCallback.result(-1, "打印崩溃");
@@ -71,6 +74,7 @@ public class PrinterLiandiA8 extends com.wufeng.latte_core.device.print.Printer 
         }
         try {
             progress.start();
+            Loader.showLoading(mContext);
         } catch (RequestException e) {
             e.printStackTrace();
             if (printEndCallback != null)

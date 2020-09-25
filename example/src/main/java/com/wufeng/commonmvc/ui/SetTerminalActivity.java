@@ -13,11 +13,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.wufeng.commonmvc.databinding.ActivitySetTerminalBinding;
 import com.wufeng.commonmvc.dialog.TipOneDialog;
 import com.wufeng.latte_core.activity.BaseActivity;
+import com.wufeng.latte_core.callback.ICallback;
 import com.wufeng.latte_core.database.TerminalInfo;
 import com.wufeng.latte_core.database.TerminalInfoManager;
 import com.wufeng.latte_core.net.IError;
 import com.wufeng.latte_core.net.ISuccess;
 import com.wufeng.latte_core.net.RestClient;
+import com.wufeng.latte_core.util.RequestUtil;
 
 public class SetTerminalActivity extends BaseActivity<ActivitySetTerminalBinding> {
     private TerminalInfo terminalInfo;
@@ -57,44 +59,18 @@ public class SetTerminalActivity extends BaseActivity<ActivitySetTerminalBinding
 
     //设置终端
     private void setTerminal(){
-        final String merchantCode = mBinding.etMerchantCode.getText().toString();
-        final String terminalCode = mBinding.etTerminalCode.getText().toString();
+        String merchantCode = mBinding.etMerchantCode.getText().toString();
+        String terminalCode = mBinding.etTerminalCode.getText().toString();
         if (TextUtils.isEmpty(merchantCode) || TextUtils.isEmpty(terminalCode)){
             Toast.makeText(SetTerminalActivity.this, "商户号终端号不能为空", Toast.LENGTH_SHORT).show();
             return;
         }
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("merchantId", merchantCode);
-        jsonObject.put("terminalId", terminalCode);
-        //String params = "data={'merchantId':'" + merchantCode + "','terminalId':'" + terminalCode + "'}";
-        RestClient.builder()
-                .url("/pgcore-pos/PosTerminal/setTerminal")
-                .xwwwformurlencoded("data=" + jsonObject.toJSONString())
-                .success(new ISuccess() {
-                    @Override
-                    public void onSuccess(String response) {
-                        JSONObject jsonObject = JSONObject.parseObject(response);
-                        if ("0".equals(jsonObject.getString("resultCode"))){
-                                TerminalInfo info = new TerminalInfo();
-                                info.setMerchantCode(merchantCode);
-                                info.setTerminalCode(terminalCode);
-                                info.setMasterKey(jsonObject.getString("masterkey"));
-                                saveTerminalInfo(info);
-                        }else{
-                            Toast.makeText(SetTerminalActivity.this, jsonObject.getString("resultMessage"), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                })
-                .error(new IError() {
-                    @Override
-                    public void onError(Throwable throwable) {
-                        Toast.makeText(SetTerminalActivity.this, "请求远程服务器失败", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .loading(SetTerminalActivity.this)
-                .build()
-                .post();
-
+        RequestUtil.setTerminal(SetTerminalActivity.this, merchantCode, terminalCode, new ICallback<TerminalInfo>() {
+            @Override
+            public void callback(TerminalInfo info) {
+                saveTerminalInfo(info);
+            }
+        });
     }
 
     //保存终端信息

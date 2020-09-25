@@ -22,9 +22,9 @@ import com.wufeng.latte_core.device.card.ReadCardFactory;
 import com.wufeng.latte_core.net.IError;
 import com.wufeng.latte_core.net.ISuccess;
 import com.wufeng.latte_core.net.RestClient;
+import com.wufeng.latte_core.util.RequestUtil;
 
 public class AddMerchantCardActivity extends BaseActivity<ActivityAddMerchantCardBinding> {
-    private CardInfo cardInfo;
 
     @Override
     protected void init(@Nullable Bundle savedInstanceState) {
@@ -37,6 +37,9 @@ public class AddMerchantCardActivity extends BaseActivity<ActivityAddMerchantCar
         mBinding.etMerchantCardNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ReadCard readCard = ReadCardFactory.getReadCard(ConfigManager.getInstance().getConfig(ConfigKeys.P0SMODEL).toString(), AddMerchantCardActivity.this);
+                if (readCard != null)
+                    readCard.stop();
                 readCard();
             }
         });
@@ -46,6 +49,7 @@ public class AddMerchantCardActivity extends BaseActivity<ActivityAddMerchantCar
                 bindingMerchantCard();
             }
         });
+        readCard();
     }
 
     //读卡
@@ -79,7 +83,7 @@ public class AddMerchantCardActivity extends BaseActivity<ActivityAddMerchantCar
             Toast.makeText(this, "该卡已绑定", Toast.LENGTH_SHORT).show();
             return;
         }
-        queryMerchantByCardNo(cardNo.toString(), new ICallback<MerchantCard>() {
+        RequestUtil.queryMerchantByCardNo(AddMerchantCardActivity.this, cardNo.toString(), new ICallback<MerchantCard>() {
             @Override
             public void callback(MerchantCard merchantCard) {
                 if(!MerchantCardManager.getInstance().insert(merchantCard)){
@@ -88,44 +92,7 @@ public class AddMerchantCardActivity extends BaseActivity<ActivityAddMerchantCar
                 }
                 Toast.makeText(AddMerchantCardActivity.this, "卡片绑定成功", Toast.LENGTH_SHORT).show();
                 mBinding.etMerchantCardNo.setText("");
-                cardInfo = null;
             }
         });
-    }
-
-    //根据卡号查询商户
-    private void queryMerchantByCardNo(final String cardNo, final ICallback<MerchantCard> callback){
-        JSONObject params = new JSONObject();
-        params.put("cardcode", cardNo);
-        RestClient.builder()
-                .url("/pgcore-pos/PosTerminal/getCustomerCard")
-                .xwwwformurlencoded("data=" + params.toJSONString())
-                .success(new ISuccess() {
-                    @Override
-                    public void onSuccess(String response) {
-                        JSONObject jsonObject = JSONObject.parseObject(response);
-                        if ("0".equals(jsonObject.getString("resultCode"))){
-                            MerchantCard merchantCard = new MerchantCard();
-                            merchantCard.setCardNo(cardNo);
-                            merchantCard.setCardName(jsonObject.getJSONObject("merchant").getString("cname"));
-                            merchantCard.setMerchantCode(jsonObject.getJSONObject("merchant").getString("merchantcode"));
-                            merchantCard.setAccountCode(jsonObject.getJSONObject("account").getString("account"));
-                            merchantCard.setIsCollectionAccount(false);
-                            if (callback != null)
-                                callback.callback(merchantCard);
-                        }else{
-                            Toast.makeText(AddMerchantCardActivity.this, jsonObject.getString("resultMessage"), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                })
-                .error(new IError() {
-                    @Override
-                    public void onError(Throwable throwable) {
-                        Toast.makeText(AddMerchantCardActivity.this, "请求远程服务器失败", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .loading(AddMerchantCardActivity.this)
-                .build()
-                .post();
     }
 }

@@ -40,6 +40,7 @@ import java.util.List;
 
 public class WholesaleTradeActivity extends BaseActivity<ActivityWholesaleTradeBinding>
         implements TradeCategoryAdapter.OnItemClickListener, CategoryRecordAdapter.OnItemDeleteListener {
+    public static final  int MAXAMOUNT = 999999999; //单笔最大金额
     private List<CategoryInfo> mCategoryData; //商品数据
     private List<CategoryRecordInfo> mCategoryRecordData; //商品记录
     private TradeCategoryAdapter tradeCategoryAdapter;
@@ -214,9 +215,14 @@ public class WholesaleTradeActivity extends BaseActivity<ActivityWholesaleTradeB
         AddCategoryRecordDialog addCategoryRecordDialog = new AddCategoryRecordDialog(categoryInfo, new AddCategoryRecordDialog.OnAddCategoryRecordListener() {
             @Override
             public void onAddCategoryRecord(CategoryRecordInfo categoryRecordInfo) {
+                BigDecimal sum = BigDecimalUtil.sumB(receivableAmount.toPlainString(), categoryRecordInfo.getGoodsAmount());
+                if (sum.compareTo(new BigDecimal(MAXAMOUNT)) > 0){
+                    Toast.makeText(WholesaleTradeActivity.this, "单笔交易限额" + MAXAMOUNT, Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 mCategoryRecordData.add(categoryRecordInfo);
                 categoryRecordAdapter.notifyItemInserted(mCategoryRecordData.size() - 1);
-                receivableAmount = BigDecimalUtil.sumB(receivableAmount.toPlainString(), categoryRecordInfo.getGoodsAmount());
+                receivableAmount = sum;
                 String payText = mCategoryRecordData.size() + "件商品，共记" + receivableAmount.toPlainString() + "元，去收款";
                 mBinding.tvPay.setText(payText);
             }
@@ -272,6 +278,8 @@ public class WholesaleTradeActivity extends BaseActivity<ActivityWholesaleTradeB
             CategoryInfo info = new CategoryInfo();
             info.setId(data.getStringExtra("id"));
             info.setName(data.getStringExtra("name"));
+            mCategoryData.add(info);
+            tradeCategoryAdapter.notifyItemInserted(mCategoryData.size() - 1);
             openCategoryInputDialog(info);
         }else if (requestCode == AllBindCategoryActivity.REQUESTCODE && resultCode == RESULT_CANCELED){
             initCategoryList();

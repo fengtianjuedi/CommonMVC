@@ -9,6 +9,7 @@ import com.wufeng.latte_core.database.MerchantTradeGoods;
 import com.wufeng.latte_core.entity.CategoryInfo;
 import com.wufeng.latte_core.entity.CategoryRecordInfo;
 import com.wufeng.latte_core.entity.TradeRecordInfo;
+import com.wufeng.latte_core.loader.Loader;
 import com.wufeng.latte_core.util.StringUtil;
 
 public class PrintTemplate {
@@ -56,11 +57,11 @@ public class PrintTemplate {
             mPrinter.printStr(Printer.AlignLeft, "------------------------------");
             mPrinter.printStr(Printer.AlignLeft, "应收金额：" + StringUtil.paddingLeft(trade.getReceivableAmount(), ' ', 16));
             mPrinter.printStr(Printer.AlignLeft, "实收金额：" + StringUtil.paddingLeft(trade.getActualAmount(), ' ', 16));
-            mPrinter.printStr(Printer.AlignLeft, "支付方式：" + StringUtil.paddingLeft((trade.getPayType() == 0 ? "一卡通" : "现金"), ' ', 16));
+            mPrinter.printStr(Printer.AlignLeft, "支付方式：" + StringUtil.paddingLeft((trade.getPayType() == 1 ? "一卡通" : "现金"), ' ', 16));
             mPrinter.printStr(Printer.AlignLeft, "------------------------------");
             mPrinter.printStr(Printer.AlignLeft, "卖家卡号：" + trade.getSellerCardNo());
             mPrinter.printStr(Printer.AlignLeft, "卖家名称： " + trade.getSellerName());
-            if (trade.getPayType() == 0){ //一卡通交易
+            if (trade.getPayType() == 1){ //一卡通交易
                 mPrinter.printStr(Printer.AlignLeft, "买家卡号：" + trade.getBuyerCardNo());
                 mPrinter.printStr(Printer.AlignLeft, "买家名称： " + trade.getBuyerName());
             }
