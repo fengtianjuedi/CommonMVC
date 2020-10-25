@@ -82,6 +82,7 @@ public class AddCategoryRecordDialog extends AppCompatDialogFragment {
                 CategoryRecordInfo recordInfo = new CategoryRecordInfo();
                 recordInfo.setGoodsId(categoryInfo.getId());
                 recordInfo.setGoodsName(categoryInfo.getName());
+                recordInfo.setGoodsBatchNo(categoryInfo.getBatchNo());
                 String price = etPrice.getText().toString();
                 String number = etNumber.getText().toString();
                 String amount = etAmount.getText().toString();

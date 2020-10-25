@@ -10,6 +10,8 @@ public class CategoryRecordInfo implements Parcelable {
     private String goodsPrice; //商品单价
     private String goodsNumber; //商品数量
     private String goodsAmount; //商品金额
+    private String goodsBatchNo; //商品批次号
+    private String goodsTraceabilityCode; //商品溯源码
 
     public String getGoodsId() {return goodsId;}
     public void setGoodsId(String value) {goodsId = value;}
@@ -26,6 +28,12 @@ public class CategoryRecordInfo implements Parcelable {
     public String getGoodsAmount(){return goodsAmount;}
     public void setGoodsAmount(String value){goodsAmount = value;}
 
+    public String getGoodsBatchNo(){return goodsBatchNo;}
+    public void setGoodsBatchNo(String value){goodsBatchNo = value;}
+
+    public String getGoodsTraceabilityCode(){return goodsTraceabilityCode;}
+    public void setGoodsTraceabilityCode(String value){this.goodsTraceabilityCode = value;}
+
     @Override
     public int describeContents() {
         return 0;
@@ -38,6 +46,8 @@ public class CategoryRecordInfo implements Parcelable {
         dest.writeString(goodsPrice);
         dest.writeString(goodsNumber);
         dest.writeString(goodsAmount);
+        dest.writeString(goodsBatchNo);
+        dest.writeString(goodsTraceabilityCode);
     }
 
     public static final Parcelable.Creator<CategoryRecordInfo> CREATOR = new Creator<CategoryRecordInfo>() {
@@ -49,6 +59,8 @@ public class CategoryRecordInfo implements Parcelable {
             categoryRecordInfo.setGoodsPrice(source.readString());
             categoryRecordInfo.setGoodsNumber(source.readString());
             categoryRecordInfo.setGoodsAmount(source.readString());
+            categoryRecordInfo.setGoodsBatchNo(source.readString());
+            categoryRecordInfo.setGoodsTraceabilityCode(source.readString());
             return categoryRecordInfo;
         }
 

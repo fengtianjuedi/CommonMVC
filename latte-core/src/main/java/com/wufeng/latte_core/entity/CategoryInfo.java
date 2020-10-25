@@ -3,6 +3,7 @@ package com.wufeng.latte_core.entity;
 public class CategoryInfo {
     private String id;
     private String name;
+    private String batchNo;
 
     public CategoryInfo(){}
 
@@ -16,4 +17,7 @@ public class CategoryInfo {
 
     public String getName(){return name;}
     public void setName(String value) {this.name = value;}
+
+    public String getBatchNo(){return batchNo;}
+    public void setBatchNo(String value){this.batchNo = value;}
 }

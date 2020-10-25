@@ -29,9 +29,9 @@ import com.wufeng.latte_core.device.print.PrintTemplate;
 import com.wufeng.latte_core.device.print.PrinterFactory;
 import com.wufeng.latte_core.entity.CategoryInfo;
 import com.wufeng.latte_core.entity.CategoryRecordInfo;
+import com.wufeng.latte_core.entity.GoodsBatchInfo;
 import com.wufeng.latte_core.entity.TradeRecordInfo;
 import com.wufeng.latte_core.util.BigDecimalUtil;
-import com.wufeng.latte_core.util.IdGenerate;
 import com.wufeng.latte_core.util.RequestUtil;
 
 import java.math.BigDecimal;
@@ -46,6 +46,7 @@ public class WholesaleTradeActivity extends BaseActivity<ActivityWholesaleTradeB
     private TradeCategoryAdapter tradeCategoryAdapter;
     private CategoryRecordAdapter categoryRecordAdapter;
     private BigDecimal receivableAmount; //应收金额
+    private MerchantCard merchantCard; //收款卡
 
     @Override
     protected void init(@Nullable Bundle savedInstanceState) {
@@ -98,7 +99,7 @@ public class WholesaleTradeActivity extends BaseActivity<ActivityWholesaleTradeB
 
     //初始化品种列表
     private void initCategoryList(){
-        MerchantCard merchantCard = MerchantCardManager.getInstance().queryCollectionAccount();
+        merchantCard = MerchantCardManager.getInstance().queryCollectionAccount();
         RequestUtil.queryCategoryByCardNo(WholesaleTradeActivity.this, merchantCard.getCardNo(), new ICallback<List<CategoryInfo>>() {
             @Override
             public void callback(List<CategoryInfo> categoryInfos) {
@@ -211,23 +212,32 @@ public class WholesaleTradeActivity extends BaseActivity<ActivityWholesaleTradeB
     }
 
     //打开品种记录输入弹窗
-    private void openCategoryInputDialog(CategoryInfo categoryInfo){
-        AddCategoryRecordDialog addCategoryRecordDialog = new AddCategoryRecordDialog(categoryInfo, new AddCategoryRecordDialog.OnAddCategoryRecordListener() {
+    private void openCategoryInputDialog(final CategoryInfo categoryInfo){
+        //查询品种批次信息
+        RequestUtil.queryCategoryBatchNo(WholesaleTradeActivity.this, merchantCard.getCardNo(), categoryInfo.getId(), new ICallback<List<GoodsBatchInfo>>() {
             @Override
-            public void onAddCategoryRecord(CategoryRecordInfo categoryRecordInfo) {
-                BigDecimal sum = BigDecimalUtil.sumB(receivableAmount.toPlainString(), categoryRecordInfo.getGoodsAmount());
-                if (sum.compareTo(new BigDecimal(MAXAMOUNT)) > 0){
-                    Toast.makeText(WholesaleTradeActivity.this, "单笔交易限额" + MAXAMOUNT, Toast.LENGTH_SHORT).show();
-                    return;
+            public void callback(List<GoodsBatchInfo> goodsBatchInfos) {
+                if (goodsBatchInfos != null && goodsBatchInfos.size() > 0){
+                    categoryInfo.setBatchNo(goodsBatchInfos.get(0).getBatchNo());
                 }
-                mCategoryRecordData.add(categoryRecordInfo);
-                categoryRecordAdapter.notifyItemInserted(mCategoryRecordData.size() - 1);
-                receivableAmount = sum;
-                String payText = mCategoryRecordData.size() + "件商品，共记" + receivableAmount.toPlainString() + "元，去收款";
-                mBinding.tvPay.setText(payText);
+                AddCategoryRecordDialog addCategoryRecordDialog = new AddCategoryRecordDialog(categoryInfo, new AddCategoryRecordDialog.OnAddCategoryRecordListener() {
+                    @Override
+                    public void onAddCategoryRecord(CategoryRecordInfo categoryRecordInfo) {
+                        BigDecimal sum = BigDecimalUtil.sumB(receivableAmount.toPlainString(), categoryRecordInfo.getGoodsAmount());
+                        if (sum.compareTo(new BigDecimal(MAXAMOUNT)) > 0){
+                            Toast.makeText(WholesaleTradeActivity.this, "单笔交易限额" + MAXAMOUNT, Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        mCategoryRecordData.add(categoryRecordInfo);
+                        categoryRecordAdapter.notifyItemInserted(mCategoryRecordData.size() - 1);
+                        receivableAmount = sum;
+                        String payText = mCategoryRecordData.size() + "件商品，共记" + receivableAmount.toPlainString() + "元，去收款";
+                        mBinding.tvPay.setText(payText);
+                    }
+                });
+                addCategoryRecordDialog.show(getSupportFragmentManager(), null);
             }
         });
-        addCategoryRecordDialog.show(getSupportFragmentManager(), null);
     }
 
     //添加品种

@@ -1,5 +1,6 @@
 package com.wufeng.latte_core.device.print;
 
+import android.content.res.Configuration;
 import android.util.Log;
 
 import com.wufeng.latte_core.config.ConfigKeys;
@@ -49,10 +50,13 @@ public class PrintTemplate {
             mPrinter.printStr(Printer.AlignLeft, "交易时间： " + trade.getTradeTime());
             mPrinter.printStr(Printer.AlignLeft, "------------------------------");
             mPrinter.printStr(Printer.AlignLeft, StringUtil.paddingRight("单价", ' ', 10) + StringUtil.paddingRight("数量", ' ', 10) + "小计");
+            StringBuilder traceabilityCodeList = new StringBuilder();
             for (int i = 0; i < trade.getCategoryRecordInfoList().size(); i++){
+                if (i != 0)traceabilityCodeList.append("-");
                 CategoryRecordInfo goods = trade.getCategoryRecordInfoList().get(i);
                 mPrinter.printStr(Printer.AlignLeft, goods.getGoodsName());
                 mPrinter.printStr(Printer.AlignLeft, StringUtil.paddingRight(goods.getGoodsPrice(), ' ', 10) + StringUtil.paddingRight(String.valueOf(goods.getGoodsNumber()), ' ', 10)+ goods.getGoodsAmount());
+                traceabilityCodeList.append(goods.getGoodsTraceabilityCode());
             }
             mPrinter.printStr(Printer.AlignLeft, "------------------------------");
             mPrinter.printStr(Printer.AlignLeft, "应收金额：" + StringUtil.paddingLeft(trade.getReceivableAmount(), ' ', 16));
@@ -68,7 +72,10 @@ public class PrintTemplate {
             mPrinter.printStr(Printer.AlignLeft, "------------------------------");
             mPrinter.printStr(Printer.AlignLeft, "本人确认以上交易同意记入本卡账户");
             mPrinter.printStr(Printer.AlignLeft, "签名：");
-            mPrinter.feedLine(6);
+            mPrinter.feedLine(2);
+            String traceabiltiyUrl = ConfigManager.getInstance().getConfig(ConfigKeys.HOST) + "/pgcore-pos/PosTerminal/queryTraceabilityInformationByBatchNo/" + traceabilityCodeList.toString() + "/1";
+            mPrinter.printQrCode(Printer.AlignCenter, 300, traceabiltiyUrl);
+            mPrinter.feedLine(4);
             int num = ConfigManager.getInstance().getConfig(ConfigKeys.PRINTNUMBER);
             for (int i = 0; i < num; i++){
                 mPrinter.startPrint(new Printer.PrintEndCallback() {

@@ -17,6 +17,7 @@ import com.wufeng.latte_core.database.TerminalInfoManager;
 import com.wufeng.latte_core.entity.CategoryInfo;
 import com.wufeng.latte_core.entity.CategoryNode;
 import com.wufeng.latte_core.entity.CategoryRecordInfo;
+import com.wufeng.latte_core.entity.GoodsBatchInfo;
 import com.wufeng.latte_core.entity.TradeRecordInfo;
 import com.wufeng.latte_core.net.IError;
 import com.wufeng.latte_core.net.ISuccess;
@@ -26,6 +27,8 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -126,6 +129,19 @@ public class RequestUtil {
                             JSONObject data = jsonObject.getJSONObject("data");
                             tradeRecordInfo.setTradeOrderCode(data.getString("transnoCenter"));
                             tradeRecordInfo.setTradeTime(data.getString("transdateCenterStr"));
+                            tradeRecordInfo.getCategoryRecordInfoList().clear();
+                            JSONArray goodsInfoList = data.getJSONArray("goodsInfoList");
+                            for (int i = 0; i < goodsInfoList.size(); i++){
+                                CategoryRecordInfo info = new CategoryRecordInfo();
+                                info.setGoodsId(goodsInfoList.getJSONObject(i).getString("goodsid"));
+                                info.setGoodsName(goodsInfoList.getJSONObject(i).getString("goodsname"));
+                                info.setGoodsPrice(goodsInfoList.getJSONObject(i).getString("price"));
+                                info.setGoodsNumber(goodsInfoList.getJSONObject(i).getString("goodsnum"));
+                                info.setGoodsAmount(goodsInfoList.getJSONObject(i).getString("goodsmoney"));
+                                info.setGoodsBatchNo(goodsInfoList.getJSONObject(i).getString("commodityBatchno"));
+                                info.setGoodsTraceabilityCode(goodsInfoList.getJSONObject(i).getString("traceNo"));
+                                tradeRecordInfo.getCategoryRecordInfoList().add(info);
+                            }
                             if (callback != null)
                                 callback.callback(0, tradeRecordInfo);
                         }else{
@@ -184,6 +200,8 @@ public class RequestUtil {
                                     categoryRecordInfo.setGoodsPrice(goods.getJSONObject(n).getString("price"));
                                     categoryRecordInfo.setGoodsNumber(goods.getJSONObject(n).getString("goodsnum"));
                                     categoryRecordInfo.setGoodsAmount(goods.getJSONObject(n).getString("goodsmoney"));
+                                    categoryRecordInfo.setGoodsBatchNo(goods.getJSONObject(n).getString("commodityBatchno"));
+                                    categoryRecordInfo.setGoodsTraceabilityCode(goods.getJSONObject(n).getString("traceNo"));
                                     categoryRecordInfoList.add(categoryRecordInfo);
                                 }
                                 tradeRecordInfo.getCategoryRecordInfoList().addAll(categoryRecordInfoList);
@@ -285,6 +303,7 @@ public class RequestUtil {
             jsonObject.put("price", info.getGoodsPrice());
             jsonObject.put("goodsnum", info.getGoodsNumber());
             jsonObject.put("goodsmoney", info.getGoodsAmount());
+            jsonObject.put("commodityBatchno", info.getGoodsBatchNo());
             goodsList.add(jsonObject);
         }
         params.put("commodityList", goodsList);
@@ -299,6 +318,19 @@ public class RequestUtil {
                             JSONObject data = jsonObject.getJSONObject("data");
                             tradeRecordInfo.setTradeOrderCode(data.getString("transnoCenter"));
                             tradeRecordInfo.setTradeTime(data.getString("transdateCenterStr"));
+                            tradeRecordInfo.getCategoryRecordInfoList().clear();
+                            JSONArray goodsInfoList = data.getJSONArray("goodsInfoList");
+                            for (int i = 0; i < goodsInfoList.size(); i++){
+                                CategoryRecordInfo info = new CategoryRecordInfo();
+                                info.setGoodsId(goodsInfoList.getJSONObject(i).getString("goodsid"));
+                                info.setGoodsName(goodsInfoList.getJSONObject(i).getString("goodsname"));
+                                info.setGoodsPrice(goodsInfoList.getJSONObject(i).getString("price"));
+                                info.setGoodsNumber(goodsInfoList.getJSONObject(i).getString("goodsnum"));
+                                info.setGoodsAmount(goodsInfoList.getJSONObject(i).getString("goodsmoney"));
+                                info.setGoodsBatchNo(goodsInfoList.getJSONObject(i).getString("commodityBatchno"));
+                                info.setGoodsTraceabilityCode(goodsInfoList.getJSONObject(i).getString("traceNo"));
+                                tradeRecordInfo.getCategoryRecordInfoList().add(info);
+                            }
                             if (callback != null)
                                 callback.callback(true);
                         } else {
@@ -599,6 +631,61 @@ public class RequestUtil {
                     @Override
                     public void onError(Throwable throwable) {
                         Toast.makeText(context, "请求远程服务器失败", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .loading(context)
+                .build()
+                .post();
+    }
+
+    //查询品种批次
+    public static void queryCategoryBatchNo(final Context context, String cardNo, String goodsId, final ICallback<List<GoodsBatchInfo>> callback){
+        TerminalInfo terminalInfo = TerminalInfoManager.getInstance().queryLastTerminalInfo();
+        JSONObject params = new JSONObject();
+        params.put("cardCode", cardNo);
+        params.put("goodsId", goodsId);
+        params.put("merchantCode", terminalInfo.getMerchantCode());
+        params.put("terminalId", terminalInfo.getTerminalCode());
+        RestClient.builder()
+                .url("/pgcore-pos/PosQuery/queryCategoryBatchNo")
+                .xwwwformurlencoded("data=" + params.toJSONString())
+                .success(new ISuccess() {
+                    @Override
+                    public void onSuccess(String response) {
+                        JSONObject jsonObject = JSONObject.parseObject(response);
+                        if ("0".equals(jsonObject.getString("resultCode"))){
+                            JSONArray data = jsonObject.getJSONArray("data");
+                            List<GoodsBatchInfo> goodsBatchInfos = new ArrayList<>();
+                            for (int i = 0; i < data.size(); i++){
+                                GoodsBatchInfo goodsBatchInfo = new GoodsBatchInfo();
+                                goodsBatchInfo.setBatchNo(data.getJSONObject(i).getString("batchNo"));
+                                goodsBatchInfo.setCreateTime(TimeUtil.parseStringToDateYMDHMS(data.getJSONObject(i).getString("createTime")));
+                                goodsBatchInfos.add(goodsBatchInfo);
+                            }
+                            Collections.sort(goodsBatchInfos, new Comparator<GoodsBatchInfo>() {
+                                @Override
+                                public int compare(GoodsBatchInfo o1, GoodsBatchInfo o2) {
+                                    return o2.getCreateTime().compareTo(o1.getCreateTime());
+                                }
+                            });
+                            if (callback != null){
+                                callback.callback(goodsBatchInfos);
+                            }
+                        }else{
+                            //Toast.makeText(context, jsonObject.getString("resultMessage"), Toast.LENGTH_SHORT).show();
+                            if (callback != null) {
+                                callback.callback(null);
+                            }
+                        }
+                    }
+                })
+                .error(new IError() {
+                    @Override
+                    public void onError(Throwable throwable) {
+                        //Toast.makeText(context, "请求远程服务器失败", Toast.LENGTH_SHORT).show();
+                        if (callback != null) {
+                            callback.callback(null);
+                        }
                     }
                 })
                 .loading(context)
