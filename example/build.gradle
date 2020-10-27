@@ -20,6 +20,9 @@ android {
         juye {
             applicationId "com.wufeng.juye" //多渠道打包，重定义包名
         }
+        xidi {
+            applicationId "com.wufeng.xidi" //多渠道打包，重定义包名
+        }
     }
     signingConfigs {
         config {
